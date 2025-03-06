@@ -159,6 +159,8 @@ header.bg-primary h1 {
     margin: 0;
     position: relative;
     z-index: 1;
+    /* 添加回退颜色，以防渐变不支持 */
+    color: #0062E6;
     background: linear-gradient(135deg, #0062E6, #33AEFF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -177,6 +179,7 @@ header.bg-primary h1 {
     z-index: 0;
     filter: grayscale(0.5);
     transition: all 0.3s ease;
+    font-family: 'bootstrap-icons';
 }
 
 .stats-card:hover .card-body::before {
@@ -186,19 +189,19 @@ header.bg-primary h1 {
 }
 
 .stats-card.total-cases .card-body::before {
-    content: "📃"; /* 文档 emoji */
+    content: "\F4E4"; /* 使用 Bootstrap 图标替代 emoji */
 }
 
 .stats-card.filtered-cases .card-body::before {
-    content: "🗃️"; /* 文件夹 emoji */
+    content: "\F5D0"; /* 使用 Bootstrap 图标替代 emoji */
 }
 
 .stats-card.leak-rate .card-body::before {
-    content: "💧"; /* 水滴 emoji 表示漏率 */
+    content: "\F5C7"; /* 使用 Bootstrap 图标替代 emoji */
 }
 
 .stats-card.death-rate .card-body::before {
-    content: "⚠️"; /* 警告 emoji */
+    content: "\F336"; /* 使用 Bootstrap 图标替代 emoji */
 }
 
 /* 添加数据加载动画 */
@@ -217,8 +220,9 @@ header.bg-primary h1 {
     animation: number-count 0.8s ease-out forwards;
 }
 
-/* 特定卡片颜色 */
+/* 特定卡片颜色 - 添加回退颜色 */
 .stats-card.total-cases .card-text {
+    color: #0062E6; /* 回退颜色 */
     background: linear-gradient(135deg, #0062E6, #33AEFF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -227,6 +231,7 @@ header.bg-primary h1 {
 }
 
 .stats-card.filtered-cases .card-text {
+    color: #2E7D32; /* 回退颜色 */
     background: linear-gradient(135deg, #2E7D32, #81C784);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -235,6 +240,7 @@ header.bg-primary h1 {
 }
 
 .stats-card.leak-rate .card-text {
+    color: #FF6F00; /* 回退颜色 */
     background: linear-gradient(135deg, #FF6F00, #FFAB40);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -243,6 +249,7 @@ header.bg-primary h1 {
 }
 
 .stats-card.death-rate .card-text {
+    color: #C62828; /* 回退颜色 */
     background: linear-gradient(135deg, #C62828, #EF5350);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
