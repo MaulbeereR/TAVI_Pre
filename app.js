@@ -90,19 +90,19 @@ function initValveTypeChart() {
     // 为每种瓣膜类型设置独特的颜色
     const colorMap = {
         'Sapien XT': 'rgba(255, 99, 132, 0.7)',
-        'Edwards-Sapien S3': 'rgba(54, 162, 235, 0.7)',
+        'Edwards-Sapien S3': 'rgba(99, 175, 225, 0.7)',
         'CoreValve': 'rgba(255, 206, 86, 0.7)',
-        'CoreValve EvolutR': 'rgba(153, 102, 255, 0.7)',
-        'Lotus valve': 'rgba(255, 159, 64, 0.7)',
+        'CoreValve EvolutR': 'rgba(161, 131, 223, 0.7)',
+        'Lotus valve': 'rgba(182, 85, 85, 0.7)',
         'SAPIEN3': 'rgba(75, 192, 192, 0.7)',
-        'Evolut RT': 'rgba(201, 203, 207, 0.7)',
+        'Evolut RT': 'rgba(75, 192, 192, 1)',
         'CoreValveTM': 'rgba(220, 53, 69, 0.7)',
         'SAPIEN 3': 'rgba(40, 167, 69, 0.7)',
         'Medtronic CoreValve Evolut R': 'rgba(111, 66, 193, 0.7)',
         'MOSAIC bioprosthesis': 'rgba(253, 126, 20, 0.7)',
         'Edwards SAPIEN 3': 'rgba(32, 201, 151, 0.7)',
-        'SAPIEN3 transcatheter heart valve': 'rgba(0, 123, 255, 0.7)',
-        'Edwards CENTERA TM 29': 'rgba(102, 16, 242, 0.7)'
+        'SAPIEN3 transcatheter heart valve': 'rgba(37, 123, 216, 0.7)',
+        'Edwards CENTERA TM 29': 'rgba(15, 127, 95, 0.7)'
     };
     
     // 根据标签获取对应颜色
@@ -160,8 +160,8 @@ function initValveDiameterChart() {
             datasets: [{
                 label: '病例数量',
                 data: data,
-                backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
             }]
         },
