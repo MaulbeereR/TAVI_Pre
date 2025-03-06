@@ -189,19 +189,19 @@ header.bg-primary h1 {
 }
 
 .stats-card.total-cases .card-body::before {
-    content: "\F4E4"; /* 使用 Bootstrap 图标替代 emoji */
+    content: "\F2CC";
 }
 
 .stats-card.filtered-cases .card-body::before {
-    content: "\F5D0"; /* 使用 Bootstrap 图标替代 emoji */
+    content: "\F17E";
 }
 
 .stats-card.leak-rate .card-body::before {
-    content: "\F5C7"; /* 使用 Bootstrap 图标替代 emoji */
+    content: "\F30C";
 }
 
 .stats-card.death-rate .card-body::before {
-    content: "\F336"; /* 使用 Bootstrap 图标替代 emoji */
+    content: "\F334";
 }
 
 /* 添加数据加载动画 */
