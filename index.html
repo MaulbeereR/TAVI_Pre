@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAVI交互式智能病例分析系统</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="bg-primary text-white p-3 mb-4">
+            <h1 class="text-center">TAVI交互式智能病例分析系统</h1>
+        </header>
+
+        <div class="row">
+            <!-- 左侧筛选面板 -->
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h4>筛选条件</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="filter-form">
+                            <div class="mb-3">
+                                <label for="age-range" class="form-label">年龄范围</label>
+                                <div class="d-flex">
+                                    <input type="number" class="form-control me-2" id="age-min" placeholder="最小">
+                                    <span class="align-self-center">-</span>
+                                    <input type="number" class="form-control ms-2" id="age-max" placeholder="最大">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">性别</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Male" id="gender-male">
+                                    <label class="form-check-label" for="gender-male">男</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="Female" id="gender-female">
+                                    <label class="form-check-label" for="gender-female">女</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="valve-type" class="form-label">瓣膜类型</label>
+                                <select class="form-select" id="valve-type">
+                                    <option value="">全部</option>
+                                    <option value="Sapien XT">Sapien XT</option>
+                                    <option value="Edwards-Sapien S3">Edwards-Sapien S3</option>
+                                    <option value="CoreValve">CoreValve</option>
+                                    <option value="CoreValve EvolutR">CoreValve EvolutR</option>
+                                    <option value="Lotus valve">Lotus valve</option>
+                                    <option value="SAPIEN3">SAPIEN3</option>
+                                    <option value="Evolut RT">Evolut RT</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="valve-diameter" class="form-label">瓣膜直径</label>
+                                <select class="form-select" id="valve-diameter">
+                                    <option value="">全部</option>
+                                    <option value="20 mm">20 mm</option>
+                                    <option value="23 mm">23 mm</option>
+                                    <option value="26 mm">26 mm</option>
+                                    <option value="27 mm">27 mm</option>
+                                    <option value="29 mm">29 mm</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="mean-gradient-range" class="form-label">术前平均跨瓣压差 (mmHg)</label>
+                                <div class="d-flex">
+                                    <input type="number" class="form-control me-2" id="mean-gradient-min" placeholder="最小">
+                                    <span class="align-self-center">-</span>
+                                    <input type="number" class="form-control ms-2" id="mean-gradient-max" placeholder="最大">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="valve-area-range" class="form-label">术前瓣膜面积 (cm²)</label>
+                                <div class="d-flex">
+                                    <input type="number" class="form-control me-2" id="valve-area-min" placeholder="最小" step="0.1">
+                                    <span class="align-self-center">-</span>
+                                    <input type="number" class="form-control ms-2" id="valve-area-max" placeholder="最大" step="0.1">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">术后结果</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="true" id="paravalvular-leak">
+                                    <label class="form-check-label" for="paravalvular-leak">瓣周漏</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="true" id="death">
+                                    <label class="form-check-label" for="death">死亡</label>
+                                </div>
+                            </div>
+                            
+                            <button type="button" id="apply-filter" class="btn btn-primary w-100">应用筛选</button>
+                            <button type="button" id="reset-filter" class="btn btn-outline-secondary w-100 mt-2">重置筛选</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧内容区域 -->
+            <div class="col-md-9">
+                <!-- 数据统计卡片 -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">总病例数</h5>
+                                <p class="card-text fs-1" id="total-cases">20</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">筛选病例数</h5>
+                                <p class="card-text fs-1" id="filtered-cases">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">瓣周漏率</h5>
+                                <p class="card-text fs-1" id="leak-rate">0%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">死亡率</h5>
+                                <p class="card-text fs-1" id="death-rate">0%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 图表区域 -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>瓣膜类型分布</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="valve-type-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>瓣膜直径分布</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="valve-diameter-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>术前术后指标对比</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="pre-post-comparison-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 病例列表 -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4>病例列表</h4>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-primary" id="sort-by-match">按匹配度排序</button>
+                            <button type="button" class="btn btn-outline-primary" id="sort-by-age">按年龄排序</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>年龄</th>
+                                        <th>性别</th>
+                                        <th>病症</th>
+                                        <th>瓣膜类型</th>
+                                        <th>瓣膜直径</th>
+                                        <th>术前平均压差</th>
+                                        <th>术后结果</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="case-list">
+                                    <!-- 病例数据将通过JavaScript动态加载 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 病例详情模态框 -->
+    <div class="modal fade" id="case-detail-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">病例详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>基本信息</h6>
+                            <table class="table">
+                                <tr>
+                                    <th>年龄</th>
+                                    <td id="modal-age"></td>
+                                </tr>
+                                <tr>
+                                    <th>性别</th>
+                                    <td id="modal-gender"></td>
+                                </tr>
+                                <tr>
+                                    <th>病症</th>
+                                    <td id="modal-case"></td>
+                                </tr>
+                                <tr>
+                                    <th>既往病史</th>
+                                    <td id="modal-history"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>术前信息</h6>
+                            <table class="table">
+                                <tr>
+                                    <th>平均跨瓣压差</th>
+                                    <td id="modal-pre-mean-gradient"></td>
+                                </tr>
+                                <tr>
+                                    <th>最大跨瓣压差</th>
+                                    <td id="modal-pre-peak-gradient"></td>
+                                </tr>
+                                <tr>
+                                    <th>瓣膜面积</th>
+                                    <td id="modal-pre-valve-area"></td>
+                                </tr>
+                                <tr>
+                                    <th>最大跨瓣流速</th>
+                                    <td id="modal-pre-max-velocity"></td>
+                                </tr>
+                                <tr>
+                                    <th>射血分数</th>
+                                    <td id="modal-pre-ef"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>手术方案</h6>
+                            <table class="table">
+                                <tr>
+                                    <th>瓣膜类型</th>
+                                    <td id="modal-valve-type"></td>
+                                </tr>
+                                <tr>
+                                    <th>瓣膜直径</th>
+                                    <td id="modal-valve-diameter"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>术后结果</h6>
+                            <table class="table">
+                                <tr>
+                                    <th>死亡</th>
+                                    <td id="modal-death"></td>
+                                </tr>
+                                <tr>
+                                    <th>瓣周漏</th>
+                                    <td id="modal-leak"></td>
+                                </tr>
+                                <tr>
+                                    <th>术后平均跨瓣压差</th>
+                                    <td id="modal-post-mean-gradient"></td>
+                                </tr>
+                                <tr>
+                                    <th>术后最大跨瓣压差</th>
+                                    <td id="modal-post-peak-gradient"></td>
+                                </tr>
+                                <tr>
+                                    <th>术后瓣膜面积</th>
+                                    <td id="modal-post-valve-area"></td>
+                                </tr>
+                                <tr>
+                                    <th>术后最大跨瓣流速</th>
+                                    <td id="modal-post-max-velocity"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 
