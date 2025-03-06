@@ -1,7 +1,253 @@
 /* 全局样式 */
 body {
-    font-family: 'Microsoft YaHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Noto Sans SC', 'Microsoft YaHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(42, 100, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(42, 100, 246, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+}
+
+/* 标题样式 - 科技风格 */
+header.bg-primary {
+    background: linear-gradient(135deg, #0062E6, #33AEFF) !important;
+    box-shadow: 0 4px 20px rgba(0, 98, 230, 0.3);
+    border-radius: 0 0 15px 15px;
+    margin-bottom: 25px !important;
+    position: relative;
+    overflow: hidden;
+}
+
+header.bg-primary::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0.5;
+    animation: pulse 15s infinite linear;
+}
+
+header.bg-primary h1 {
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 15px 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* 标题图标样式 */
+.header-icon {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    animation: pulse-icon 1.5s infinite ease-in-out alternate;
+}
+
+@keyframes pulse-icon {
+    from {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    to {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* AI驱动徽章 */
+.tech-badge {
+    background: rgba(0, 0, 0, 0.2);
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    vertical-align: middle;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tech-badge i {
+    margin-right: 3px;
+    font-size: 0.8rem;
+    vertical-align: text-top;
+}
+
+@keyframes pulse {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 数据统计卡片样式 - 科技风格 */
+.stats-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    position: relative;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.stats-card .card-header {
+    background: linear-gradient(135deg, #f5f7fa, #e4e8f0);
+    border-bottom: none;
+    padding: 15px;
+    font-weight: 600;
+    color: #495057;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card .card-header::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.stats-card .card-body {
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.stats-card .card-body::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(13, 110, 253, 0.05);
+    z-index: 0;
+}
+
+.stats-card .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+}
+
+.stats-card .card-text {
+    font-weight: 700;
+    font-size: 2.5rem !important;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, #0062E6, #33AEFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* 添加图标 */
+.stats-card .card-body::before {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 1.5rem;
+    opacity: 0.15;
+    z-index: 0;
+    filter: grayscale(0.5);
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover .card-body::before {
+    opacity: 0.3;
+    transform: scale(1.1);
+    filter: grayscale(0);
+}
+
+.stats-card.total-cases .card-body::before {
+    content: "📃"; /* 文档 emoji */
+}
+
+.stats-card.filtered-cases .card-body::before {
+    content: "🗃️"; /* 文件夹 emoji */
+}
+
+.stats-card.leak-rate .card-body::before {
+    content: "💧"; /* 水滴 emoji 表示漏率 */
+}
+
+.stats-card.death-rate .card-body::before {
+    content: "⚠️"; /* 警告 emoji */
+}
+
+/* 添加数据加载动画 */
+@keyframes number-count {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stats-card .card-text {
+    animation: number-count 0.8s ease-out forwards;
+}
+
+/* 特定卡片颜色 */
+.stats-card.total-cases .card-text {
+    background: linear-gradient(135deg, #0062E6, #33AEFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.stats-card.filtered-cases .card-text {
+    background: linear-gradient(135deg, #2E7D32, #81C784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.stats-card.leak-rate .card-text {
+    background: linear-gradient(135deg, #FF6F00, #FFAB40);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.stats-card.death-rate .card-text {
+    background: linear-gradient(135deg, #C62828, #EF5350);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
 }
 
 /* 标题样式 */

@@ -7,11 +7,19 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container-fluid">
         <header class="bg-primary text-white p-3 mb-4">
-            <h1 class="text-center">TAVI交互式智能病例分析系统</h1>
+            <div class="d-flex justify-content-center align-items-center">
+                <i class="bi bi-heart-pulse-fill me-3 fs-1 header-icon"></i>
+                <h1 class="text-center m-0">
+                    <span class="fw-bold">TAVI</span>
+                    <span class="fw-light">交互式智能病例分析系统</span>
+                    <span class="tech-badge ms-2"><i class="bi bi-cpu"></i> AI驱动</span>
+                </h1>
+            </div>
         </header>
 
         <div class="row">
@@ -112,34 +120,42 @@
                 <!-- 数据统计卡片 -->
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <div class="card text-center">
+                        <div class="card stats-card total-cases">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">总病例数</h5>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">总病例数</h5>
-                                <p class="card-text fs-1" id="total-cases">20</p>
+                                <p class="card-text" id="total-cases">20</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card text-center">
+                        <div class="card stats-card filtered-cases">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">筛选病例数</h5>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">筛选病例数</h5>
-                                <p class="card-text fs-1" id="filtered-cases">0</p>
+                                <p class="card-text" id="filtered-cases">20</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card text-center">
+                        <div class="card stats-card leak-rate">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">瓣周漏率</h5>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">瓣周漏率</h5>
-                                <p class="card-text fs-1" id="leak-rate">0%</p>
+                                <p class="card-text" id="leak-rate">40%</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="card text-center">
+                        <div class="card stats-card death-rate">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">死亡率</h5>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">死亡率</h5>
-                                <p class="card-text fs-1" id="death-rate">0%</p>
+                                <p class="card-text" id="death-rate">5%</p>
                             </div>
                         </div>
                     </div>
