@@ -8,6 +8,7 @@ const applyFilterBtn = document.getElementById('apply-filter');
 const resetFilterBtn = document.getElementById('reset-filter');
 const sortByMatchBtn = document.getElementById('sort-by-match');
 const sortByAgeBtn = document.getElementById('sort-by-age');
+const sortByYearBtn = document.getElementById('sort-by-year');
 
 // 图表实例
 let valveTypeChart;
@@ -56,6 +57,7 @@ function bindEvents() {
     // 排序按钮
     sortByMatchBtn.addEventListener('click', () => sortCases('match'));
     sortByAgeBtn.addEventListener('click', () => sortCases('age'));
+    sortByYearBtn.addEventListener('click', () => sortCases('year'));
 }
 
 // 初始化图表
@@ -90,19 +92,16 @@ function initValveTypeChart() {
     // 为每种瓣膜类型设置独特的颜色
     const colorMap = {
         'Sapien XT': 'rgba(255, 99, 132, 0.7)',
-        'Edwards-Sapien S3': 'rgba(99, 175, 225, 0.7)',
+        'Edwards-Sapien S3': 'rgba(84, 137, 194, 0.7)',
         'CoreValve': 'rgba(255, 206, 86, 0.7)',
+        'Edwards CENTERA TM 29': 'rgba(15, 127, 95, 0.7)',
         'CoreValve EvolutR': 'rgba(161, 131, 223, 0.7)',
-        'Lotus valve': 'rgba(182, 85, 85, 0.7)',
-        'SAPIEN3': 'rgba(75, 192, 192, 0.7)',
-        'Evolut RT': 'rgba(75, 192, 192, 1)',
+        'Lotus valve': 'rgba(194, 153, 133, 0.7)',
         'CoreValveTM': 'rgba(220, 53, 69, 0.7)',
         'SAPIEN 3': 'rgba(40, 167, 69, 0.7)',
-        'Medtronic CoreValve Evolut R': 'rgba(111, 66, 193, 0.7)',
-        'MOSAIC bioprosthesis': 'rgba(253, 126, 20, 0.7)',
-        'Edwards SAPIEN 3': 'rgba(32, 201, 151, 0.7)',
-        'SAPIEN3 transcatheter heart valve': 'rgba(37, 123, 216, 0.7)',
-        'Edwards CENTERA TM 29': 'rgba(15, 127, 95, 0.7)'
+        'Evolut RT': 'rgba(75, 192, 192, 1)',
+        'Medtronic CoreValve Evolut R': 'rgba(142, 99, 221, 0.7)',
+        'MOSAIC bioprosthesis': 'rgba(253, 126, 20, 0.7)'
     };
     
     // 根据标签获取对应颜色
@@ -292,6 +291,7 @@ function renderCaseList(cases) {
         // 构建行内容
         row.innerHTML = `
             <td>${caseItem.id}</td>
+            <td>${caseItem.year}</td>
             <td>${caseItem.Basic_Info.Age}</td>
             <td>${caseItem.Basic_Info.Gender === 'Male' ? '男' : caseItem.Basic_Info.Gender === 'Female' ? '女' : 'N/A'}</td>
             <td>${truncateText(caseItem.Basic_Info.Case, 30)}</td>
@@ -354,6 +354,46 @@ function showCaseDetail(caseId) {
     document.getElementById('modal-post-peak-gradient').textContent = caseItem.Result.Peak_Gradients;
     document.getElementById('modal-post-valve-area').textContent = caseItem.Result.Valve_Area;
     document.getElementById('modal-post-max-velocity').textContent = caseItem.Result.Maximum_Velocity;
+    
+    // 填充报告信息
+    document.getElementById('modal-doi').textContent = caseItem.doi || 'N/A';
+    document.getElementById('modal-year').textContent = caseItem.year || 'N/A';
+    
+    // 处理PDF和图片按钮
+    const openPdfBtn = document.getElementById('open-pdf-btn');
+    const viewImagesBtn = document.getElementById('view-images-btn');
+    
+    // 检查是否有PDF文件
+    if (caseItem.Files && caseItem.Files.PDF) {
+        openPdfBtn.disabled = false;
+        openPdfBtn.onclick = () => {
+            // 使用Chrome打开PDF文件
+            const pdfPath = caseItem.Files.PDF;
+            
+            // 尝试使用file协议打开
+            try {
+                // 对路径进行编码，确保特殊字符正确处理
+                const encodedPath = encodeURI(`file:///${pdfPath}`);
+                window.open(encodedPath, '_blank');
+            } catch (error) {
+                console.error('无法打开PDF文件:', error);
+                alert('无法打开PDF文件，请检查文件路径是否正确。\n路径: ' + pdfPath);
+            }
+        };
+    } else {
+        openPdfBtn.disabled = true;
+    }
+    
+    // 检查是否有图片
+    if (caseItem.Files && caseItem.Files.Images && caseItem.Files.Images.length > 0) {
+        viewImagesBtn.disabled = false;
+        viewImagesBtn.onclick = () => {
+            // 打开图片查看页面
+            window.open(`case-images.html?id=${caseItem.id}`, '_blank');
+        };
+    } else {
+        viewImagesBtn.disabled = true;
+    }
     
     // 显示模态框
     const modal = new bootstrap.Modal(document.getElementById('case-detail-modal'));
@@ -508,15 +548,24 @@ function updateCharts() {
 // 排序病例
 function sortCases(sortBy) {
     if (sortBy === 'age') {
-        // 按年龄排序
+        // 按年龄从大到小排序, 如果为N/A则排在最后
         filteredCases.sort((a, b) => {
             const ageA = parseInt(a.Basic_Info.Age.replace(/\D/g, '')) || 0;
             const ageB = parseInt(b.Basic_Info.Age.replace(/\D/g, '')) || 0;
-            return ageA - ageB;
+            if (isNaN(ageA) && !isNaN(ageB)) return 1;
+            if (!isNaN(ageA) && isNaN(ageB)) return -1;
+            return ageB - ageA;
         });
     } else if (sortBy === 'match') {
-        // 按匹配度排序（这里简化为按ID排序）
+        // 按ID排序
         filteredCases.sort((a, b) => a.id - b.id);
+    } else if (sortBy === 'year') {
+        // 按年份从大到小排序
+        filteredCases.sort((a, b) => {
+            const yearA = a.year || 0;
+            const yearB = b.year || 0;
+            return yearB - yearA;
+        });
     }
     
     // 渲染病例列表

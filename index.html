@@ -59,10 +59,14 @@
                                     <option value="Sapien XT">Sapien XT</option>
                                     <option value="Edwards-Sapien S3">Edwards-Sapien S3</option>
                                     <option value="CoreValve">CoreValve</option>
+                                    <option value="Edwards CENTERA TM 29">Edwards CENTERA TM 29</option>
                                     <option value="CoreValve EvolutR">CoreValve EvolutR</option>
                                     <option value="Lotus valve">Lotus valve</option>
-                                    <option value="SAPIEN3">SAPIEN3</option>
+                                    <option value="CoreValveTM">CoreValveTM</option>
+                                    <option value="SAPIEN 3">SAPIEN 3</option>
                                     <option value="Evolut RT">Evolut RT</option>
+                                    <option value="Medtronic CoreValve Evolut R">Medtronic CoreValve Evolut R</option>
+                                    <option value="MOSAIC bioprosthesis">MOSAIC bioprosthesis</option>
                                 </select>
                             </div>
                             
@@ -203,8 +207,9 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4>病例列表</h4>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-primary" id="sort-by-match">按匹配度排序</button>
+                            <button type="button" class="btn btn-outline-primary" id="sort-by-match">按ID排序</button>
                             <button type="button" class="btn btn-outline-primary" id="sort-by-age">按年龄排序</button>
+                            <button type="button" class="btn btn-outline-primary" id="sort-by-year">按年份排序</button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -213,6 +218,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>年份</th>
                                         <th>年龄</th>
                                         <th>性别</th>
                                         <th>病症</th>
@@ -331,6 +337,32 @@
                                 <tr>
                                     <th>术后最大跨瓣流速</th>
                                     <td id="modal-post-max-velocity"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <h6>报告信息</h6>
+                            <table class="table">
+                                <tr>
+                                    <th>DOI</th>
+                                    <td id="modal-doi"></td>
+                                </tr>
+                                <tr>
+                                    <th>发表年份</th>
+                                    <td id="modal-year"></td>
+                                </tr>
+                                <tr>
+                                    <th>文件操作</th>
+                                    <td>
+                                        <button id="open-pdf-btn" class="btn btn-sm btn-outline-primary me-2">
+                                            <i class="bi bi-file-earmark-pdf"></i> 查看PDF
+                                        </button>
+                                        <button id="view-images-btn" class="btn btn-sm btn-outline-info">
+                                            <i class="bi bi-images"></i> 查看图片
+                                        </button>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
