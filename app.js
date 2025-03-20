@@ -18,6 +18,13 @@ let prePostComparisonChart;
 // 当前筛选后的病例
 let filteredCases = [];
 
+// 排序状态
+let sortStates = {
+    match: { ascending: true },
+    age: { ascending: true },
+    year: { ascending: true }
+};
+
 // 初始化页面
 document.addEventListener('DOMContentLoaded', () => {
     // 初始化数据
@@ -294,7 +301,11 @@ function renderCaseList(cases) {
             <td>${caseItem.year}</td>
             <td>${caseItem.Basic_Info.Age}</td>
             <td>${caseItem.Basic_Info.Gender === 'Male' ? '男' : caseItem.Basic_Info.Gender === 'Female' ? '女' : 'N/A'}</td>
-            <td>${truncateText(caseItem.Basic_Info.Case, 30)}</td>
+            <td>
+                <span class="case-text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="${caseItem.Basic_Info.Case}">
+                    ${truncateText(caseItem.Basic_Info.Case, 30)}
+                </span>
+            </td>
             <td>${caseItem.Procedure.Valve_Type}</td>
             <td>${caseItem.Procedure.Valve_Diameter}</td>
             <td>${caseItem.Pre_Info.Mean_Gradient}</td>
@@ -315,6 +326,12 @@ function renderCaseList(cases) {
         
         // 添加到列表
         caseListEl.appendChild(row);
+    });
+    
+    // 初始化所有tooltip
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
     });
     
     // 为详情按钮添加事件
@@ -358,6 +375,10 @@ function showCaseDetail(caseId) {
     // 填充报告信息
     document.getElementById('modal-doi').textContent = caseItem.doi || 'N/A';
     document.getElementById('modal-year').textContent = caseItem.year || 'N/A';
+    document.getElementById('modal-source').textContent = caseItem.source || 'N/A';
+    document.getElementById('modal-title').textContent = caseItem.title || 'N/A';
+    document.getElementById('modal-author').textContent = caseItem.author || 'N/A';
+    document.getElementById('modal-pmid').textContent = caseItem.pmid || 'N/A';
     
     // 处理PDF和图片按钮
     const openPdfBtn = document.getElementById('open-pdf-btn');
@@ -547,29 +568,72 @@ function updateCharts() {
 
 // 排序病例
 function sortCases(sortBy) {
+    // 切换排序方向
+    sortStates[sortBy].ascending = !sortStates[sortBy].ascending;
+    
+    // 更新箭头图标
+    updateSortArrow(sortBy);
+    
     if (sortBy === 'age') {
-        // 按年龄从大到小排序, 如果为N/A则排在最后
+        // 按年龄排序，N/A排在最后
         filteredCases.sort((a, b) => {
-            const ageA = parseInt(a.Basic_Info.Age.replace(/\D/g, '')) || 0;
-            const ageB = parseInt(b.Basic_Info.Age.replace(/\D/g, '')) || 0;
-            if (isNaN(ageA) && !isNaN(ageB)) return 1;
-            if (!isNaN(ageA) && isNaN(ageB)) return -1;
-            return ageB - ageA;
+            const ageA = a.Basic_Info.Age;
+            const ageB = b.Basic_Info.Age;
+            
+            // 如果都是N/A，保持原顺序
+            if (ageA === 'N/A' && ageB === 'N/A') return 0;
+            // 如果只有一个是N/A，将其排在最后
+            if (ageA === 'N/A') return 1;
+            if (ageB === 'N/A') return -1;
+            
+            // 提取数字部分进行比较
+            const numA = parseInt(ageA.replace(/\D/g, ''));
+            const numB = parseInt(ageB.replace(/\D/g, ''));
+            
+            return sortStates[sortBy].ascending ? numA - numB : numB - numA;
         });
     } else if (sortBy === 'match') {
-        // 按ID排序
-        filteredCases.sort((a, b) => a.id - b.id);
-    } else if (sortBy === 'year') {
-        // 按年份从大到小排序
+        // 按ID排序，N/A排在最后
         filteredCases.sort((a, b) => {
-            const yearA = a.year || 0;
-            const yearB = b.year || 0;
-            return yearB - yearA;
+            const idA = a.id;
+            const idB = b.id;
+            
+            // 如果都是N/A，保持原顺序
+            if (idA === 'N/A' && idB === 'N/A') return 0;
+            // 如果只有一个是N/A，将其排在最后
+            if (idA === 'N/A') return 1;
+            if (idB === 'N/A') return -1;
+            
+            return sortStates[sortBy].ascending ? idA - idB : idB - idA;
+        });
+    } else if (sortBy === 'year') {
+        // 按年份排序，N/A排在最后
+        filteredCases.sort((a, b) => {
+            const yearA = a.year;
+            const yearB = b.year;
+            
+            // 如果都是N/A，保持原顺序
+            if (yearA === 'N/A' && yearB === 'N/A') return 0;
+            // 如果只有一个是N/A，将其排在最后
+            if (yearA === 'N/A') return 1;
+            if (yearB === 'N/A') return -1;
+            
+            return sortStates[sortBy].ascending ? yearA - yearB : yearB - yearA;
         });
     }
     
     // 渲染病例列表
     renderCaseList(filteredCases);
+}
+
+// 更新排序箭头图标
+function updateSortArrow(sortBy) {
+    const arrow = document.getElementById(`sort-by-${sortBy}-arrow`);
+    if (sortStates[sortBy].ascending) {
+        arrow.className = 'bi bi-arrow-up';
+    } else {
+        arrow.className = 'bi bi-arrow-down';
+    }
 }
 
 // 辅助函数：截断文本

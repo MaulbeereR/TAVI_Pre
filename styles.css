@@ -268,6 +268,13 @@ header.bg-primary h1 {
     font-weight: 600;
 }
 
+/* 设置瓣膜类型列宽 */
+.table th:nth-child(6),
+.table td:nth-child(6) {
+    min-width: 150px;
+    max-width: 200px;
+}
+
 /* 病例列表行样式 */
 #case-list tr:hover {
     background-color: #f1f8ff;
@@ -363,4 +370,50 @@ header.bg-primary h1 {
     to {
         transform: rotate(360deg);
     }
+}
+
+/* 病症文本样式 */
+.case-text {
+    color: inherit;
+    border-bottom: none;
+    cursor: default;
+}
+
+/* 自定义Tooltip样式 */
+.tooltip {
+    font-size: 14px;
+}
+
+.tooltip-inner {
+    max-width: 350px;
+    padding: 8px 12px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    line-height: 1.5;
+}
+
+.tooltip.bs-tooltip-top .arrow::before {
+    border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+/* 病例详情表格样式 */
+.modal-body .table th {
+    white-space: nowrap;
+    min-width: 120px;
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.modal-body .table td {
+    word-break: break-word;
+}
+
+/* 病例详情中的基本信息和报告信息部分 */
+.modal-body .table th[scope="row"] {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+    white-space: nowrap;
+    background-color: #f8f9fa;
 } 

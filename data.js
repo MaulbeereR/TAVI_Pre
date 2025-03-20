@@ -3,6 +3,11 @@ const taviCases = [
     {
         id: 1,
         doi: "10.1016/j.jccase.2017.08.003",
+        pmid: "30279838",
+        title: "Transcatheter aortic valve implantation in a patient with aplastic anemia.",
+        source: "J Cardiol Cases",
+        author: "Yujiro Kawai, Yasuyuki Toyoda, Hikaru Kimura, Miki Horigome, Yasutoshi Tsuda, Takahiro Takemura",
+        abstract: "Aplastic anemia is a syndrome involving pancytopenia caused by bone marrow insufficiency. Pancytopenia increases the surgical risk of bleeding and infection. Here, we report a successful. transcatheter aortic valve implantation (TAVI) in a patient with aplastic anemia. The patient was a 76- year-old woman who was admitted to our hospital with syncope. Laboratory testing showed. pancytopenia, and echocardiography revealed severe aortic valve stenosis. Although the log.EuroscORE and STs Score were not overly high, because of the presence of pancytopenia, surgical aortic valve. replacement was considered too high risk, making her a candidate for TAvI. In this case, the patient's pancytopenia was so severe that even TAVI without preparation was considered high risk. In light of this,. we carried out a two-day preoperative administration of granulocyte colony-stimulating factor and transfused packed red blood cells and platelet concentrates. TAVI was performed via the left femoral artery using the cut-down procedure under general anesthesia. The postoperative course was uneventful,. and she was discharged on the sixth postoperative day. With adequate preoperative preparation, TAVI may be performed safely in high-risk patients with hematologic disorders.",
         year: 2017,
         Basic_Info: {
             Age: "76",
@@ -37,11 +42,16 @@ const taviCases = [
                     caption: "Perioperative clinical course."
                 },
             ]
-        }
+        },
     },
     {
         id: 2,
         doi: "10.1016/j.jccase.2017.08.016",
+        pmid: "30279848",
+        title: "Transcatheter bicuspid aortic valve replacement in Turner syndrome: A unique experience of interventional cardiologist",
+        source: "J Cardiol Cases.",
+        author: "Ahmad Munir, Ahsan Wahab, Mahin Khan, Hafiz Khan, Wah Wah Htun, Theodore L Schreiber",
+        abstract: "A 69-year-old short-statured Turner syndrome (TS) patient with a history of poliomyelitis in childhood and moderate bicuspid aortic stenosis (BAS) reported worsening dyspnea and fatigue over six months. A repeat transthoracic echocardiogram revealed progression to severe aortic stenosis with dilated ascending aorta (AA). As part of the work-up for aortic valve replacement, the patient underwent cardiac catheterization, which revealed a severely calcified AV with an area of 0.5 sq. cm and a mean gradient of 37 mmHg. On coronary angiography, there was 70% stenosis of the proximal left anterior descending artery (LAD). Due to poor rehabilitation potential, she was deemed high-risk for surgical aortic valve replacement. A recommendation for transcatheter aortic valve replacement (TAVR) with stenting of the proximal LAD was made. Dilated AA was managed conservatively with serial noninvasive imaging. The patient underwent TAVR with Edwards-Sapien valve (23 mm S3) and stenting of proximal LAD. The procedure was successful without complications. To our knowledge, our patient is the first case of TAVR in BAS with aortopathy in TS. <Learning objective: Therapeutically, transcatheter aortic valve replacement is an off-label indication for bicuspid aortic stenosis. In real-life practice, many of these patients are poor surgical candidates and demand careful and judicious decision-making in the presence of diverse clinical scenarios. In such circumstances, a multidisciplinary approach with shared decision-making is required to recommend best possible therapeutic solution in the presence of limited data.>. Keywords: Aortic valve stenosis; Aortopathy; Bicuspid aortic valve stenosis; Transcatheter aortic valve replacement; Turner syndrome.",
         year: 2017,
         Basic_Info: {
             Age: "69",
@@ -88,11 +98,16 @@ const taviCases = [
                         caption: "Computed tomography angiogram displaying double-oblique projection along the bicuspid aortic valve annular plane from multiplanar reconstruction showing asymmetric calcification of the aortic leaflets."
                     }
                 ]
-            }
+            },
     },
     {
         id: 3,
         doi: "10.1016/j.jccase.2017.11.003",
+        pmid: "30279868",
+        title: "A case of acute coronary syndrome caused by delayed coronary ischemia after transcatheter aortic valve implantation",
+        source: "J Cardiol Cases. ",
+        author: "Yuichi Ninomiya, Shuichi Hamasaki, Yutaro Nomoto, Takeko Kawabata, Daichi Fukumoto, Akino Yoshimura, Shunichi Imamura, Masakazu Ogawa, Yuta Shiramomo, Keisuke Kawaida, Goichi Yotsumoto, Hiroto Suzuyama, Kazuhiro Nishigami, Tomohiro Sakamoto, Mitsuru Ohishi",
+        abstract:"An 84-year-old female patient suffered from dyspnea due to severe aortic stenosis. Several comorbidities and her advanced age made her acceptable for transcatheter aortic valve implantation (TAVI). The TAVI procedure was performed via a femoral access and a 26-mm CoreValve prosthesis (Medtronic, Minneapolis, MN, USA) was implanted. The prosthesis was deployed at a high position because of short. distance between the annulus base and coronary arteries. Aortic angiography indicated normal contrast flow into both coronary arteries. ",
         year: 2017,
         Basic_Info: {
             Age: "84",
@@ -135,11 +150,16 @@ const taviCases = [
                     caption: "(Left) The schema of the intraoperative finding. (Right) The second coronary angiographic finding. The blood flow perfused not directly to the right coronary cusp, but by a roundabout route from the left coronary cusp because of the adhesion between the transition zone (sealing skirt) of CoreValve and the aorta around the non-coronary cusp."
                 },
             ]
-        }
+        },
     },
     {
         id: 4,
         doi: "10.1016/j.jccase.2017.12.001",
+        pmid: "30279872",
+        title: "Simultaneous transcatheter aortic valve implantation and endovascular aneurysm repair in a patient with very severe aortic stenosis with abdominal aortic aneurysm",
+        source: "J Cardiol Cases. ",
+        author: "Yu Sato, Yu Horiuchi, Kazuyuki Yahagi, Taishi Okuno, Takayoshi Kusuhara, Motoi Yokozuka, Sumio Miura, Takeshi Taketani, Kengo Tanabe",
+        abstract: "The safety of non-cardiac surgery is uncertain for asymptomatic patients with very severe aortic stenosis. (AS). Herein, we describe a case involving an elderly and frail patient with asymptomatic, very severe AS. The patient was considered a high-risk candidate for aortic valve replacement (AVR); thus, transcatheter aortic valve implantation (TAvI) was planned. On perioperative examination, an abdominal aortic aneurysm (AAA) was observed, which required endovascular aneurysm repair (EVAR). To reduce the risks involved with sequential procedures, TAVI and EVAR were performed simultaneously. In patients with severe AS who are high-risk candidates for AVR, TAVI can be considered as an alternative therapy before non-cardiac surgery. In addition, the combined TAVI and EVAR procedure can reduce the risks associated with the perioperative period. ",
         year: 2017,
         Basic_Info: {
             Age: "83",
@@ -182,11 +202,16 @@ const taviCases = [
                     caption: "Angiograms of the abdominal aortic aneurysm pre- and post-endovascular aneurysm repair. An excellent final angiographic image, which did not exhibit endoleak, was obtained."
                 },
             ]
-        }
+        },
     },
     {
         id: 5,
         doi: "10.1016/j.jccase.2018.01.002",
+        pmid: "30279882",
+        title: "Transcatheter aortic valve implantation in a patient with severe aortic valve stenosis, colon cancer, and obstructive ileus: A case report",
+        source: "J Cardiol Cases. ",
+        author: "Tetsu Tanaka, Kazuyuki Yahagi, Taishi Okuno, Yu Horiuchi, Takayoshi Kusuhara, Motoi Yokozuka, Sumio Miura, Kengo Tanabe",
+        abstract: "An 85-year-old woman with symptomatic severe aortic stenosis (As) developed an obstructive ileus caused by colon cancer. Colectomy was considered a high-risk surgery due to both the severe AS and obstructive ileus. Therefore, we planned placement of a colonic stent for the obstructive ileus. After stenting, we performed transcatheter aortic valve implantation (TAvi) instead of surgical aortic valve. replacement (SAvR), because of the risk of bleeding during extracorporeal circulation and the. perioperative risk of AVR (Society of Thoracic Surgery predicted risk of mortality: 7.4%). Successful colonic stenting and TAVI allowed a safer colectomy. The period from TAVI to colectomy was 12 days. TAVI could be useful for symptomatic severe AS in high-risk patients prior to non-cardiac surgery, especially for malignant tumors. ",
         year: 2018,
         Basic_Info: {
             Age: "85",
@@ -225,11 +250,16 @@ const taviCases = [
                     caption: "Fluoroscopy during transcatheter aortic valve implantation. (A) Implantation of 23-mm Sapien XT valve. (B) Aortography after valve deployment."
                 },
             ]
-        }
+        },
     },
     {
         id: 6,
         doi: "10.1016/j.jccase.2018.01.010",
+        pmid: "30279890",
+        title: "Left ventricular reverse remodeling after transcatheter aortic valve implantation complicated by paroxysmal complete atrioventricular block",
+        source: "J Cardiol Cases. ",
+        author: "Luca Segreti, Kristian Ujka, Tea Cellamaro, Giulio Zucchelli, Andrea Di Cori, Ezio Soldati, Maria Grazia Bongiorni",
+        abstract: "An 86-year-old man with unremarkable clinical history complaining of asthenia and dyspnea was. diagnosed with low-flow low-gradient aortic stenosis [LFLG-AS; left ventricular ejection fraction (LVEF) 40% and transaortic mean gradient 37 mmHg, increasing to 52% and 55 mmHg after dobutamine infusion]. The patient underwent transcatheter aortic valve implantation (TAVI; Edwards CENTERATM 29, Irvine, CA, USA). The procedure and the following hospital stay were free from complications, with no. changes on electrocardiography (ECG). ",
         year: 2018,
         Basic_Info: {
             Age: "86",
@@ -272,11 +302,16 @@ const taviCases = [
                     caption: " Implantable loop recorder registration during syncope, demonstrating paroxysmal complete atrioventricular block and wide QRS escape rhythm. Arrows indicate evident P waves."
                 },
             ]
-        }
+        },
     },
     {
         id: 7,
         doi: "10.1016/j.jccase.2018.02.004",
+        pmid: "30279894",
+        title: "Transcatheter aortic valve implantation for severe aortic stenosis in dextrocardia with situs inversus using a self-expanding aortic valve",
+        source: "J Cardiol Cases.",
+        author: "Yuichi Morita, Tomokazu Okimoto, Yasutsugu Nagamoto, Shingo Mochizuki, Kazunori Yamada",
+        abstract: "Transcatheter aortic valve implantation (TAVI) has evolved into a standard therapy for aged patients with severe aortic valve stenosis who are not candidates for surgery. However, the reports about the safety of TAVI for patients with dextrocardia situs inversus are few. An 84-year-old man with dextrocardia situs inversus underwent a TAVI for severe aortic stenosis (AS) with an aortic valve area of 0.5 cm?, and a mean pressure gradient of 46 mmHg. Preoperative computed tomography (CT) revealed an inverted (rightward) orientation of the ventricle apex as well as the great vessels. The TAVI was performed through a transfemoral approach under general anesthesia. A left and right reversed fluoroscopic image was used for the TAVI. Finally, a 26-mm CoreValve Evolut R (Medtronic, Minneapolis, MN, USA) was successfully deployed at the aortic annulus under angiographic guidance. Post-procedural transthoracic echocardiography demonstrated a well-functioning CoreValve Evolut R with a mean pressure gradient of 8 mmHg. No complications occurred during the procedure or peri-procedural period. The patient's symptoms subsequently improved from New York Heart Association class IlI to class I. In conclusion, a TAVI procedure was safely performed in a patient with dextrocardia situs inversus through a transfemoral approach by evaluating the anatomical details with preoperative CT. ",
         year: 2018,
         Basic_Info: {
             Age: "84",
@@ -319,11 +354,16 @@ const taviCases = [
                     caption: "A fluoroscopic image showing a 26-mm CoreValve Evolut R deployed at the aortic annulus."
                 },
             ]
-        }
+        },
     },
     {
         id: 8,
         doi: "10.1016/j.jccase.2018.06.007",
+        pmid: "30279933",
+        title: "Trans-catheter aortic valve implantation without contrast using the Lotus mechanically-expanded heart valve",
+        source: "J Cardiol Cases.",
+        author: "Noman Ali, Smriti Saraf, Dominik Schlosshan, Michael Cunnington, Christopher J Malkin, Daniel J Blackman",
+        abstract: "Trans-catheter aortic valve implantation (TAvI) has become an established treatment for inoperable and high-surgical risk patients with severe, symptomatic aortic stenosis (As). Post-procedural acute kidney injury (AKI) is a frequent complication following TAVI and is associated with increased mortality. Patients with pre-existing chronic renal impairment are at particularly high risk. The etiology of post-TAVI AKI is multi-factorial, but the principal procedural issues are contrast-induced nephropathy, and renal hypoperfusion secondary to intra-procedural hypotension. We report a case of a TAVI in an 80-year-old patient with severe AS and significant chronic kidney disease (CKD), which was carried out without the. use of contrast and with minimal procedural hypotension. ",
         year: 2018,
         Basic_Info: {
             Age: "80",
@@ -366,11 +406,16 @@ const taviCases = [
                     caption: "Intra-procedural transesophageal echocardiography images demonstrating only trivial paravalvular regurgitation following deployment of the TAVI prosthesis. LA, left atrium; RA, right atrium; RV, right ventricle; IAS, inter-atrial septum; NCS, non-coronary sinus; LCS, left coronary sinus; RCS, right coronary sinus; LVOT, left ventricular outflow tract; AMVL, anterior mitral valve leaflet; TAVI, trans-catheter aortic valve implantation."
                 },
             ]
-        }
+        },
     },
     {
         id: 9,
         doi: "10.1016/j.jccase.2018.07.005",
+        pmid: "30416618",
+        title: "Critical exacerbation of idiopathic pulmonary fibrosis after transcatheter aortic valve implantation: Need for multidisciplinary care beyond heart team",
+        source: "J Cardiol Caes.",
+        author: "Yoichiro Sugizaki, Shumpei Mori, Yuichi Nagamatsu, Tomomi Akita, Akira Nagasawa, Takayoshi Toba, Masatsugu Yamamoto, Tatsuya Nishii, Norihiko Obata, Yoshikatsu Nomura, Hiromasa Otake, Toshiro Shinke, Yutaka Okita, Ken-Ichi Hirata",
+        abstract: "An 82-year-old man with severe aortic stenosis and idiopathic pulmonary fibrosis (IPF) underwent transcatheter aortic valve implantation (TAVI) under general anesthesia. However, following a successful. TAVI procedure, he developed progressive respiratory failure because of the exacerbation of IPF. Despite the use of immunosuppressants, the patient could not be saved and he died of respiratory failure.. Although TAVI is a less invasive procedure compared to conventional surgical aortic valve replacement, it. is currently selected for management of severely ill, frail, and elderly patients. This case highlights the potential risk of IPF exacerbation following a TAVI procedure performed under general anesthesia.. ",
         year: 2018,
         Basic_Info: {
             Age: "82",
@@ -417,11 +462,16 @@ const taviCases = [
                     caption: "Laboratory data before transcatheter aortic valve implantation (TAVI) and at readmission."
                 },
             ]
-        }
+        },
     },
     {
         id: 10,
         doi: "10.1016/j.jccase.2018.09.007",
+        pmid: "32042352",
+        title: "Successful transcatheter aortic valve implantation in a Jehovah's Witness patient with a small aortic root and severe leaflet calcification",
+        source: "J Cardiol Cases.",
+        author: "Toru Yoshizaki, Toru Naganuma, Sunao Nakamura",
+        abstract: "A 69-year-old female Jehovah's Witness was diagnosed with symptomatic severe aortic stenosis (AS). Because the patient, who refused blood transfusion for religious reasons, had multiple comorbidities, such as thrombocytopenia due to liver cirrhosis, esophageal varices, and an old cerebral infarction, a decision to perform transcatheter aortic valve implantation (TAvI) was made. Preprocedural computed tomography showed a small aortic root and severe leaflet calcification, especially at the non-coronary cusp; therefore, the risk of annulus and Valsalva rupture was considered to be high. A 20-mm transcatheter heart valve (Edwards SAPIEN3; Edwards Lifesciences Corporation, Irvine, CA, USA) was. successfully implanted using the transfemoral approach. To prevent blood transfusion, erythropoietin and sodium ferrous citrate were prescribed during the periprocedural period. The postprocedural course was uneventful, and the patient was discharged on postoperative day 10. TAVI, which is associated with a significantly lower need for transfusion compared with surgical aortic valve replacement, has recently been performed as a less invasive treatment for high- or intermediate-risk patients with As. This case highlights the feasibility and safety of TAVI using a 20-mm transcatheter heart valve for a patient with severe AS, a small aortic root, and severe and eccentric leaflet calcification who refused blood transfusion.. <Learning objective: Transcatheter aortic valve implantation is a less invasive procedure and is possibly the optimal treatment for patients with severe aortic stenosis who refuse blood transfusion. In addition, periprocedural approaches that promote a high preprocedural hemoglobin level as well as prevent unnecessary blood loss and catastrophic complications are important in avoiding blood transfusions.> 2019 Published bv Elsevier Ltd on behalf of Iapanese College of Cardiologv. ",
         year: 2018,
         Basic_Info: {
             Age: "69",
@@ -456,11 +506,16 @@ const taviCases = [
                     caption: "(A) Preprocedural computed tomography showing heavily calcified leaflets, especially at the non-coronary cusp. RCC, right coronary cusp; LCC, left coronary cusp; NCC non-coronary cusp. (B) Preprocedural computed tomography showing the left coronary height from the annulus. (C) Serial hemoglobin measurements during the periprocedural period. EVL, endoscopic variceal ligation; Hb, hemoglobin; TAVI, transcatheter aortic valve implantation. (D) Intraprocedural angiography of a 20-mm SAPIEN3 prosthesis implantation with protection for the left main coronary artery using a guiding catheter. The balloon indentation shows severe calcification (dashed circle). (E) Intraprocedural transesophageal echocardiogram showing the transcatheter heart valve (solid arrow) positioned at the edge of the annulus opposite the heavily calcified leaflet at the non-coronary cusp (dashed arrow). (F) Transesophageal echocardiogram showing mild paravalvular leak (solid arrow) from the gap between the transcatheter heart valve and heavily calcified leaflets. (G) The crossover balloon technique for performing percutaneous closure to reduce bleeding from the access site. During inflation of an 8.0 40-mm balloon to low pressure in the external iliac artery, the main introducer sheath was withdrawn and the access site was secured with a percutaneous closure system. (H) Final femoral angiogram shows the injection of contrast material from the tip of the over-the-wire balloon and that hemostasis at the access site was achieved. (I) The postprocedural computed tomography showing the transcatheter heart valve (solid arrow) seated opposite the heavily calcified leaflet at the non-coronary cusp (dashed arrow)."
                 },
             ]
-        }
+        },
     },
     {
         id: 11,
         doi: "10.1016/j.jccase.2018.12.001",
+        pmid: "30949246",
+        title: "Use of the MANTA device to rescue failed pre-closure following transfemoral transcatheter aortic valve implantation",
+        source: "J Cardiol Cases.",
+        author: "Noman Ali, Daniel J Blackman, Michael Cunnington, Christopher J Malkin",
+        abstract: "Access site vascular complications remain relatively frequent following trans-femoral (TF) transcatheter aortic valve implantation (TAvl), and are associated with significant morbidity as well as increased mortality. Suture-based vascular closure devices (VcD) are widely used and have been demonstrated to reduce the rate of vascular complications. However, failure to achieve adequate hemostasis following their use occurs in some cases, and may necessitate surgical escalation. ",
         year: 2018,
         Basic_Info: {
             Age: "79",
@@ -499,11 +554,16 @@ const taviCases = [
                     caption: "The MANTA device. (1–6) Schematic representation of the steps involved in the deployment of the MANTA. In the present case, steps 1 and 2 were omitted since the device was used as a rescue rather than electively. Images provided by Essential Medical Inc., Malvern, PA, USA."
                 },
             ]
-        }
+        },
     },
     {
         id: 12,
         doi: "10.1016/j.jccase.2018.12.011",
+        pmid: "30996760",
+        title: "Transcatheter aortic valve replacement in a patient with anomalous origin of the left coronary artery",
+        source: "J Cardiol Cases.",
+        author: "Sung Woo Cho, Byung Gyu Kim, Taek Kyu Park, Seung-Hyuk Choi, Hyeon-Cheol Gwon, Sung-Ji Park, Jong Chun Nah",
+        abstract: "Transcatheter aortic valve replacement (TAvR) is widely performed in patients with severe aortic stenosis (As), having a high surgical risk. However, reports of TAVR performed in patients with anomalous coronary arteries are rare. In existing literature, several complications including coronary obstruction are reported. In this study, we report a 77-year-old female patient with severe AS and anomalous origin of the left coronary artery from the right coronary sinus, who successfully underwent TAVR. ",
         year: 2018,
         Basic_Info: {
             Age: "77",
@@ -542,11 +602,17 @@ const taviCases = [
                     caption: "Coronary aorta computed tomography angiography showing the size of (A) sinus of Valsalva and (B) sinotubular junction, (C) the aortic annular area and the annulus area-driven and perimeter-driven diameters, and (D) the distance of the right coronary ostia from aortic annulus plane. Aortography during the procedure, (E) before TAVR. (F) after TAVR. (G) Transthoracic echocardiography showing a continuous wave Doppler image of aortic valve obtained from apical 5- chamber view after TAVR."
                 },
             ]
-        }
+        },
+        Abstract: "Transcatheter aortic valve replacement (TAvR) is widely performed in patients with severe aortic stenosis (As), having a high surgical risk. However, reports of TAVR performed in patients with anomalous coronary arteries are rare. In existing literature, several complications including coronary obstruction are reported. In this study, we report a 77-year-old female patient with severe AS and anomalous origin of the left coronary artery from the right coronary sinus, who successfully underwent TAVR. ",
     },
     {
         id: 13,
         doi: "10.1016/j.jccase.2018.12.016",
+        pmid: "30996761",
+        title: "Unexpected massive pleural effusion leading to discovery of left subclavian artery rupture during transcatheter aortic valve implantation",
+        source: "J Cardiol Cases.",
+        author: "Hideyuki Kawashima, Yusuke Watanabe, Akihisa Kataoka, Ken Kozuma",
+        abstract: "An 89-year-old woman underwent transcatheter aortic valve implantation (TAVI) for severe aortic valve stenosis, based on a logistic European System for Cardiac Operative Risk Evaluation of 59.6% and Society of Thoracic Surgeons risk score of 17.1%. The patient had multiple comorbidities including chronic kidney disease with creatinine clearance of 15ml/min. We ruled out preprocedural contrast-enhanced computed tomography and coronary angiography to prevent exacerbation of renal dysfunction. Moreover, we concluded that a trans-subclavian approach was optimal, because the transfemoral approach was contraindicated due to severe lordosis, and the transapical approach was contraindicated due to severe chronic obstructive pulmonary disease and frailty. This report describes a massive pleural effusion that led to the discovery of subclavian artery rupture causing hemodynamic shock. Hemodynamic instability in this patient was caused by hypovolemic and obstructive shock, with a pleural perfusion caused by subclavian artery rupture. Monitoring via transesophageal echocardiography during the procedure enabled early discovery of the massive pleural effusion. Subsequent covered stent implantation stabilized the subclavian artery rupture, and the patient became hemodynamically stable. As subclavian artery rupture can occur during trans-subclavian TAVI, the presence of calcifications and tortuosity requires careful management. ",
         year: 2018,
         Basic_Info: {
             Age: "89",
@@ -589,11 +655,16 @@ const taviCases = [
                     caption: "Rupture of left subclavian artery (white arrow)."
                 },
             ]
-        }
+        },
     },
     {
         id: 14,
         doi: "10.1016/j.jccase.2019.03.001",
+        pmid: "31320949",
+        title: "Postoperative paraplegia after transapical transcatheter aortic valve implantation",
+        source: "J Cardiol Cases.",
+        author: "Kazuki Mori, Tomoyuki Wada, Takashi Shuto, Aiko Kodera, Takayuki Kawashima, Hirofumi Anai, Shinji Miyamoto",
+        abstract: "An 84-year-old man experienced dyspnea on exertion. He had. previously undergone percutaneous coronary intervention for. angina pectoris. At that time, aortic stenosis (As) was detected by echocardiogram. He was admitted to our hospital due to AS progression. His medical history revealed lung lobectomy for lung. cancer, and his respiratory function was markedly impaired,. causing chronic obstructive pulmonary disease.. ",
         year: 2019,
         Basic_Info: {
             Age: "84",
@@ -632,11 +703,16 @@ const taviCases = [
                     caption: "Postoperative magnetic resonance imaging. (A) Postoperative cerebral diffusion-weighted magnetic resonance imaging showed several small acute cerebral infarctions of the right cerebrum. (B) Spinal cord magnetic resonance imaging suggested spinal cord ischemia and edema (arrows) below the T10 spinal cord level but no hematoma."
                 },
             ]
-        }
+        },
     },
     {
         id: 15,
         doi: "10.1016/j.jccase.2019.04.002",
+        pmid: "31440315",
+        title: "Preventing brain embolism by using a modified isolation technique in transcatheter aortic valve implantation for a patient with shaggy and porcelain aorta",
+        source: "J Cardiol Cases.",
+        author: "Yoshikatsu Nomura, Motoharu Kawashima, Kanetsugu Nagao, Shota Hasegawa, Takanori Tsujimoto, So Izumi, Masamichi Matsumori, Tasuku Honda, Kenzo Uzu, Nobuyuki Takahashi, Takahiro Sawada, Tetsuari Onishi, Yoshinori Yasaka, Hirohisa Murakami, Nobuhiko Mukohara",
+        abstract: "Transcatheter aortic valve implantation (TAvl) has become a useful and effective treatment for surgical high-risk patients with severe aortic valve stenosis (AS). Stroke is one of the most frequent complications. associated with TAvI. Shaggy and porcelain aortas are a risk factor for procedure-related strokes. Preventing brain embolism is one of the most important goals in patients with diseased aortas. We. present a case where we performed TAVI in an 89-year-old man with severe AS, a shaggy aorta, a. porcelain aorta, and congestive heart failure. TAVI via a transfemoral approach was performed using a modified isolation technique with cannulation from bilateral axillary arteries and cardiopulmonary bypass to prevent brain embolism. The catheter-delivered embolic protection device is necessary to pass the diseased aorta, but the modified isolation technique can be used without any contact with the shaggy aorta. Embolism did not occur, and his heart failure improved immediately. ",
         year: 2019,
         Basic_Info: {
             Age: "89",
@@ -679,11 +755,16 @@ const taviCases = [
                     caption: "Photograph of the operative setup. The cardiopulmonary bypass machine was positioned behind the monitor, and to the left side of the patient. The anesthesia apparatus and transesophageal echocardiography machine were placed near the patient’s head."
                 },
             ]
-        }
+        },
     },
     {
         id: 16,
         doi: "10.1016/j.jccase.2019.10.003",
+        pmid: "32042360",
+        title: "Changes in polysomnographic findings following transcatheter aortic valve implantation in a patient with aortic stenosis",
+        source: "J Cardiol Cases.",
+        author: "Shinichiro Doi, Takatoshi Kasai, Shoichiro Yatsu, Sakiko Miyazaki, Shinichiro Fujimoto, Shinya Okazaki, Shizuyuki Dohi, Kenji Kuwaki, Atsushi Amano, Hiroyuki Daida",
+        abstract: "Patients with aortic stenosis (AS) are likely to have sleep-disordered breathing (SDB) and improvements in AS by transcatheter or surgical aortic valve replacement alter the type and severity of SDB. However, limited data are available whether polysomnographic findings changed following transcatheter aortic valve implantation (TAVI). In this report, we describe the case of a patient with severe AS and SDB whose polysomnographic findings showed that after TAVI, sleep disturbances occurred in association with worsened periodic leg movements despite improvement in the SDB. ",
         year: 2019,
         Basic_Info: {
             Age: "75",
@@ -722,11 +803,16 @@ const taviCases = [
                     caption: "(A) Diagnostic polysomnography before TAVI. Eight occurrences of central apnea were detected, with subsequent waxing and waning hyperventilation. During central apneas, the movements of the thorax and abdomen were absent. Duration from the onset of the first breath terminating the apnea to the nadir of the subsequent dip in the SO2 measured at the finger indicates the LFCT, which is considerably long (an average of 10 consecutive apnea–hyperpnea cycles during the first episode of stage 2 sleep, 26 s). (B) Follow-up polysomnography performed 7 months after TAVI. Five occurrences of obstructive apnea were detected. During obstructive apneas, the out-of-phase movements of the thorax and abdomen were observed. LFCT was shorter than that before TAVI (an average of 10 consecutive apnea–hyperpnea cycles during the first episode of stage 2 sleep, 17 s)."
                 },
             ]
-        }
+        },
     },
     {
         id: 17,
         doi: "10.1016/j.jccase.2020.04.005",
+        pmid: "32636966",
+        title: "Coronary angioplasty post TAVI: Is the solution outside the box?",
+        source: "J Cardiol Cases.",
+        author: "Petros S Dardas, Efstratios K Theofilogiannakos, Dimitris Tsikaderis, Nikos E Mezilis",
+        abstract: "Transcatheter aortic valve replacement (TAvR) has become the standard option for high risk patients with bioprosthetic valve degeneration. However, percutaneous coronary interventions after TAVR may be challenging as the manipulation and engagement of the guiding catheters is much more limited and difficult, due to the superimposition of the metallic frame of the TAVR valve upon the bioprosthetic cage. We describe a case of percutaneous coronary intervention in a patient with history of transcatheter aortic valve implantation after bioprosthetic valve degeneration and we describe a new method for accessing coronary arteries in cases of TAVR-in-surgical aortic valve replacement with a high-frame TAVR with a supra-annular leaflet position, by using the route outside the frame. ",
         year: 2020,
         Basic_Info: {
             Age: "81",
@@ -765,11 +851,16 @@ const taviCases = [
                     caption: "(A) A schema to show a new method for accessing coronary arteries in cases of transcatheter aortic valve implantation (TAVI)-in-surgical aortic valve replacement with a high-frame TAVI with a supraannular leaflet position, by using the route outside the frame. (B) A computed tomography angiography showed very good apposition of the EVOLUT frame to the aortic wall after percutaneous coronary intervention."
                 },
             ]
-        }
+        },
     },
     {
         id: 18,
         doi: "10.1016/j.jccase.2020.06.012",
+        pmid: "33133313",
+        title: "A case with familial hypercholesterolemia complicated with severe systemic atherosclerosis intensively treated for more than 30 years",
+        source: "J Cardiol Cases.",
+        author: "Tetsuo Nishikawa, Hayato Tada, Tamami Nakagawa-Kamiya, Satoru Niwa, Shohei Yoshida, Mika Mori, Kenji Sakata, Atsushi Nohara, Toshinori Higashikata, Hiroki Kato, Kenji Ino, Hirofumi Takemura, Masayuki Takamura, Masa-Aki Kawashiri",
+        abstract: "Worldwide, lentigo maligna melanoma (LMM) comprises 4%-15% of cutaneous melanoma and occurs less commonly than superficial spreading or nodular subtypes. We assessed the incidence of melanoma subtypes in regional and national Surveillance, Epidemiology, and End Results (SEER) cancer registry data from 1990 to 2000.. Because 30%-50% of SEER data were not classified by histogenetic type, we compared the observed SEER trends. with an age-matched population of 1024 cases from Stanford University Medical Center (SUmc) (1995-2000). SEER data revealed lentigo maligna (LM) as the most prevalent in situ subtype (79%-83%), and that LMM has been increasing at a higher rate compared with other subtypes and to all invasive melanoma combined for patients aged 45-64 and 65 y. The SUMC data demonstrated LM and LMM as the only subtypes increasing in incidence over the study period. In both groups, LM comprised >75% of in situ melanoma and LMM >27% of invasive melanoma in men 65 y and older. Regional and national SEER data suggest an increasing incidence of LM and LMM, particularly in men >age 65. An increased incidence of LM subtypes should direct melanoma screening to heavily sun-exposed. sites, where these subtypes predominate. ",
         year: 2020,
         Basic_Info: {
             Age: "N/A",
@@ -816,11 +907,16 @@ const taviCases = [
                     caption: "General characteristics and proportion of LM and LMM subtypes in the SEER and SUMC patient populations"
                 },
             ]
-        }
+        },
     },
     {
         id: 19,
         doi: "10.1016/j.jccase.2020.09.006",
+        pmid: "32950703",
+        title: "Answer to Vieira et al. \"Cytokine profile as a prognostic tool in coronavirus disease 2019\". Joint Bone Spine 2020. Doi:10.1016/j.jbspin.2020.09.006",
+        source: "Joint Bone Spine.",
+        author: "Luca Quartuccio, Maurizio Benucci, Salvatore De Vita",
+        abstract: "Vascular complications associated with vascular closure device use is uncommon; however, it sometimes occurs in transfemoral transcatheter aortic valve implantation (TF-TAVI). We present a case of ProGlide (Abbott Vascular, Santa Clara, CA, USA)-related right femoral occlusion following TF-TAVI. An 83-year-old woman, who underwent TF-TAVI using double ProGlide pre-closure technique, presented with right claudication three days after TAVI. Computed tomography showed femoral occlusion of the puncture site. Recanalization without pressure gradient between the proximal and distal sites of the lesion was. achieved by balloon angioplasty (BA) with a 4.0 mm balloon; however, early re-occlusion of the lesion. occurred the next day after BA. Repeated BA was performed for the re-occlusion site 30 days after TAVI because of persistent claudication. Serial angioscopic images of the lesion revealed that the intima, which was injured at the first BA, had healed at the second BA, indicating that BA with larger balloons could be safely performed. We performed BA with a 6.0-mm balloon without stent implantation. The patency of the lesion was maintained during the 6-month follow-up period. The serial angioscopic findings, which revealed the healing process of the intima injury, were useful in determining a suitable endovascular therapy strategy for ProGlide-related occlusion.. ",
         year: 2020,
         Basic_Info: {
             Age: "83",
@@ -863,11 +959,16 @@ const taviCases = [
                     caption: "Fluoroscopy, intravascular ultrasound, and angioscopy findings after the second endovascular therapy. (A) Fluoroscopy showing sufficient expansion at the occlusion site (white dotted line) after balloon angioplasty. (B) Intravascular ultrasound and (C) angioscopy showing sufficient lumen area at the occlusion site."
                 },
             ]
-        }
+        },
     },
     {
         id: 20,
         doi: "10.1016/j.jccase.2021.02.002",
+        pmid: "34354784",
+        title: "Transcatheter aortic valve implantation in rheumatic aortic stenosis with a functioning mitral prosthesis",
+        source: "J Cardiol Cases.",
+        author: "Taro Ichise, Tomohito Mabuchi, Masahiro Uehara, Yuji Takashima, Yoji Nagata, Yoshio Yamaguchi, Ikuo Moriuchi, Tatsuaki Murakami, Osamu Monta, Kazuo Ohsato",
+        abstract: "Transcatheter aortic valve implantation (TAvI) for patients with rheumatic aortic stenosis (AS) is not wellknown. We herein report a case of TAVI in rheumatic AS without significant calcification and prior mitral. valve replacement. An 80-year-old woman underwent TAVI for severe AS. Preoperative computed tomography revealed tricuspid aortic valve leaflets with commissural fusion, minimal calcification, and a minimal distance between the aortic annulus and mechanical mitral valve. TAVI was performed through a. transfemoral approach under general anesthesia. After predilatation of the aortic valve with a 20-mm balloon, a 23-mm SAPIEN 3 valve was successfully deployed via slow inflation. Valve embolization did not occur, and the valve did not interfere with the prosthetic mitral leaflets. This report shows that TAVI. can be safe, feasible, and effective in patients with rheumatic AS without significant calcification and. prior mitral valve replacement. ",
         year: 2021,
         Basic_Info: {
             Age: "80",
@@ -910,6 +1011,6 @@ const taviCases = [
                     caption: "The white line depicts the perpendicular aortic annulus view (A). A 23-mm SAPIEN 3 valve was meticulously positioned slightly higher (B), and slowly deployed by 1-ml underfilling during rapid ventricular pacing (C). The transcatheter heart valve had good form and position demonstrated by computed tomography illustrating three-dimensional volumetric reconstructions (D) and long-axis views (E, F)."
                 },
             ]
-        }
+        },
     }
 ]; 

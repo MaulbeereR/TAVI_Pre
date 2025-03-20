@@ -207,9 +207,15 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4>病例列表</h4>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-primary" id="sort-by-match">按ID排序</button>
-                            <button type="button" class="btn btn-outline-primary" id="sort-by-age">按年龄排序</button>
-                            <button type="button" class="btn btn-outline-primary" id="sort-by-year">按年份排序</button>
+                            <button type="button" class="btn btn-outline-primary" id="sort-by-match">
+                                按ID排序 <i class="bi bi-arrow-up" id="sort-by-match-arrow"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="sort-by-age">
+                                按年龄排序 <i class="bi bi-arrow-up" id="sort-by-age-arrow"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="sort-by-year">
+                                按年份排序 <i class="bi bi-arrow-up" id="sort-by-year-arrow"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -218,7 +224,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>年份</th>
+                                        <th>论文发表年份</th>
                                         <th>年龄</th>
                                         <th>性别</th>
                                         <th>病症</th>
@@ -272,6 +278,21 @@
                             </table>
                         </div>
                         <div class="col-md-6">
+                            <h6>手术方案</h6>
+                            <table class="table">
+                                <tr>
+                                    <th>瓣膜类型</th>
+                                    <td id="modal-valve-type"></td>
+                                </tr>
+                                <tr>
+                                    <th>瓣膜直径</th>
+                                    <td id="modal-valve-diameter"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                             <h6>术前信息</h6>
                             <table class="table">
                                 <tr>
@@ -293,21 +314,6 @@
                                 <tr>
                                     <th>射血分数</th>
                                     <td id="modal-pre-ef"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>手术方案</h6>
-                            <table class="table">
-                                <tr>
-                                    <th>瓣膜类型</th>
-                                    <td id="modal-valve-type"></td>
-                                </tr>
-                                <tr>
-                                    <th>瓣膜直径</th>
-                                    <td id="modal-valve-diameter"></td>
                                 </tr>
                             </table>
                         </div>
@@ -350,17 +356,33 @@
                                     <td id="modal-doi"></td>
                                 </tr>
                                 <tr>
+                                    <th>PMID</th>
+                                    <td id="modal-pmid"></td>
+                                </tr>
+                                <tr>
                                     <th>发表年份</th>
                                     <td id="modal-year"></td>
                                 </tr>
                                 <tr>
-                                    <th>文件操作</th>
+                                    <th>期刊来源</th>
+                                    <td id="modal-source"></td>
+                                </tr>
+                                <tr>
+                                    <th>标题</th>
+                                    <td id="modal-title"></td>
+                                </tr>
+                                <tr>
+                                    <th>作者</th>
+                                    <td id="modal-author"></td>
+                                </tr>
+                                <tr>
+                                    <th>文件查看</th>
                                     <td>
                                         <button id="open-pdf-btn" class="btn btn-sm btn-outline-primary me-2">
                                             <i class="bi bi-file-earmark-pdf"></i> 查看PDF
                                         </button>
                                         <button id="view-images-btn" class="btn btn-sm btn-outline-info">
-                                            <i class="bi bi-images"></i> 查看图片
+                                            <i class="bi bi-images"></i> 查看详情
                                         </button>
                                     </td>
                                 </tr>
