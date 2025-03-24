@@ -324,7 +324,74 @@ header.bg-primary h1 {
 /* 图表容器样式 */
 .chart-container {
     position: relative;
-    height: 300px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 图表卡片样式 */
+.chart-card {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.chart-card .card-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 图表标题样式 */
+.chart-card .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 0.75rem 1rem;
+    text-align: center;
+}
+
+.chart-card .card-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* 图表图例样式 */
+.chartjs-legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.chartjs-legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+}
+
+.chartjs-legend-item span {
+    margin-left: 0.5rem;
+}
+
+/* 图例标记样式 */
+.chartjs-legend-item .chartjs-legend-marker {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+.chartjs-legend-item .chartjs-legend-marker::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+    border-radius: 2px;
 }
 
 /* 高亮显示匹配的病例 */

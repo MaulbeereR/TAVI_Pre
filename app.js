@@ -42,8 +42,8 @@ function initializeData() {
     // 设置总病例数
     totalCasesEl.textContent = taviCases.length;
     
-    // 初始显示所有病例
-    filteredCases = [...taviCases];
+    // 初始显示所有病例并按ID排序
+    filteredCases = [...taviCases].sort((a, b) => a.id - b.id);
     filteredCasesEl.textContent = filteredCases.length;
     
     // 计算并显示瓣周漏率和死亡率
@@ -128,12 +128,21 @@ function initValveTypeChart() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'right',
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'rect',
+                        padding: 20,
+                        font: {
+                            size: 12
+                        }
+                    }
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: '瓣膜类型分布'
                 }
             }
@@ -173,24 +182,21 @@ function initValveDiameterChart() {
         },
         options: {
             responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: '病例数量'
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'rect',
+                        padding: 20,
+                        font: {
+                            size: 12
+                        }
                     }
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: '瓣膜直径'
-                    }
-                }
-            },
-            plugins: {
                 title: {
-                    display: true,
+                    display: false,
                     text: '瓣膜直径分布'
                 }
             }
@@ -245,18 +251,21 @@ function initPrePostComparisonChart() {
         },
         options: {
             responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: '平均跨瓣压差 (mmHg)'
-                    }
-                }
-            },
+            maintainAspectRatio: false,
             plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'rect',
+                        padding: 20,
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
                 title: {
-                    display: true,
+                    display: false,
                     text: '术前术后平均跨瓣压差对比'
                 }
             }
@@ -374,11 +383,7 @@ function showCaseDetail(caseId) {
     
     // 填充报告信息
     document.getElementById('modal-doi').textContent = caseItem.doi || 'N/A';
-    document.getElementById('modal-year').textContent = caseItem.year || 'N/A';
-    document.getElementById('modal-source').textContent = caseItem.source || 'N/A';
     document.getElementById('modal-title').textContent = caseItem.title || 'N/A';
-    document.getElementById('modal-author').textContent = caseItem.author || 'N/A';
-    document.getElementById('modal-pmid').textContent = caseItem.pmid || 'N/A';
     
     // 处理PDF和图片按钮
     const openPdfBtn = document.getElementById('open-pdf-btn');
@@ -432,8 +437,6 @@ function applyFilters() {
     const valveDiameter = document.getElementById('valve-diameter').value;
     const meanGradientMin = document.getElementById('mean-gradient-min').value;
     const meanGradientMax = document.getElementById('mean-gradient-max').value;
-    const valveAreaMin = document.getElementById('valve-area-min').value;
-    const valveAreaMax = document.getElementById('valve-area-max').value;
     const paravalvularLeak = document.getElementById('paravalvular-leak').checked;
     const death = document.getElementById('death').checked;
     
@@ -496,22 +499,6 @@ function applyFilters() {
             }
         }
         
-        // 瓣膜面积筛选
-        if (valveAreaMin || valveAreaMax) {
-            const valveArea = parseFloat(caseItem.Pre_Info.Valve_Area);
-            if (isNaN(valveArea)) {
-                return false;
-            }
-            
-            if (valveAreaMin && valveArea < parseFloat(valveAreaMin)) {
-                return false;
-            }
-            
-            if (valveAreaMax && valveArea > parseFloat(valveAreaMax)) {
-                return false;
-            }
-        }
-        
         // 瓣周漏筛选
         if (paravalvularLeak && caseItem.Result.Paravalvular_Leak !== true) {
             return false;
@@ -568,6 +555,14 @@ function updateCharts() {
 
 // 排序病例
 function sortCases(sortBy) {
+    // 移除所有按钮的高亮状态
+    document.querySelectorAll('.btn-outline-primary').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // 为当前排序按钮添加高亮状态
+    document.getElementById(`sort-by-${sortBy}`).classList.add('active');
+    
     // 切换排序方向
     sortStates[sortBy].ascending = !sortStates[sortBy].ascending;
     

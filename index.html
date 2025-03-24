@@ -26,29 +26,49 @@
             <!-- 左侧筛选面板 -->
             <div class="col-md-3">
                 <div class="card mb-4">
-                    <div class="card-header bg-secondary text-white">
-                        <h4>筛选条件</h4>
+                    <div class="card-header bg-light text-dark">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">筛选条件</h4>
+                            <button type="button" id="reset-filter" class="btn btn-outline-primary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 重置</button>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <form id="filter-form">
+                        <form id="filter-form">                          
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">性别</label>
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" value="Male" id="gender-male">
+                                            <label class="form-check-label" for="gender-male">男</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Female" id="gender-female">
+                                            <label class="form-check-label" for="gender-female">女</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">术后结果</label>
+                                    <div class="d-flex">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" value="true" id="paravalvular-leak">
+                                            <label class="form-check-label" for="paravalvular-leak">瓣周漏</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="true" id="death">
+                                            <label class="form-check-label" for="death">死亡</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="age-range" class="form-label">年龄范围</label>
                                 <div class="d-flex">
                                     <input type="number" class="form-control me-2" id="age-min" placeholder="最小">
                                     <span class="align-self-center">-</span>
                                     <input type="number" class="form-control ms-2" id="age-max" placeholder="最大">
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">性别</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Male" id="gender-male">
-                                    <label class="form-check-label" for="gender-male">男</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="Female" id="gender-female">
-                                    <label class="form-check-label" for="gender-female">女</label>
                                 </div>
                             </div>
                             
@@ -90,30 +110,8 @@
                                     <input type="number" class="form-control ms-2" id="mean-gradient-max" placeholder="最大">
                                 </div>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label for="valve-area-range" class="form-label">术前瓣膜面积 (cm²)</label>
-                                <div class="d-flex">
-                                    <input type="number" class="form-control me-2" id="valve-area-min" placeholder="最小" step="0.1">
-                                    <span class="align-self-center">-</span>
-                                    <input type="number" class="form-control ms-2" id="valve-area-max" placeholder="最大" step="0.1">
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">术后结果</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="true" id="paravalvular-leak">
-                                    <label class="form-check-label" for="paravalvular-leak">瓣周漏</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="true" id="death">
-                                    <label class="form-check-label" for="death">死亡</label>
-                                </div>
-                            </div>
-                            
+                                                    
                             <button type="button" id="apply-filter" class="btn btn-primary w-100">应用筛选</button>
-                            <button type="button" id="reset-filter" class="btn btn-outline-secondary w-100 mt-2">重置筛选</button>
                         </form>
                     </div>
                 </div>
@@ -168,35 +166,42 @@
                 <!-- 图表区域 -->
                 <div class="row mb-4">
                     <div class="col-md-6">
-                        <div class="card">
+                        <div class="card chart-card">
                             <div class="card-header">
                                 <h5>瓣膜类型分布</h5>
                             </div>
                             <div class="card-body">
-                                <canvas id="valve-type-chart"></canvas>
+                                <div class="chart-container" style="height: 800px;">
+                                    <canvas id="valve-type-chart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>瓣膜直径分布</h5>
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <div class="card chart-card">
+                                    <div class="card-header">
+                                        <h5>瓣膜直径分布</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container" style="height: 380px;">
+                                            <canvas id="valve-diameter-chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <canvas id="valve-diameter-chart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>术前术后指标对比</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="pre-post-comparison-chart"></canvas>
+                            <div class="col-12">
+                                <div class="card chart-card">
+                                    <div class="card-header">
+                                        <h5>术前术后指标对比</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container" style="height: 380px;">
+                                            <canvas id="pre-post-comparison-chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -206,15 +211,15 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4>病例列表</h4>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-outline-primary" id="sort-by-match">
-                                按ID排序 <i class="bi bi-arrow-up" id="sort-by-match-arrow"></i>
+                        <div class="d-flex gap-2">
+                            <button id="sort-by-match" class="btn btn-outline-primary active">
+                                按ID排序 <i id="sort-by-match-arrow" class="bi bi-arrow-up"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-primary" id="sort-by-age">
-                                按年龄排序 <i class="bi bi-arrow-up" id="sort-by-age-arrow"></i>
+                            <button id="sort-by-age" class="btn btn-outline-primary">
+                                按年龄排序 <i id="sort-by-age-arrow" class="bi bi-arrow-up"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-primary" id="sort-by-year">
-                                按年份排序 <i class="bi bi-arrow-up" id="sort-by-year-arrow"></i>
+                            <button id="sort-by-year" class="btn btn-outline-primary">
+                                按年份排序 <i id="sort-by-year-arrow" class="bi bi-arrow-up"></i>
                             </button>
                         </div>
                     </div>
@@ -352,30 +357,6 @@
                             <h6>报告信息</h6>
                             <table class="table">
                                 <tr>
-                                    <th>DOI</th>
-                                    <td id="modal-doi"></td>
-                                </tr>
-                                <tr>
-                                    <th>PMID</th>
-                                    <td id="modal-pmid"></td>
-                                </tr>
-                                <tr>
-                                    <th>发表年份</th>
-                                    <td id="modal-year"></td>
-                                </tr>
-                                <tr>
-                                    <th>期刊来源</th>
-                                    <td id="modal-source"></td>
-                                </tr>
-                                <tr>
-                                    <th>标题</th>
-                                    <td id="modal-title"></td>
-                                </tr>
-                                <tr>
-                                    <th>作者</th>
-                                    <td id="modal-author"></td>
-                                </tr>
-                                <tr>
                                     <th>文件查看</th>
                                     <td>
                                         <button id="open-pdf-btn" class="btn btn-sm btn-outline-primary me-2">
@@ -385,6 +366,14 @@
                                             <i class="bi bi-images"></i> 查看详情
                                         </button>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <th>DOI</th>
+                                    <td id="modal-doi"></td>
+                                </tr>
+                                <tr>
+                                    <th>标题</th>
+                                    <td id="modal-title"></td>
                                 </tr>
                             </table>
                         </div>

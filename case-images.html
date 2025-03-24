@@ -11,10 +11,10 @@
     <style>
         .image-container {
             margin-bottom: 30px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            /* border: 1px solid #ddd;
+            border-radius: 5px; */
             padding: 15px;
-            background-color: #f8f9fa;
+            background-color: white;
         }
         .case-image {
             max-width: 100%;
@@ -55,12 +55,18 @@
         <div class="row">
             <div class="col-12">
                 <button class="btn btn-primary back-button" onclick="window.close()">
-                    <i class="bi bi-arrow-left"></i> 返回病例详情
+                    <i class="bi bi-arrow-left"></i> 返回
                 </button>
-                <h2 class="mb-4" id="case-title">病例图片</h2>
+                <h2 class="mb-4" id="case-title">病例</h2>
                 <div class="alert alert-info">
-                    <strong>DOI:</strong> <span id="case-doi"></span> | 
-                    <strong>年份:</strong> <span id="case-year"></span>
+                    <strong>DOI:</strong> <span id="case-doi"></span>  |    
+                    <strong>PMID:</strong> <span id="modal-pmid"></span>  |
+                    <strong>发表年份:</strong> <span id="case-year"></span>  |
+                    <strong>期刊来源:</strong> <span id="modal-source"></span>
+                    <br>
+                    <strong>标题:</strong> <span id="modal-title"></span>
+                    <br>
+                    <strong>作者:</strong> <span id="modal-author"></span>                    
                 </div>
                 <div class="card mb-4">
                     <div class="card-header">
@@ -70,15 +76,20 @@
                         <p id="case-abstract" class="mb-0"></p>
                     </div>
                 </div>
-                <h3 class="section-title">原文参考图表</h3>
-                <div id="images-container">
-                    <!-- 图片将通过JavaScript动态加载 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">原文参考图表</h5>
+                    </div>
+                    <div id="images-container" class="card-body">
+                        <!-- 图片将通过JavaScript动态加载 -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="data.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // 从URL获取病例ID
@@ -102,7 +113,11 @@
             document.getElementById('case-doi').textContent = caseItem.doi || 'N/A';
             document.getElementById('case-year').textContent = caseItem.year || 'N/A';
             document.getElementById('case-abstract').textContent = caseItem.abstract || 'N/A';
-            
+            document.getElementById('modal-pmid').textContent = caseItem.pmid || 'N/A';
+            document.getElementById('modal-source').textContent = caseItem.source || 'N/A';
+            document.getElementById('modal-author').textContent = caseItem.author || 'N/A';
+            document.getElementById('modal-title').textContent = caseItem.title || 'N/A';            
+
             // 检查是否有图片
             if (!caseItem.Files || !caseItem.Files.Images || caseItem.Files.Images.length === 0) {
                 document.getElementById('images-container').innerHTML = '<div class="alert alert-warning">该病例没有图片</div>';
