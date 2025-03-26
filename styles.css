@@ -483,4 +483,120 @@ header.bg-primary h1 {
     max-width: 120px;
     white-space: nowrap;
     background-color: #f8f9fa;
+}
+
+/* 瓣膜直径选择器样式 */
+.valve-diameter-select {
+    position: relative;
+    width: 100%;
+}
+
+.select-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.select-header:hover {
+    border-color: #86b7fe;
+}
+
+.select-header i {
+    transition: transform 0.2s ease-in-out;
+}
+
+.select-header.active i {
+    transform: rotate(180deg);
+}
+
+.select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+}
+
+.valve-diameter-checkboxes {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.valve-diameter-checkboxes .form-check {
+    margin-bottom: 0.5rem;
+}
+
+.valve-diameter-checkboxes .form-check:last-child {
+    margin-bottom: 0;
+}
+
+.valve-diameter-checkboxes::-webkit-scrollbar {
+    width: 6px;
+}
+
+.valve-diameter-checkboxes::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.valve-diameter-checkboxes::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.valve-diameter-checkboxes::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* 瓣膜类型选择器样式 */
+.valve-type-select {
+    position: relative;
+    width: 100%;
+}
+
+.valve-type-checkboxes {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.valve-type-checkboxes .form-check {
+    margin-bottom: 0.5rem;
+}
+
+.valve-type-checkboxes .form-check:last-child {
+    margin-bottom: 0;
+}
+
+.valve-type-checkboxes::-webkit-scrollbar {
+    width: 6px;
+}
+
+.valve-type-checkboxes::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.valve-type-checkboxes::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.valve-type-checkboxes::-webkit-scrollbar-thumb:hover {
+    background: #555;
 } 

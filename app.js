@@ -9,6 +9,10 @@ const resetFilterBtn = document.getElementById('reset-filter');
 const sortByMatchBtn = document.getElementById('sort-by-match');
 const sortByAgeBtn = document.getElementById('sort-by-age');
 const sortByYearBtn = document.getElementById('sort-by-year');
+const valveDiameterHeaderEl = document.getElementById('valve-diameter-header');
+const valveDiameterDropdownEl = document.getElementById('valve-diameter-dropdown');
+const valveTypeHeaderEl = document.getElementById('valve-type-header');
+const valveTypeDropdownEl = document.getElementById('valve-type-dropdown');
 
 // 图表实例
 let valveTypeChart;
@@ -65,6 +69,41 @@ function bindEvents() {
     sortByMatchBtn.addEventListener('click', () => sortCases('match'));
     sortByAgeBtn.addEventListener('click', () => sortCases('age'));
     sortByYearBtn.addEventListener('click', () => sortCases('year'));
+
+    // 瓣膜直径下拉框事件
+    valveDiameterHeaderEl.addEventListener('click', () => {
+        const isActive = valveDiameterHeaderEl.classList.contains('active');
+        valveDiameterHeaderEl.classList.toggle('active');
+        valveDiameterDropdownEl.style.display = isActive ? 'none' : 'block';
+    });
+
+    // 瓣膜类型下拉框事件
+    valveTypeHeaderEl.addEventListener('click', () => {
+        const isActive = valveTypeHeaderEl.classList.contains('active');
+        valveTypeHeaderEl.classList.toggle('active');
+        valveTypeDropdownEl.style.display = isActive ? 'none' : 'block';
+    });
+
+    // 点击其他地方关闭下拉框
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.valve-diameter-select')) {
+            valveDiameterHeaderEl.classList.remove('active');
+            valveDiameterDropdownEl.style.display = 'none';
+        }
+        if (!event.target.closest('.valve-type-select')) {
+            valveTypeHeaderEl.classList.remove('active');
+            valveTypeDropdownEl.style.display = 'none';
+        }
+    });
+
+    // 更新选中状态显示
+    document.querySelectorAll('.valve-diameter-checkboxes input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateValveDiameterHeader);
+    });
+
+    document.querySelectorAll('.valve-type-checkboxes input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateValveTypeHeader);
+    });
 }
 
 // 初始化图表
@@ -98,17 +137,28 @@ function initValveTypeChart() {
     
     // 为每种瓣膜类型设置独特的颜色
     const colorMap = {
-        'Sapien XT': 'rgba(255, 99, 132, 0.7)',
-        'Edwards-Sapien S3': 'rgba(84, 137, 194, 0.7)',
-        'CoreValve': 'rgba(255, 206, 86, 0.7)',
-        'Edwards CENTERA TM 29': 'rgba(15, 127, 95, 0.7)',
-        'CoreValve EvolutR': 'rgba(161, 131, 223, 0.7)',
-        'Lotus valve': 'rgba(194, 153, 133, 0.7)',
-        'CoreValveTM': 'rgba(220, 53, 69, 0.7)',
-        'SAPIEN 3': 'rgba(40, 167, 69, 0.7)',
-        'Evolut RT': 'rgba(75, 192, 192, 1)',
-        'Medtronic CoreValve Evolut R': 'rgba(142, 99, 221, 0.7)',
-        'MOSAIC bioprosthesis': 'rgba(253, 126, 20, 0.7)'
+        'ACURATE Neo': 'rgba(255, 99, 132, 0.7)',      // 红色
+        'Avalus': 'rgba(54, 162, 235, 0.7)',           // 蓝色
+        'CoreValve': 'rgba(255, 206, 86, 0.7)',        // 黄色
+        'Edwards': 'rgba(75, 192, 192, 0.7)',          // 青色
+        'Edwards SAPIEN': 'rgba(153, 102, 255, 0.7)',  // 紫色
+        'Evolut': 'rgba(255, 159, 64, 0.7)',           // 橙色
+        'Hancock': 'rgba(255, 99, 71, 0.7)',           // 番茄红
+        'INSPIRIS': 'rgba(50, 205, 50, 0.7)',          // 酸橙绿
+        'Inoue': 'rgba(30, 144, 255, 0.7)',            // 道奇蓝
+        'Inovare': 'rgba(218, 112, 214, 0.7)',         // 兰花紫
+        'J-Valve': 'rgba(255, 140, 0, 0.7)',           // 深橙色
+        'JenaValve': 'rgba(255, 182, 193, 0.7)',       // 浅粉色
+        'LOTUS': 'rgba(0, 191, 255, 0.7)',             // 深天蓝
+        'Medtronic Mosaic': 'rgba(148, 0, 211, 0.7)',  // 深紫色
+        'MyVal': 'rgba(0, 206, 209, 0.7)',             // 青绿色
+        'Navitor': 'rgba(34, 139, 34, 0.7)',           // 森林绿
+        'PERCEVAL-S': 'rgba(255, 215, 0, 0.7)',        // 金色
+        'Portico': 'rgba(220, 20, 60, 0.7)',           // 猩红色
+        'St Jude': 'rgba(255, 127, 80, 0.7)',         // 珊瑚色
+        'Tyshak': 'rgba(0, 139, 139, 0.7)',            // 青色
+        'Venus': 'rgba(138, 43, 226, 0.7)',            // 蓝紫色
+        'Vitaflow Liberty': 'rgba(65, 105, 225, 0.7)', // 皇家蓝
     };
     
     // 根据标签获取对应颜色
@@ -163,18 +213,37 @@ function initValveDiameterChart() {
         }
     });
     
-    // 准备图表数据
+    // 准备图表数据并排序
     const labels = Object.keys(valveDiameters);
     const data = Object.values(valveDiameters);
+    
+    // 创建临时数组进行排序
+    const sortedData = labels.map((label, index) => ({
+        label: label,
+        data: data[index]
+    }));
+    
+    // 按直径大小排序（N/A放在最后）
+    sortedData.sort((a, b) => {
+        if (a.label === 'N/A') return 1;
+        if (b.label === 'N/A') return -1;
+        const numA = parseInt(a.label);
+        const numB = parseInt(b.label);
+        return numA - numB;
+    });
+    
+    // 分离排序后的标签和数据
+    const sortedLabels = sortedData.map(item => item.label);
+    const sortedValues = sortedData.map(item => item.data);
     
     // 创建图表
     valveDiameterChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: labels,
+            labels: sortedLabels,
             datasets: [{
                 label: '病例数量',
-                data: data,
+                data: sortedValues,
                 backgroundColor: 'rgba(75, 192, 192, 0.7)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
@@ -434,11 +503,23 @@ function applyFilters() {
     const genderMale = document.getElementById('gender-male').checked;
     const genderFemale = document.getElementById('gender-female').checked;
     const valveType = document.getElementById('valve-type').value;
-    const valveDiameter = document.getElementById('valve-diameter').value;
+    
+    // 获取选中的瓣膜直径
+    const selectedValveDiameters = [];
+    document.querySelectorAll('.valve-diameter-checkboxes input[type="checkbox"]:checked').forEach(checkbox => {
+        selectedValveDiameters.push(checkbox.value);
+    });
+    
     const meanGradientMin = document.getElementById('mean-gradient-min').value;
     const meanGradientMax = document.getElementById('mean-gradient-max').value;
     const paravalvularLeak = document.getElementById('paravalvular-leak').checked;
     const death = document.getElementById('death').checked;
+    
+    // 获取选中的瓣膜类型
+    const selectedValveTypes = [];
+    document.querySelectorAll('.valve-type-checkboxes input[type="checkbox"]:checked').forEach(checkbox => {
+        selectedValveTypes.push(checkbox.value);
+    });
     
     // 筛选病例
     filteredCases = taviCases.filter(caseItem => {
@@ -474,12 +555,12 @@ function applyFilters() {
         }
         
         // 瓣膜类型筛选
-        if (valveType && caseItem.Procedure.Valve_Type !== valveType) {
+        if (selectedValveTypes.length > 0 && !selectedValveTypes.includes(caseItem.Procedure.Valve_Type)) {
             return false;
         }
         
         // 瓣膜直径筛选
-        if (valveDiameter && caseItem.Procedure.Valve_Diameter !== valveDiameter) {
+        if (selectedValveDiameters.length > 0 && !selectedValveDiameters.includes(caseItem.Procedure.Valve_Diameter)) {
             return false;
         }
         
@@ -524,8 +605,28 @@ function applyFilters() {
 
 // 重置筛选
 function resetFilters() {
-    // 重置表单
-    document.getElementById('filter-form').reset();
+    // 重置所有筛选条件
+    document.getElementById('age-min').value = '';
+    document.getElementById('age-max').value = '';
+    document.getElementById('gender-male').checked = false;
+    document.getElementById('gender-female').checked = false;
+    document.getElementById('valve-type').value = '';
+    document.getElementById('mean-gradient-min').value = '';
+    document.getElementById('mean-gradient-max').value = '';
+    document.getElementById('paravalvular-leak').checked = false;
+    document.getElementById('death').checked = false;
+    
+    // 重置瓣膜直径选择
+    document.querySelectorAll('.valve-diameter-checkboxes input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    updateValveDiameterHeader();
+    
+    // 重置瓣膜类型选择
+    document.querySelectorAll('.valve-type-checkboxes input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    updateValveTypeHeader();
     
     // 重置筛选结果
     filteredCases = [...taviCases];
@@ -635,4 +736,30 @@ function updateSortArrow(sortBy) {
 function truncateText(text, maxLength) {
     if (text === 'N/A') return text;
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+}
+
+// 更新瓣膜直径选择器的显示文本
+function updateValveDiameterHeader() {
+    const checkedBoxes = document.querySelectorAll('.valve-diameter-checkboxes input[type="checkbox"]:checked');
+    const headerSpan = valveDiameterHeaderEl.querySelector('span');
+    
+    if (checkedBoxes.length === 0) {
+        headerSpan.textContent = '全部';
+    } else {
+        const selectedSizes = Array.from(checkedBoxes).map(cb => cb.value);
+        headerSpan.textContent = selectedSizes.join(', ');
+    }
+}
+
+// 更新瓣膜类型选择器的显示文本
+function updateValveTypeHeader() {
+    const checkedBoxes = document.querySelectorAll('.valve-type-checkboxes input[type="checkbox"]:checked');
+    const headerSpan = valveTypeHeaderEl.querySelector('span');
+    
+    if (checkedBoxes.length === 0) {
+        headerSpan.textContent = '全部';
+    } else {
+        const selectedTypes = Array.from(checkedBoxes).map(cb => cb.value);
+        headerSpan.textContent = selectedTypes.join(', ');
+    }
 } 

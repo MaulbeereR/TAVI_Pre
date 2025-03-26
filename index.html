@@ -74,32 +74,190 @@
                             
                             <div class="mb-3">
                                 <label for="valve-type" class="form-label">瓣膜类型</label>
-                                <select class="form-select" id="valve-type">
-                                    <option value="">全部</option>
-                                    <option value="Sapien XT">Sapien XT</option>
-                                    <option value="Edwards-Sapien S3">Edwards-Sapien S3</option>
-                                    <option value="CoreValve">CoreValve</option>
-                                    <option value="Edwards CENTERA TM 29">Edwards CENTERA TM 29</option>
-                                    <option value="CoreValve EvolutR">CoreValve EvolutR</option>
-                                    <option value="Lotus valve">Lotus valve</option>
-                                    <option value="CoreValveTM">CoreValveTM</option>
-                                    <option value="SAPIEN 3">SAPIEN 3</option>
-                                    <option value="Evolut RT">Evolut RT</option>
-                                    <option value="Medtronic CoreValve Evolut R">Medtronic CoreValve Evolut R</option>
-                                    <option value="MOSAIC bioprosthesis">MOSAIC bioprosthesis</option>
-                                </select>
+                                <div class="valve-type-select">
+                                    <div class="select-header" id="valve-type-header">
+                                        <span>全部</span>
+                                        <i class="bi bi-chevron-down"></i>
+                                    </div>
+                                    <div class="select-dropdown" id="valve-type-dropdown" style="display: none;">
+                                        <div class="valve-type-checkboxes">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="ACURATE Neo" id="valve-type-acurate-neo">
+                                                <label class="form-check-label" for="valve-type-acurate-neo">ACURATE Neo</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Avalus" id="valve-type-avalus">
+                                                <label class="form-check-label" for="valve-type-avalus">Avalus</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="CoreValve" id="valve-type-corevalve">
+                                                <label class="form-check-label" for="valve-type-corevalve">CoreValve</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Edwards" id="valve-type-edwards">
+                                                <label class="form-check-label" for="valve-type-edwards">Edwards</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Edwards SAPIEN" id="valve-type-edwards-sapien">
+                                                <label class="form-check-label" for="valve-type-edwards-sapien">Edwards SAPIEN</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Evolut" id="valve-type-evolut">
+                                                <label class="form-check-label" for="valve-type-evolut">Evolut</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Hancock" id="valve-type-hancock">
+                                                <label class="form-check-label" for="valve-type-hancock">Hancock</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="INSPIRIS" id="valve-type-inspiris">
+                                                <label class="form-check-label" for="valve-type-inspiris">INSPIRIS</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Inoue" id="valve-type-inoue">
+                                                <label class="form-check-label" for="valve-type-inoue">Inoue</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Inovare" id="valve-type-inovare">
+                                                <label class="form-check-label" for="valve-type-inovare">Inovare</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="J-Valve" id="valve-type-j-valve">
+                                                <label class="form-check-label" for="valve-type-j-valve">J-Valve</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="JenaValve" id="valve-type-jenavalve">
+                                                <label class="form-check-label" for="valve-type-jenavalve">JenaValve</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="LOTUS" id="valve-type-lotus">
+                                                <label class="form-check-label" for="valve-type-lotus">LOTUS</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Medtronic Mosaic" id="valve-type-medtronic-mosaic">
+                                                <label class="form-check-label" for="valve-type-medtronic-mosaic">Medtronic Mosaic</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="MyVal" id="valve-type-myval">
+                                                <label class="form-check-label" for="valve-type-myval">MyVal</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Navitor" id="valve-type-navitor">
+                                                <label class="form-check-label" for="valve-type-navitor">Navitor</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="PERCEVAL-S" id="valve-type-perceval-s">
+                                                <label class="form-check-label" for="valve-type-perceval-s">PERCEVAL-S</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Portico" id="valve-type-portico">
+                                                <label class="form-check-label" for="valve-type-portico">Portico</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="St Jude" id="valve-type-st-jude">
+                                                <label class="form-check-label" for="valve-type-st-jude">St Jude</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Tyshak" id="valve-type-tyshak">
+                                                <label class="form-check-label" for="valve-type-tyshak">Tyshak</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Venus" id="valve-type-venus">
+                                                <label class="form-check-label" for="valve-type-venus">Venus</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="Vitaflow Liberty" id="valve-type-vitaflow-liberty">
+                                                <label class="form-check-label" for="valve-type-vitaflow-liberty">Vitaflow Liberty</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="mb-3">
-                                <label for="valve-diameter" class="form-label">瓣膜直径</label>
-                                <select class="form-select" id="valve-diameter">
-                                    <option value="">全部</option>
-                                    <option value="20 mm">20 mm</option>
-                                    <option value="23 mm">23 mm</option>
-                                    <option value="26 mm">26 mm</option>
-                                    <option value="27 mm">27 mm</option>
-                                    <option value="29 mm">29 mm</option>
-                                </select>
+                                <label class="form-label">瓣膜直径</label>
+                                <div class="valve-diameter-select">
+                                    <div class="select-header" id="valve-diameter-header">
+                                        <span>全部</span>
+                                        <i class="bi bi-chevron-down"></i>
+                                    </div>
+                                    <div class="select-dropdown" id="valve-diameter-dropdown" style="display: none;">
+                                        <div class="valve-diameter-checkboxes" style="max-height: 200px; overflow-y: auto;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="16 mm" id="valve-diameter-16">
+                                                <label class="form-check-label" for="valve-diameter-16">16 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="18 mm" id="valve-diameter-18">
+                                                <label class="form-check-label" for="valve-diameter-18">18 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="19 mm" id="valve-diameter-19">
+                                                <label class="form-check-label" for="valve-diameter-19">19 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="20 mm" id="valve-diameter-20">
+                                                <label class="form-check-label" for="valve-diameter-20">20 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="21 mm" id="valve-diameter-21">
+                                                <label class="form-check-label" for="valve-diameter-21">21 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="22 mm" id="valve-diameter-22">
+                                                <label class="form-check-label" for="valve-diameter-22">22 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="23 mm" id="valve-diameter-23">
+                                                <label class="form-check-label" for="valve-diameter-23">23 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="24 mm" id="valve-diameter-24">
+                                                <label class="form-check-label" for="valve-diameter-24">24 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="25 mm" id="valve-diameter-25">
+                                                <label class="form-check-label" for="valve-diameter-25">25 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="26 mm" id="valve-diameter-26">
+                                                <label class="form-check-label" for="valve-diameter-26">26 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="27 mm" id="valve-diameter-27">
+                                                <label class="form-check-label" for="valve-diameter-27">27 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="28 mm" id="valve-diameter-28">
+                                                <label class="form-check-label" for="valve-diameter-28">28 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="29 mm" id="valve-diameter-29">
+                                                <label class="form-check-label" for="valve-diameter-29">29 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="30 mm" id="valve-diameter-30">
+                                                <label class="form-check-label" for="valve-diameter-30">30 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="31 mm" id="valve-diameter-31">
+                                                <label class="form-check-label" for="valve-diameter-31">31 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="32 mm" id="valve-diameter-32">
+                                                <label class="form-check-label" for="valve-diameter-32">32 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="33 mm" id="valve-diameter-33">
+                                                <label class="form-check-label" for="valve-diameter-33">33 mm</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="34 mm" id="valve-diameter-34">
+                                                <label class="form-check-label" for="valve-diameter-34">34 mm</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="mb-3">
