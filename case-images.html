@@ -66,6 +66,8 @@
                     <br>
                     <strong>标题:</strong> <span id="modal-title"></span>
                     <br>
+                    <strong>关键词:</strong> <span id="modal-keywords"></span>
+                    <br>
                     <strong>作者:</strong> <span id="modal-author"></span>                    
                 </div>
                 <div class="card mb-4">
@@ -117,7 +119,8 @@
             document.getElementById('modal-pmid').textContent = caseItem.pmid || 'N/A';
             document.getElementById('modal-source').textContent = caseItem.source || 'N/A';
             document.getElementById('modal-author').textContent = caseItem.author || 'N/A';
-            document.getElementById('modal-title').textContent = caseItem.title || 'N/A';            
+            document.getElementById('modal-title').textContent = caseItem.title || 'N/A'; 
+            document.getElementById('modal-keywords').textContent = caseItem.keywords || 'N/A';
 
             // 检查是否有图片
             if (!caseItem.Files || !caseItem.Files.Images || caseItem.Files.Images.length === 0) {

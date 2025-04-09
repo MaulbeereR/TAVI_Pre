@@ -562,16 +562,12 @@ function showCaseDetail(caseId) {
         openPdfBtn.disabled = true;
     }
     
-    // 检查是否有图片
-    if (caseItem.Files && caseItem.Files.Images && caseItem.Files.Images.length > 0) {
-        viewImagesBtn.disabled = false;
-        viewImagesBtn.onclick = () => {
-            // 打开图片查看页面
-            window.open(`case-images.html?id=${caseItem.id}`, '_blank');
-        };
-    } else {
-        viewImagesBtn.disabled = true;
-    }
+    // 设置图片按钮事件
+    viewImagesBtn.disabled = false;
+    viewImagesBtn.onclick = () => {
+        // 打开图片查看页面
+        window.open(`case-images.html?id=${caseItem.id}`, '_blank');
+    };
     
     // 显示模态框
     const modal = new bootstrap.Modal(document.getElementById('case-detail-modal'));
