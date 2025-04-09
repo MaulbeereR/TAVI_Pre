@@ -502,7 +502,6 @@ function applyFilters() {
     const ageMax = document.getElementById('age-max').value;
     const genderMale = document.getElementById('gender-male').checked;
     const genderFemale = document.getElementById('gender-female').checked;
-    const valveType = document.getElementById('valve-type').value;
     
     // 获取选中的瓣膜直径
     const selectedValveDiameters = [];
@@ -610,7 +609,6 @@ function resetFilters() {
     document.getElementById('age-max').value = '';
     document.getElementById('gender-male').checked = false;
     document.getElementById('gender-female').checked = false;
-    document.getElementById('valve-type').value = '';
     document.getElementById('mean-gradient-min').value = '';
     document.getElementById('mean-gradient-max').value = '';
     document.getElementById('paravalvular-leak').checked = false;
