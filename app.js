@@ -29,6 +29,10 @@ let sortStates = {
     year: { ascending: true }
 };
 
+// 分页变量
+let currentPage = 1;
+const casesPerPage = 50;
+
 // 初始化页面
 document.addEventListener('DOMContentLoaded', () => {
     // 初始化数据
@@ -189,6 +193,17 @@ function initValveTypeChart() {
                         font: {
                             size: 12
                         }
+                    },
+                    title: {
+                        display: true,
+                        text: '点击图例可显示 / 隐藏对应数据',
+                        font: {
+                            size: 12,
+                            style: 'italic'
+                        },
+                        padding: {
+                            top: 10
+                        }
                     }
                 },
                 title: {
@@ -296,22 +311,27 @@ function initPrePostComparisonChart() {
         }
     });
     
+    // 只取前20个病例的数据
+    const limitedPreMeanGradients = preMeanGradients.slice(0, 20);
+    const limitedPostMeanGradients = postMeanGradients.slice(0, 20);
+    const limitedCaseLabels = caseLabels.slice(0, 20);
+    
     // 创建图表
     prePostComparisonChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: caseLabels,
+            labels: limitedCaseLabels,
             datasets: [
                 {
                     label: '术前平均跨瓣压差 (mmHg)',
-                    data: preMeanGradients,
+                    data: limitedPreMeanGradients,
                     backgroundColor: 'rgba(255, 99, 132, 0.7)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
                 },
                 {
                     label: '术后平均跨瓣压差 (mmHg)',
-                    data: postMeanGradients,
+                    data: limitedPostMeanGradients,
                     backgroundColor: 'rgba(75, 192, 192, 0.7)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
@@ -363,8 +383,13 @@ function renderCaseList(cases) {
     // 清空列表
     caseListEl.innerHTML = '';
     
+    // 计算当前页的病例
+    const start = (currentPage - 1) * casesPerPage;
+    const end = start + casesPerPage;
+    const paginatedCases = cases.slice(start, end);
+    
     // 添加病例行
-    cases.forEach(caseItem => {
+    paginatedCases.forEach(caseItem => {
         const row = document.createElement('tr');
         
         // 提取年龄数字部分
@@ -420,6 +445,64 @@ function renderCaseList(cases) {
             showCaseDetail(caseId);
         });
     });
+
+    // 渲染分页控件
+    renderPagination(cases.length);
+}
+
+// 渲染分页控件
+function renderPagination(totalCases) {
+    const paginationEl = document.getElementById('pagination');
+    paginationEl.innerHTML = '';
+    
+    const totalPages = Math.ceil(totalCases / casesPerPage);
+    
+    // 创建分页按钮
+    const createPageButton = (text, page, isActive = false) => {
+        const button = document.createElement('button');
+        button.className = `btn ${isActive ? 'btn-primary' : 'btn-outline-primary'} mx-1`;
+        button.textContent = text;
+        button.disabled = isActive;
+        button.addEventListener('click', () => {
+            currentPage = page;
+            renderCaseList(filteredCases);
+        });
+        return button;
+    };
+    
+    // 添加首页按钮
+    if (currentPage > 1) {
+        paginationEl.appendChild(createPageButton('首页', 1));
+    }
+    
+    // 添加上一页按钮
+    if (currentPage > 1) {
+        paginationEl.appendChild(createPageButton('上一页', currentPage - 1));
+    }
+    
+    // 添加页码按钮
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+    
+    for (let i = startPage; i <= endPage; i++) {
+        paginationEl.appendChild(createPageButton(i, i, i === currentPage));
+    }
+    
+    // 添加下一页按钮
+    if (currentPage < totalPages) {
+        paginationEl.appendChild(createPageButton('下一页', currentPage + 1));
+    }
+    
+    // 添加末页按钮
+    if (currentPage < totalPages) {
+        paginationEl.appendChild(createPageButton('末页', totalPages));
+    }
+    
+    // 添加页码信息
+    const pageInfo = document.createElement('span');
+    pageInfo.className = 'mx-2';
+    // pageInfo.textContent = `第 ${currentPage} 页，共 ${totalPages} 页`;
+    paginationEl.appendChild(pageInfo);
 }
 
 // 显示病例详情
@@ -675,10 +758,10 @@ function sortCases(sortBy) {
             const ageB = b.Basic_Info.Age;
             
             // 如果都是N/A，保持原顺序
-            if (ageA === 'N/A' && ageB === 'N/A') return 0;
+            if (ageA === '-1' && ageB === '-1') return 0;
             // 如果只有一个是N/A，将其排在最后
-            if (ageA === 'N/A') return 1;
-            if (ageB === 'N/A') return -1;
+            if (ageA === '-1') return 1;
+            if (ageB === '-1') return -1;
             
             // 提取数字部分进行比较
             const numA = parseInt(ageA.replace(/\D/g, ''));
