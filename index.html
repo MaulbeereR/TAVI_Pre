@@ -273,6 +273,37 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- AI智能问答 -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light text-dark">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">AI智能问答</h4>
+                            <div>
+                                <button id="clear-chat" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-trash"></i> 清空
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column" style="height: 500px;">
+                        <div class="chat-container" id="chat-container">
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="message system">
+                                    <div class="message-content">
+                                        <p>你好！我是TAVI/TAVR智能助手，有任何关于TAVI/TAVR手术、瓣膜类型、病例分析的问题，请随时向我提问。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input-container">
+                                <textarea id="chat-input" class="form-control" placeholder="请输入您的问题..." rows="2"></textarea>
+                                <button id="send-message" class="btn btn-primary">
+                                    <i class="bi bi-send-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- 右侧内容区域 -->

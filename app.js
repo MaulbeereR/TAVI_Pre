@@ -13,6 +13,10 @@ const valveDiameterHeaderEl = document.getElementById('valve-diameter-header');
 const valveDiameterDropdownEl = document.getElementById('valve-diameter-dropdown');
 const valveTypeHeaderEl = document.getElementById('valve-type-header');
 const valveTypeDropdownEl = document.getElementById('valve-type-dropdown');
+const chatInputEl = document.getElementById('chat-input');
+const sendMessageBtn = document.getElementById('send-message');
+const chatMessagesEl = document.getElementById('chat-messages');
+const clearChatBtn = document.getElementById('clear-chat');
 
 // 图表实例
 let valveTypeChart;
@@ -32,6 +36,19 @@ let sortStates = {
 // 分页变量
 let currentPage = 1;
 const casesPerPage = 50;
+
+// GPT配置
+const gptConfig = {
+    api_key: "",
+    model: "gpt-4o-mini",
+    temperature: 0.01,
+    max_tokens: 15000,
+    api_base: "https://admin-m99nr154-eastus2.cognitiveservices.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2025-01-01-preview",
+    api_version: "2025-01-01-preview"
+};
+
+// 聊天历史
+let chatHistory = [];
 
 // 初始化页面
 document.addEventListener('DOMContentLoaded', () => {
@@ -88,6 +105,15 @@ function bindEvents() {
         valveTypeDropdownEl.style.display = isActive ? 'none' : 'block';
     });
 
+    // 聊天相关事件
+    sendMessageBtn.addEventListener('click', sendChatMessage);
+    chatInputEl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendChatMessage();
+        }
+    });
+
     // 点击其他地方关闭下拉框
     document.addEventListener('click', (event) => {
         if (!event.target.closest('.valve-diameter-select')) {
@@ -108,6 +134,9 @@ function bindEvents() {
     document.querySelectorAll('.valve-type-checkboxes input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', updateValveTypeHeader);
     });
+
+    // 清空聊天按钮事件
+    clearChatBtn.addEventListener('click', clearChatHistory);
 }
 
 // 初始化图表
@@ -825,6 +854,7 @@ function updateValveDiameterHeader() {
     } else {
         const selectedSizes = Array.from(checkedBoxes).map(cb => cb.value);
         headerSpan.textContent = selectedSizes.join(', ');
+        headerSpan.textContent = `已选 ${checkedBoxes.length} 项`;
     }
 }
 
@@ -836,7 +866,206 @@ function updateValveTypeHeader() {
     if (checkedBoxes.length === 0) {
         headerSpan.textContent = '全部';
     } else {
-        const selectedTypes = Array.from(checkedBoxes).map(cb => cb.value);
-        headerSpan.textContent = selectedTypes.join(', ');
+        
+        headerSpan.textContent = `已选 ${checkedBoxes.length} 项`;
     }
+}
+
+// 发送聊天消息
+async function sendChatMessage() {
+    const message = chatInputEl.value.trim();
+    if (!message) return;
+    
+    // 清空输入框
+    chatInputEl.value = '';
+    
+    // 添加用户消息到聊天窗口
+    addMessageToChat('user', message);
+    
+    // 添加到聊天历史
+    chatHistory.push({ role: 'user', content: message });
+    
+    try {
+        // 显示加载状态
+        const loadingMsgId = addMessageToChat('system', '<div class="typing-indicator"><span></span><span></span><span></span></div>');
+        
+        // 调用API获取回复
+        const response = await callGptApi(message);
+        
+        // 移除加载状态
+        removeMessage(loadingMsgId);
+        
+        // 添加AI回复到聊天窗口
+        addMessageToChat('system', response);
+        
+        // 添加回复到聊天历史
+        chatHistory.push({ role: 'assistant', content: response });
+    } catch (error) {
+        console.error('获取AI回复时出错:', error);
+        // 显示错误消息
+        addMessageToChat('system', '抱歉，我遇到了一些问题，请稍后再试。');
+    }
+    
+    // 滚动到底部
+    scrollChatToBottom();
+}
+
+// 调用GPT API
+async function callGptApi(message) {
+    // 准备API请求参数
+    const messages = [
+        { role: 'system', content: '你是TAVI/TAVR（经导管主动脉瓣植入/置换术）领域的专家助手。你擅长回答有关TAVI/TAVR手术、主动脉瓣狭窄、瓣膜类型、手术结果和并发症等相关问题。请提供专业、准确、简洁的回答。' },
+        ...chatHistory.slice(-10), // 保留最近10条消息作为上下文
+    ];
+    
+    // 添加当前筛选条件的上下文信息
+    const filterContext = getFilterContext();
+    if (filterContext) {
+        messages.push({ role: 'system', content: filterContext });
+    }
+    
+    try {
+        const endpoint = `${gptConfig.api_base}`;
+        
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': gptConfig.api_key
+            },
+            body: JSON.stringify({
+                messages: messages,
+                model: gptConfig.model,
+                temperature: gptConfig.temperature,
+                max_tokens: gptConfig.max_tokens
+            })
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`API请求失败: ${response.status} ${JSON.stringify(errorData)}`);
+        }
+        
+        const data = await response.json();
+        return data.choices[0].message.content;
+    } catch (error) {
+        console.error('API调用失败:', error);
+        throw error;
+    }
+}
+
+// 获取当前筛选条件的上下文
+function getFilterContext() {
+    // 如果没有应用筛选，则返回null
+    if (filteredCases.length === taviCases.length) {
+        return null;
+    }
+    
+    // 收集筛选条件信息
+    const gender = [];
+    if (document.getElementById('gender-male').checked) gender.push('男性');
+    if (document.getElementById('gender-female').checked) gender.push('女性');
+    
+    const outcomes = [];
+    if (document.getElementById('paravalvular-leak').checked) outcomes.push('瓣周漏');
+    if (document.getElementById('death').checked) outcomes.push('死亡');
+    
+    const ageMin = document.getElementById('age-min').value;
+    const ageMax = document.getElementById('age-max').value;
+    
+    const valveTypes = Array.from(document.querySelectorAll('.valve-type-checkboxes input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+    
+    const valveDiameters = Array.from(document.querySelectorAll('.valve-diameter-checkboxes input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+    
+    const mgMin = document.getElementById('mean-gradient-min').value;
+    const mgMax = document.getElementById('mean-gradient-max').value;
+    
+    // 构建上下文字符串
+    let context = '当前筛选条件：';
+    const conditions = [];
+    
+    if (gender.length > 0) conditions.push(`性别为${gender.join('或')}`);
+    if (outcomes.length > 0) conditions.push(`术后结果包括${outcomes.join('或')}`);
+    if (ageMin && ageMax) conditions.push(`年龄在${ageMin}到${ageMax}岁之间`);
+    else if (ageMin) conditions.push(`年龄大于等于${ageMin}岁`);
+    else if (ageMax) conditions.push(`年龄小于等于${ageMax}岁`);
+    
+    if (valveTypes.length > 0) conditions.push(`瓣膜类型为${valveTypes.join('、')}`);
+    if (valveDiameters.length > 0) conditions.push(`瓣膜直径为${valveDiameters.join('、')}`);
+    
+    if (mgMin && mgMax) conditions.push(`术前平均跨瓣压差在${mgMin}到${mgMax} mmHg之间`);
+    else if (mgMin) conditions.push(`术前平均跨瓣压差大于等于${mgMin} mmHg`);
+    else if (mgMax) conditions.push(`术前平均跨瓣压差小于等于${mgMax} mmHg`);
+    
+    if (conditions.length === 0) {
+        return null;
+    }
+    
+    context += conditions.join('，') + '。';
+    context += `筛选结果共有${filteredCases.length}个病例。`;
+    
+    return context;
+}
+
+// 添加消息到聊天窗口
+function addMessageToChat(role, content) {
+    const messageId = 'msg-' + Date.now();
+    const messageEl = document.createElement('div');
+    messageEl.className = `message ${role}`;
+    messageEl.id = messageId;
+    
+    const contentEl = document.createElement('div');
+    contentEl.className = 'message-content';
+    contentEl.innerHTML = formatMessage(content);
+    
+    messageEl.appendChild(contentEl);
+    chatMessagesEl.appendChild(messageEl);
+    
+    // 滚动到底部
+    scrollChatToBottom();
+    
+    return messageId;
+}
+
+// 移除消息
+function removeMessage(messageId) {
+    const messageEl = document.getElementById(messageId);
+    if (messageEl) {
+        messageEl.remove();
+    }
+}
+
+// 格式化消息（支持简单的Markdown格式）
+function formatMessage(message) {
+    if (typeof message !== 'string') {
+        return message;
+    }
+    
+    // 转换换行符为<br>
+    let formatted = message.replace(/\n/g, '<br>');
+    
+    // 转换Markdown风格的链接和加粗
+    formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    
+    return formatted;
+}
+
+// 滚动聊天窗口到底部
+function scrollChatToBottom() {
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+}
+
+// 清空聊天历史
+function clearChatHistory() {
+    // 清空聊天历史
+    chatHistory = [];
+    
+    // 清空聊天窗口
+    chatMessagesEl.innerHTML = '';
+    
+    // 添加欢迎消息
+    addMessageToChat('system', '<p>你好！我是TAVI/TAVR智能助手，有任何关于TAVI/TAVR手术、瓣膜类型、病例分析的问题，请随时向我提问。</p>');
 } 
