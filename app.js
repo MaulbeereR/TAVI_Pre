@@ -852,8 +852,8 @@ function updateValveDiameterHeader() {
     if (checkedBoxes.length === 0) {
         headerSpan.textContent = '全部';
     } else {
-        const selectedSizes = Array.from(checkedBoxes).map(cb => cb.value);
-        headerSpan.textContent = selectedSizes.join(', ');
+        // const selectedSizes = Array.from(checkedBoxes).map(cb => cb.value);
+        // headerSpan.textContent = selectedSizes.join(', ');
         headerSpan.textContent = `已选 ${checkedBoxes.length} 项`;
     }
 }
@@ -919,11 +919,11 @@ async function callGptApi(message) {
     ];
     
     // 添加当前筛选条件的上下文信息
-    const filterContext = getFilterContext();
-    if (filterContext) {
-        messages.push({ role: 'system', content: filterContext });
+    const {context, ids} = getFilterContext();
+    if (context) {
+        messages.push({ role: 'system', content: context});
     }
-    
+
     try {
         const endpoint = `${gptConfig.api_base}`;
         
@@ -1005,8 +1005,24 @@ function getFilterContext() {
     
     context += conditions.join('，') + '。';
     context += `筛选结果共有${filteredCases.length}个病例。`;
+
+    ids = filteredCases.map(item => item.id);
+
+    // 遍历ids前十位（如果ids小于10，则全部遍历）
+    if (ids.length > 10) {
+        ids = ids.slice(0, 10);
+    }
+
+    context += `以下是筛选结果的标题和摘要：\n`;
+
+    for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        const case_info = taviCases.find(item => item.id === id);
+        context += `病例${id}的标题：${case_info.title}\n`;
+        context += `病例${id}的摘要：${case_info.abstract}\n`;
+    }
     
-    return context;
+    return {context, ids};
 }
 
 // 添加消息到聊天窗口
