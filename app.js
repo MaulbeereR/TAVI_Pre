@@ -958,7 +958,7 @@ async function callGptApi(message) {
 function getFilterContext() {
     // 如果没有应用筛选，则返回null
     if (filteredCases.length === taviCases.length) {
-        return null;
+        return {context: null, ids: null};
     }
     
     // 收集筛选条件信息
@@ -1018,8 +1018,7 @@ function getFilterContext() {
     for (let i = 0; i < ids.length; i++) {
         const id = ids[i];
         const case_info = taviCases.find(item => item.id === id);
-        context += `病例${id}的标题：${case_info.title}\n`;
-        context += `病例${id}的摘要：${case_info.abstract}\n`;
+        context += `病例${id}的摘要：${case_info.abstract}`;
     }
     
     return {context, ids};
