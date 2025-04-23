@@ -1,0 +1,190 @@
+/**
+ * TAVI预手术评估系统数据统计卡片组件样式
+ */
+
+/* 数据统计卡片样式 - 科技风格，显示关键医疗数据 */
+.stats-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease; /* 平滑过渡效果 */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    position: relative;
+}
+
+/* 卡片悬停效果 - 微抬升 */
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12); /* 悬停时增强阴影 */
+}
+
+/* 卡片头部样式 */
+.stats-card .card-header {
+    background: linear-gradient(135deg, #f5f7fa, #e4e8f0);
+    border-bottom: none;
+    padding: 15px;
+    font-weight: 600;
+    color: #495057;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 卡片头部装饰元素 */
+.stats-card .card-header::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* 卡片内容区域样式 */
+.stats-card .card-body {
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* 卡片内容区域装饰元素 */
+.stats-card .card-body::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(13, 110, 253, 0.05);
+    z-index: 0;
+}
+
+/* 卡片标题样式 */
+.stats-card .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #6c757d;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 卡片数值文本样式 - 使用渐变色效果 */
+.stats-card .card-text {
+    font-weight: 700;
+    font-size: 2.5rem !important;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    /* 添加回退颜色，以防渐变不支持 */
+    color: #0062E6;
+    background: linear-gradient(135deg, #0062E6, #33AEFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* 添加各类型卡片的图标 */
+.stats-card .card-body::before {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 1.5rem;
+    opacity: 0.15;
+    z-index: 0;
+    filter: grayscale(0.5);
+    transition: all 0.3s ease;
+    font-family: 'bootstrap-icons'; /* 使用Bootstrap图标字体 */
+}
+
+/* 卡片图标悬停效果 */
+.stats-card:hover .card-body::before {
+    opacity: 0.3;
+    transform: scale(1.1);
+    filter: grayscale(0); /* 悬停时显示彩色 */
+}
+
+/* 定义各类型卡片的特定图标 */
+.stats-card.total-cases .card-body::before {
+    content: "\F2CC"; /* 总病例图标 */
+}
+
+.stats-card.filtered-cases .card-body::before {
+    content: "\F17E"; /* 筛选病例图标 */
+}
+
+.stats-card.leak-rate .card-body::before {
+    content: "\F30C"; /* 漏率图标 */
+}
+
+.stats-card.death-rate .card-body::before {
+    content: "\F334"; /* 死亡率图标 */
+}
+
+/* 数值加载动画定义 */
+@keyframes number-count {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 应用数值加载动画 */
+.stats-card .card-text {
+    animation: number-count 0.8s ease-out forwards;
+}
+
+/* 不同统计卡片的特定颜色 */
+/* 总病例数卡片 - 蓝色系 */
+.stats-card.total-cases .card-text {
+    color: #0062E6; /* 回退颜色 */
+    background: linear-gradient(135deg, #0062E6, #33AEFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+/* 筛选病例数卡片 - 绿色系 */
+.stats-card.filtered-cases .card-text {
+    color: #2E7D32; /* 回退颜色 */
+    background: linear-gradient(135deg, #2E7D32, #81C784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+/* 漏率卡片 - 橙色系 */
+.stats-card.leak-rate .card-text {
+    color: #FF6F00; /* 回退颜色 */
+    background: linear-gradient(135deg, #FF6F00, #FFAB40);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+/* 死亡率卡片 - 红色系 */
+.stats-card.death-rate .card-text {
+    color: #C62828; /* 回退颜色 */
+    background: linear-gradient(135deg, #C62828, #EF5350);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+} 

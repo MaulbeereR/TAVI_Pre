@@ -1,0 +1,138 @@
+/**
+ * TAVI预手术评估系统瓣膜选择器组件样式
+ */
+
+/* 瓣膜直径选择器容器 */
+.valve-diameter-select {
+    position: relative;
+    width: 100%;
+}
+
+/* 选择器头部样式 */
+.select-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    user-select: none; /* 防止文本被选中 */
+}
+
+/* 选择器头部悬停效果 */
+.select-header:hover {
+    border-color: #86b7fe;
+}
+
+/* 选择器箭头图标过渡效果 */
+.select-header i {
+    transition: transform 0.2s ease-in-out;
+}
+
+/* 激活状态下箭头旋转 */
+.select-header.active i {
+    transform: rotate(180deg);
+}
+
+/* 下拉菜单样式 */
+.select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+}
+
+/* 瓣膜直径复选框容器 */
+.valve-diameter-checkboxes {
+    max-height: 200px;
+    overflow-y: auto; /* 内容超出时显示滚动条 */
+}
+
+/* 瓣膜直径选项样式 */
+.valve-diameter-checkboxes .form-check {
+    margin-bottom: 0.5rem;
+}
+
+/* 最后一个选项移除底部间距 */
+.valve-diameter-checkboxes .form-check:last-child {
+    margin-bottom: 0;
+}
+
+/* 自定义滚动条宽度 */
+.valve-diameter-checkboxes::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* 滚动条轨道样式 */
+.valve-diameter-checkboxes::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+/* 滚动条滑块样式 */
+.valve-diameter-checkboxes::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+/* 滚动条滑块悬停样式 */
+.valve-diameter-checkboxes::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* 瓣膜类型选择器容器 */
+.valve-type-select {
+    position: relative;
+    width: 100%;
+}
+
+/* 瓣膜类型复选框容器 */
+.valve-type-checkboxes {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* 瓣膜类型选项样式 */
+.valve-type-checkboxes .form-check {
+    margin-bottom: 0.5rem;
+}
+
+/* 最后一个选项移除底部间距 */
+.valve-type-checkboxes .form-check:last-child {
+    margin-bottom: 0;
+}
+
+/* 自定义滚动条宽度 */
+.valve-type-checkboxes::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* 滚动条轨道样式 */
+.valve-type-checkboxes::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+/* 滚动条滑块样式 */
+.valve-type-checkboxes::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+/* 滚动条滑块悬停样式 */
+.valve-type-checkboxes::-webkit-scrollbar-thumb:hover {
+    background: #555;
+} 

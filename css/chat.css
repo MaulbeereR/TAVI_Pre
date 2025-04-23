@@ -1,0 +1,131 @@
+/**
+ * TAVI预手术评估系统聊天组件样式
+ */
+
+/* 聊天容器 - 用于AI交互界面 */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+/* 消息列表容器 */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 单条消息样式 */
+.message {
+    display: flex;
+    margin-bottom: 8px;
+    max-width: 80%;
+}
+
+/* 用户消息靠右对齐 */
+.message.user {
+    align-self: flex-end;
+}
+
+/* 系统/AI消息靠左对齐 */
+.message.system {
+    align-self: flex-start;
+}
+
+/* 消息内容样式 */
+.message-content {
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-word; /* 长文本自动换行 */
+}
+
+/* 用户消息气泡样式 - 蓝色 */
+.message.user .message-content {
+    background-color: #007bff;
+    color: white;
+    border-bottom-right-radius: 4px; /* 自定义气泡形状 */
+}
+
+/* 系统/AI消息气泡样式 - 灰色 */
+.message.system .message-content {
+    background-color: #e9ecef;
+    color: #212529;
+    border-bottom-left-radius: 4px; /* 自定义气泡形状 */
+}
+
+/* 聊天输入区域样式 */
+.chat-input-container {
+    display: flex;
+    padding: 12px;
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    gap: 10px;
+}
+
+/* 聊天输入框样式 */
+.chat-input-container textarea {
+    flex: 1;
+    resize: none; /* 禁止调整大小 */
+    border-radius: 20px;
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+/* 发送按钮样式 */
+.chat-input-container button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* 圆形按钮 */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 打字指示器 - 显示AI正在回复中 */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 0;
+}
+
+/* 打字指示器动画点 */
+.typing-indicator span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #adb5bd;
+    border-radius: 50%;
+    animation: typing 1.4s infinite ease-in-out both;
+}
+
+/* 错开动画时间以形成波浪效果 */
+.typing-indicator span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+/* 打字动画定义 */
+@keyframes typing {
+    0%, 80%, 100% { 
+        transform: scale(0.6);
+    }
+    40% { 
+        transform: scale(1);
+    }
+} 

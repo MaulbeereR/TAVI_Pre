@@ -1,0 +1,51 @@
+/**
+ * TAVI预手术评估系统响应式布局样式
+ */
+
+/* 移动设备的响应式调整 */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 0.5rem; /* 减小内边距 */
+    }
+    
+    .card {
+        margin-bottom: 1rem; /* 增加卡片间距 */
+    }
+    
+    .table {
+        font-size: 0.875rem; /* 缩小表格字体 */
+    }
+    
+    /* 移动设备上缩小头部标题 */
+    header.bg-primary h1 {
+        font-size: 1.5rem;
+        padding: 10px 0;
+    }
+    
+    /* 调整图表尺寸 */
+    .chart-container {
+        height: 250px;
+    }
+    
+    /* 单列布局 */
+    .row > [class*='col-'] {
+        margin-bottom: 1rem;
+    }
+}
+
+/* 平板设备的响应式调整 */
+@media (min-width: 769px) and (max-width: 992px) {
+    .container-fluid {
+        padding: 0.75rem;
+    }
+    
+    /* 平板设备上调整头部标题 */
+    header.bg-primary h1 {
+        font-size: 1.8rem;
+    }
+    
+    /* 调整图表尺寸 */
+    .chart-container {
+        height: 300px;
+    }
+} 
