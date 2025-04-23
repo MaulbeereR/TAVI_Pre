@@ -3,11 +3,11 @@ from openai import OpenAI
 import time
 
 client = OpenAI(
-    api_key="",
+    api_key="OPENAI_API_KEY",
     base_url="https://api.openai.com/v1"
 )
 
-with open("tavi_abstract.json", "r", encoding="utf-8") as f:
+with open("./data/tavi_abstract.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
 abstracts = [item['abstract'] for item in data]
@@ -43,7 +43,7 @@ for idx, item in enumerate(data):
         continue
 
 # 保存向量结果
-with open("tavi_abstract_embeddings.json", "w", encoding="utf-8") as f:
+with open("./data/tavi_abstract_embeddings.json", "w", encoding="utf-8") as f:
     json.dump(results, f, ensure_ascii=False, indent=2)
 
 print("✅ Embedding generation complete.")
