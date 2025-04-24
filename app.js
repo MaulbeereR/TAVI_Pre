@@ -1,41 +1,41 @@
 // DOM元素
-const caseListEl = document.getElementById('case-list');
-const totalCasesEl = document.getElementById('total-cases');
-const filteredCasesEl = document.getElementById('filtered-cases');
-const leakRateEl = document.getElementById('leak-rate');
-const deathRateEl = document.getElementById('death-rate');
-const applyFilterBtn = document.getElementById('apply-filter');
-const resetFilterBtn = document.getElementById('reset-filter');
-const sortByMatchBtn = document.getElementById('sort-by-match');
-const sortByAgeBtn = document.getElementById('sort-by-age');
-const sortByYearBtn = document.getElementById('sort-by-year');
-const valveDiameterHeaderEl = document.getElementById('valve-diameter-header');
-const valveDiameterDropdownEl = document.getElementById('valve-diameter-dropdown');
-const valveTypeHeaderEl = document.getElementById('valve-type-header');
-const valveTypeDropdownEl = document.getElementById('valve-type-dropdown');
-const chatInputEl = document.getElementById('chat-input');
-const sendMessageBtn = document.getElementById('send-message');
-const chatMessagesEl = document.getElementById('chat-messages');
-const clearChatBtn = document.getElementById('clear-chat');
+const caseListEl = document.getElementById('case-list');                   // 病例列表容器
+const totalCasesEl = document.getElementById('total-cases');               // 总病例数显示元素
+const filteredCasesEl = document.getElementById('filtered-cases');         // 筛选后病例数显示元素
+const leakRateEl = document.getElementById('leak-rate');                   // 瓣周漏率显示元素
+const deathRateEl = document.getElementById('death-rate');                 // 死亡率显示元素
+const applyFilterBtn = document.getElementById('apply-filter');            // 应用筛选按钮
+const resetFilterBtn = document.getElementById('reset-filter');            // 重置筛选按钮
+const sortByMatchBtn = document.getElementById('sort-by-match');           // 按匹配度排序按钮
+const sortByAgeBtn = document.getElementById('sort-by-age');               // 按年龄排序按钮
+const sortByYearBtn = document.getElementById('sort-by-year');             // 按年份排序按钮
+const valveDiameterHeaderEl = document.getElementById('valve-diameter-header');     // 瓣膜直径筛选器标题
+const valveDiameterDropdownEl = document.getElementById('valve-diameter-dropdown'); // 瓣膜直径下拉选项
+const valveTypeHeaderEl = document.getElementById('valve-type-header');             // 瓣膜类型筛选器标题
+const valveTypeDropdownEl = document.getElementById('valve-type-dropdown');         // 瓣膜类型下拉选项
+const chatInputEl = document.getElementById('chat-input');                 // 聊天输入框
+const sendMessageBtn = document.getElementById('send-message');            // 发送消息按钮
+const chatMessagesEl = document.getElementById('chat-messages');           // 聊天消息容器
+const clearChatBtn = document.getElementById('clear-chat');                // 清空聊天按钮
 
 // 图表实例
-let valveTypeChart;
-let valveDiameterChart;
-let prePostComparisonChart;
+let valveTypeChart;          // 瓣膜类型分布图表实例
+let valveDiameterChart;      // 瓣膜直径分布图表实例
+let prePostComparisonChart;  // 术前术后对比图表实例
 
 // 当前筛选后的病例
 let filteredCases = [];
 
 // 排序状态
 let sortStates = {
-    match: { ascending: true },
-    age: { ascending: true },
-    year: { ascending: true }
+    match: { ascending: true },  // 匹配度排序状态
+    age: { ascending: true },    // 年龄排序状态
+    year: { ascending: true }    // 年份排序状态
 };
 
 // 分页变量
-let currentPage = 1;
-const casesPerPage = 50;
+let currentPage = 1;         // 当前页码
+const casesPerPage = 50;     // 每页显示的病例数量
 
 // GPT配置
 const gptConfig = {
@@ -50,7 +50,9 @@ const gptConfig = {
 // 聊天历史
 let chatHistory = [];
 
-// 初始化页面
+/**
+ * 页面加载完成后的初始化函数
+ */
 document.addEventListener('DOMContentLoaded', () => {
     // 初始化数据
     initializeData();
@@ -62,7 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeCharts();
 });
 
-// 初始化数据
+/**
+ * 初始化数据
+ * 加载病例数据并设置初始显示
+ */
 function initializeData() {
     // 设置总病例数
     totalCasesEl.textContent = taviCases.length;
@@ -78,7 +83,10 @@ function initializeData() {
     renderCaseList(filteredCases);
 }
 
-// 绑定事件
+/**
+ * 绑定页面事件
+ * 为各个交互元素添加事件监听器
+ */
 function bindEvents() {
     // 应用筛选按钮
     applyFilterBtn.addEventListener('click', applyFilters);
@@ -139,7 +147,9 @@ function bindEvents() {
     clearChatBtn.addEventListener('click', clearChatHistory);
 }
 
-// 初始化图表
+/**
+ * 初始化所有图表
+ */
 function initializeCharts() {
     // 瓣膜类型分布图表
     initValveTypeChart();
@@ -151,7 +161,10 @@ function initializeCharts() {
     initPrePostComparisonChart();
 }
 
-// 初始化瓣膜类型分布图表
+/**
+ * 初始化瓣膜类型分布图表
+ * 生成饼状图展示不同瓣膜类型的分布情况
+ */
 function initValveTypeChart() {
     const ctx = document.getElementById('valve-type-chart').getContext('2d');
     
@@ -188,7 +201,7 @@ function initValveTypeChart() {
         'Navitor': 'rgba(34, 139, 34, 0.7)',           // 森林绿
         'PERCEVAL-S': 'rgba(255, 215, 0, 0.7)',        // 金色
         'Portico': 'rgba(220, 20, 60, 0.7)',           // 猩红色
-        'St Jude': 'rgba(255, 127, 80, 0.7)',         // 珊瑚色
+        'St Jude': 'rgba(255, 127, 80, 0.7)',          // 珊瑚色
         'Tyshak': 'rgba(0, 139, 139, 0.7)',            // 青色
         'Venus': 'rgba(138, 43, 226, 0.7)',            // 蓝紫色
         'Vitaflow Liberty': 'rgba(65, 105, 225, 0.7)', // 皇家蓝
@@ -244,7 +257,10 @@ function initValveTypeChart() {
     });
 }
 
-// 初始化瓣膜直径分布图表
+/**
+ * 初始化瓣膜直径分布图表
+ * 生成柱状图展示不同瓣膜直径的分布情况
+ */
 function initValveDiameterChart() {
     const ctx = document.getElementById('valve-diameter-chart').getContext('2d');
     
@@ -317,7 +333,10 @@ function initValveDiameterChart() {
     });
 }
 
-// 初始化术前术后指标对比图表
+/**
+ * 初始化术前术后指标对比图表
+ * 生成柱状图展示术前术后平均跨瓣压差的变化
+ */
 function initPrePostComparisonChart() {
     const ctx = document.getElementById('pre-post-comparison-chart').getContext('2d');
     
@@ -391,7 +410,11 @@ function initPrePostComparisonChart() {
     });
 }
 
-// 更新统计数据
+/**
+ * 更新统计数据
+ * 计算并显示瓣周漏率和死亡率
+ * @param {Array} cases - 需要统计的病例数组
+ */
 function updateStatistics(cases) {
     // 计算瓣周漏率
     const leakCases = cases.filter(caseItem => caseItem.Result.Paravalvular_Leak === true);
@@ -407,7 +430,11 @@ function updateStatistics(cases) {
     filteredCasesEl.textContent = cases.length;
 }
 
-// 渲染病例列表
+/**
+ * 渲染病例列表
+ * 根据当前筛选和分页状态显示病例
+ * @param {Array} cases - 要显示的病例数组
+ */
 function renderCaseList(cases) {
     // 清空列表
     caseListEl.innerHTML = '';
@@ -479,14 +506,24 @@ function renderCaseList(cases) {
     renderPagination(cases.length);
 }
 
-// 渲染分页控件
+/**
+ * 渲染分页控件
+ * 生成分页按钮和页码信息
+ * @param {Number} totalCases - 总病例数量
+ */
 function renderPagination(totalCases) {
     const paginationEl = document.getElementById('pagination');
     paginationEl.innerHTML = '';
     
     const totalPages = Math.ceil(totalCases / casesPerPage);
     
-    // 创建分页按钮
+    /**
+     * 创建分页按钮
+     * @param {String} text - 按钮文本
+     * @param {Number} page - 页码
+     * @param {Boolean} isActive - 是否为当前页
+     * @returns {HTMLElement} 按钮元素
+     */
     const createPageButton = (text, page, isActive = false) => {
         const button = document.createElement('button');
         button.className = `btn ${isActive ? 'btn-primary' : 'btn-outline-primary'} mx-1`;
@@ -534,7 +571,11 @@ function renderPagination(totalCases) {
     paginationEl.appendChild(pageInfo);
 }
 
-// 显示病例详情
+/**
+ * 显示病例详情
+ * 在模态框中展示选中病例的详细信息
+ * @param {Number} caseId - 病例ID
+ */
 function showCaseDetail(caseId) {
     // 查找病例
     const caseItem = taviCases.find(item => item.id === caseId);
@@ -603,7 +644,10 @@ function showCaseDetail(caseId) {
     modal.show();
 }
 
-// 应用筛选
+/**
+ * 应用筛选
+ * 根据用户选择的条件筛选病例
+ */
 function applyFilters() {
     // 获取筛选条件
     const ageMin = document.getElementById('age-min').value;
@@ -710,7 +754,10 @@ function applyFilters() {
     renderCaseList(filteredCases);
 }
 
-// 重置筛选
+/**
+ * 重置筛选
+ * 清除所有筛选条件并显示所有病例
+ */
 function resetFilters() {
     // 重置所有筛选条件
     document.getElementById('age-min').value = '';
@@ -747,7 +794,10 @@ function resetFilters() {
     renderCaseList(filteredCases);
 }
 
-// 更新图表
+/**
+ * 更新图表
+ * 根据当前筛选结果重新生成所有图表
+ */
 function updateCharts() {
     // 销毁旧图表
     if (valveTypeChart) valveTypeChart.destroy();
@@ -760,7 +810,11 @@ function updateCharts() {
     initPrePostComparisonChart();
 }
 
-// 排序病例
+/**
+ * 排序病例
+ * 根据指定字段对病例进行排序
+ * @param {String} sortBy - 排序字段：'match'(ID), 'age'(年龄), 'year'(年份)
+ */
 function sortCases(sortBy) {
     // 移除所有按钮的高亮状态
     document.querySelectorAll('.btn-outline-primary').forEach(btn => {
@@ -828,7 +882,11 @@ function sortCases(sortBy) {
     renderCaseList(filteredCases);
 }
 
-// 更新排序箭头图标
+/**
+ * 更新排序箭头图标
+ * 根据排序方向更新箭头指示
+ * @param {String} sortBy - 排序字段
+ */
 function updateSortArrow(sortBy) {
     const arrow = document.getElementById(`sort-by-${sortBy}-arrow`);
     if (sortStates[sortBy].ascending) {
@@ -838,13 +896,22 @@ function updateSortArrow(sortBy) {
     }
 }
 
-// 辅助函数：截断文本
+/**
+ * 辅助函数：截断文本
+ * 如果文本长度超过指定值，截断并添加省略号
+ * @param {String} text - 原始文本
+ * @param {Number} maxLength - 最大长度
+ * @returns {String} 处理后的文本
+ */
 function truncateText(text, maxLength) {
     if (text === 'N/A') return text;
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 }
 
-// 更新瓣膜直径选择器的显示文本
+/**
+ * 更新瓣膜直径选择器的显示文本
+ * 根据选中的瓣膜直径更新筛选器标题
+ */
 function updateValveDiameterHeader() {
     const checkedBoxes = document.querySelectorAll('.valve-diameter-checkboxes input[type="checkbox"]:checked');
     const headerSpan = valveDiameterHeaderEl.querySelector('span');
@@ -858,7 +925,10 @@ function updateValveDiameterHeader() {
     }
 }
 
-// 更新瓣膜类型选择器的显示文本
+/**
+ * 更新瓣膜类型选择器的显示文本
+ * 根据选中的瓣膜类型更新筛选器标题
+ */
 function updateValveTypeHeader() {
     const checkedBoxes = document.querySelectorAll('.valve-type-checkboxes input[type="checkbox"]:checked');
     const headerSpan = valveTypeHeaderEl.querySelector('span');
@@ -871,7 +941,10 @@ function updateValveTypeHeader() {
     }
 }
 
-// 发送聊天消息
+/**
+ * 发送聊天消息
+ * 发送用户输入的消息并获取AI回复
+ */
 async function sendChatMessage() {
     const message = chatInputEl.value.trim();
     if (!message) return;
@@ -910,7 +983,12 @@ async function sendChatMessage() {
     scrollChatToBottom();
 }
 
-// 调用GPT API
+/**
+ * 调用GPT API
+ * 向Azure OpenAI服务发送请求并获取回复
+ * @param {String} message - 用户消息
+ * @returns {Promise<String>} AI回复内容
+ */
 async function callGptApi(message) {
     // 准备API请求参数
     const messages = [

@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TAVI病例详情</title>
+    <!-- 字体引入: Noto Sans SC (Google Fonts) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 图标库 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- 自定义全局样式 -->
     <link rel="stylesheet" href="./css/main.css">
+    <!-- 页面特定样式 -->
     <style>
+        /* 图片容器样式 */
         .image-container {
             margin-bottom: 30px;
             /* border: 1px solid #ddd;
@@ -16,6 +22,7 @@
             padding: 15px;
             background-color: white;
         }
+        /* 图片样式 */
         .case-image {
             max-width: 100%;
             height: auto;
@@ -25,15 +32,18 @@
             margin-left: auto;
             margin-right: auto;
         }
+        /* 图片说明文字样式 */
         .image-caption {
             font-style: italic;
             color: #555;
             margin-bottom: 10px;
             text-align: center;
         }
+        /* 返回按钮样式 */
         .back-button {
             margin-bottom: 20px;
         }
+        /* 章节标题样式 */
         .section-title {
             color: #666;
             font-size: 1.2rem;
@@ -41,6 +51,7 @@
             padding-bottom: 10px;
             border-bottom: 2px solid #eee;
         }
+        /* 图片和说明文字的包装容器 */
         .image-wrapper {
             display: flex;
             flex-direction: column;
@@ -51,13 +62,17 @@
     </style>
 </head>
 <body>
+    <!-- 主容器 -->
     <div class="container mt-4">
         <div class="row">
             <div class="col-12">
+                <!-- 返回按钮 -->
                 <button class="btn btn-primary back-button" onclick="window.close()">
                     <i class="bi bi-arrow-left"></i> 返回
                 </button>
+                <!-- 病例标题 -->
                 <h2 class="mb-4" id="case-title">病例</h2>
+                <!-- 病例元数据信息展示区 -->
                 <div class="alert alert-info">
                     <strong>DOI:</strong> <span id="case-doi"></span>  |    
                     <strong>PMID:</strong> <span id="modal-pmid"></span>  |
@@ -70,6 +85,7 @@
                     <br>
                     <strong>作者:</strong> <span id="modal-author"></span>                    
                 </div>
+                <!-- 摘要卡片 -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">摘要</h5>
@@ -78,6 +94,7 @@
                         <p id="case-abstract" class="mb-0"></p>
                     </div>
                 </div>
+                <!-- 图片展示卡片 -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">原文参考图表</h5>
@@ -90,28 +107,49 @@
         </div>
     </div>
 
+    <!-- 数据源脚本 - 包含病例数据的JS文件 -->
     <script src="./data/db_output.js"></script>
     <!-- <script src="data.js"></script> -->
 
+    <!-- 页面逻辑脚本 -->
     <script>
+        /**
+         * @函数: DOMContentLoaded事件监听器
+         * @描述: 页面加载完成后执行的主要逻辑
+         * @依赖: db_output.js (提供taviCases数据)
+         */
         document.addEventListener('DOMContentLoaded', () => {
             // 从URL获取病例ID
             const urlParams = new URLSearchParams(window.location.search);
             const caseId = parseInt(urlParams.get('id'));
             
+            // 检查ID有效性
             if (!caseId) {
                 document.getElementById('images-container').innerHTML = '<div class="alert alert-danger">未找到病例ID</div>';
                 return;
             }
             
-            // 查找病例
+            // 从数据中查找匹配的病例
             const caseItem = taviCases.find(item => item.id === caseId);
             if (!caseItem) {
                 document.getElementById('images-container').innerHTML = '<div class="alert alert-danger">未找到病例数据</div>';
                 return;
             }
             
-            // 更新页面标题和信息
+            // 更新页面标题和基本信息
+            updateCaseInfo(caseId, caseItem);
+            
+            // 检查并显示病例图片
+            displayCaseImages(caseItem);
+        });
+
+        /**
+         * @函数: updateCaseInfo
+         * @描述: 更新页面上的病例基本信息
+         * @参数: {Number} caseId - 病例ID
+         * @参数: {Object} caseItem - 病例数据对象
+         */
+        function updateCaseInfo(caseId, caseItem) {
             document.getElementById('case-title').textContent = `病例 #${caseId} 详情`;
             document.getElementById('case-doi').textContent = caseItem.doi || 'N/A';
             document.getElementById('case-year').textContent = caseItem.year || 'N/A';
@@ -121,56 +159,88 @@
             document.getElementById('modal-author').textContent = caseItem.author || 'N/A';
             document.getElementById('modal-title').textContent = caseItem.title || 'N/A'; 
             document.getElementById('modal-keywords').textContent = caseItem.keywords || 'N/A';
+        }
 
-            // 检查是否有图片
+        /**
+         * @函数: displayCaseImages
+         * @描述: 检查并显示病例相关图片
+         * @参数: {Object} caseItem - 病例数据对象
+         */
+        function displayCaseImages(caseItem) {
+            // 检查是否有图片数据
             if (!caseItem.Files || !caseItem.Files.Images || caseItem.Files.Images.length === 0) {
                 document.getElementById('images-container').innerHTML = '<div class="alert alert-warning">该病例没有图片</div>';
                 return;
             }
             
-            // 渲染图片
+            // 渲染所有图片
             const imagesContainer = document.getElementById('images-container');
             caseItem.Files.Images.forEach((image, index) => {
-                const imageDiv = document.createElement('div');
-                imageDiv.className = 'image-container';
-                
-                // 创建图片包装器
-                const imageWrapper = document.createElement('div');
-                imageWrapper.className = 'image-wrapper';
-                
-                // 创建图注元素
-                const caption = document.createElement('p');
-                caption.className = 'image-caption';
-                caption.textContent = `${image.caption || '无图注'}`;
-                
-                // 创建图片元素
-                const img = document.createElement('img');
-                img.src = `file:///${image.path}`;
-                img.alt = `病例图片 ${index + 1}`;
-                img.className = 'case-image';
-                
-                // 添加错误处理
-                img.onerror = function() {
-                    // 创建错误提示
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'alert alert-warning';
-                    errorDiv.innerHTML = `
-                        <strong>图片无法加载</strong><br>
-                        路径: ${image.path}<br>
-                        <small>由于浏览器安全限制，可能无法直接显示本地图片。</small>
-                    `;
-                    
-                    // 替换图片元素
-                    this.parentNode.replaceChild(errorDiv, this);
-                };
-                
-                // 按顺序添加元素
-                imageWrapper.appendChild(caption);
-                imageWrapper.appendChild(img);
-                imageDiv.appendChild(imageWrapper);
+                // 创建图片容器
+                const imageDiv = createImageContainer(image, index);
                 imagesContainer.appendChild(imageDiv);
             });
-        });
+        }
+
+        /**
+         * @函数: createImageContainer
+         * @描述: 为单张图片创建容器和相关元素
+         * @参数: {Object} image - 图片数据对象
+         * @参数: {Number} index - 图片索引
+         * @返回: {HTMLElement} 完整的图片容器元素
+         */
+        function createImageContainer(image, index) {
+            // 创建主容器
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'image-container';
+            
+            // 创建图片包装器
+            const imageWrapper = document.createElement('div');
+            imageWrapper.className = 'image-wrapper';
+            
+            // 创建图注元素
+            const caption = document.createElement('p');
+            caption.className = 'image-caption';
+            caption.textContent = `${image.caption || '无图注'}`;
+            
+            // 创建图片元素
+            const img = document.createElement('img');
+            img.src = `file:///${image.path}`;
+            img.alt = `病例图片 ${index + 1}`;
+            img.className = 'case-image';
+            
+            // 添加图片加载错误处理
+            img.onerror = function() {
+                handleImageError(this, image.path);
+            };
+            
+            // 按顺序添加元素
+            imageWrapper.appendChild(caption);
+            imageWrapper.appendChild(img);
+            imageDiv.appendChild(imageWrapper);
+            
+            return imageDiv;
+        }
+
+        /**
+         * @函数: handleImageError
+         * @描述: 处理图片加载错误情况
+         * @参数: {HTMLElement} imgElement - 图片元素
+         * @参数: {String} imagePath - 图片路径
+         */
+        function handleImageError(imgElement, imagePath) {
+            // 创建错误提示
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-warning';
+            errorDiv.innerHTML = `
+                <strong>图片无法加载</strong><br>
+                <!-- 路径: ${imagePath}<br> -->
+                <small>由于浏览器安全限制，可能无法直接显示本地图片。</small>
+            `;
+            
+            // 替换图片元素
+            imgElement.parentNode.replaceChild(errorDiv, imgElement);
+        }
     </script>
 </body>
 </html> 
