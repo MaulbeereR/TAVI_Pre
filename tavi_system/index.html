@@ -1,0 +1,1742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAVI智能分析系统</title>
+    <!-- 引入字体 - 添加备用字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部标题栏 -->
+        <header class="header">
+            <div class="logo">
+                <i class="bi bi-heart"></i>
+                <h1>TAVI智能分析系统</h1>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 统计卡片区域 -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <h3>总病例数</h3>
+                    <p class="stat-value">1300</p>
+                </div>
+                <div class="stat-card">
+                    <h3>筛选病例数</h3>
+                    <p class="stat-value">1300</p>
+                </div>
+                <div class="stat-card">
+                    <h3>关键指标 1</h3>
+                    <p class="stat-value">xxxx</p>
+                </div>
+                <div class="stat-card">
+                    <h3>关键指标 2</h3>
+                    <p class="stat-value">xxxx</p>
+                </div>
+            </div>
+
+            <!-- 左侧筛选面板和右侧内容区 -->
+            <div class="content-wrapper">
+                <!-- 左侧筛选面板 -->
+                <div class="filter-panel">
+                    <div class="basic-info">
+                        <h3>基本情况</h3>
+                        <div class="tabs">
+                            <div class="tab active" data-tab="basic">基本</div>
+                            <div class="tab" data-tab="preop">术前</div>
+                            <div class="tab" data-tab="surgery">手术</div>
+                            <div class="tab" data-tab="discharge">出院</div>
+                            <div class="tab" data-tab="followup">随访</div>
+                        </div>
+                    </div>
+
+                    <div class="filter-form">
+                        <!-- 基本情况筛选项 -->
+                        <div class="tab-content active" id="basic-content">
+                            <!-- 年龄筛选 -->
+                            <div class="filter-item">
+                                <label>年龄</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="0">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="120">
+                                </div>
+                            </div>
+
+                            <!-- 性别筛选 -->
+                            <div class="filter-item">
+                                <label>性别</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">Male</div>
+                                        <div class="dropdown-item">Female</div>
+                                        <div class="dropdown-item">N/A</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 体重指数BMI -->
+                            <div class="filter-item">
+                                <label>体重指数<br>BMI</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 体表面积 -->
+                            <div class="filter-item">
+                                <label>体表面积<br>(m²)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 糖尿病 -->
+                            <div class="filter-item">
+                                <label>糖尿病</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 高血压 -->
+                            <div class="filter-item">
+                                <label>高血压</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 高脂血症 -->
+                            <div class="filter-item">
+                                <label>高脂血症</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 冠心病 -->
+                            <div class="filter-item">
+                                <label>冠心病</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 慢阻肺 -->
+                            <div class="filter-item">
+                                <label>慢阻肺</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 透析 -->
+                            <div class="filter-item">
+                                <label>透析</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 房颤 -->
+                            <div class="filter-item">
+                                <label>房颤</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 纽约心脏病协会分级 -->
+                            <div class="filter-item">
+                                <label>NYHA<br>分级</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">I</div>
+                                        <div class="dropdown-item">II</div>
+                                        <div class="dropdown-item">III</div>
+                                        <div class="dropdown-item">N/A</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ACEI/ARB -->
+                            <div class="filter-item">
+                                <label>ACEI/ARB</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Beta受体阻滞剂 -->
+                            <div class="filter-item">
+                                <label>Beta受体<br>阻滞剂</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 钙离子阻滞剂 -->
+                            <div class="filter-item">
+                                <label>钙离子<br>阻滞剂</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 利尿剂 -->
+                            <div class="filter-item">
+                                <label>利尿剂</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 阿司匹林 -->
+                            <div class="filter-item">
+                                <label>阿司匹林</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 抗凝药 -->
+                            <div class="filter-item">
+                                <label>抗凝药</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 他汀类药物 -->
+                            <div class="filter-item">
+                                <label>他汀类<br>药物</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 心梗 -->
+                            <div class="filter-item">
+                                <label>心梗</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 经皮冠状动脉介入术 -->
+                            <div class="filter-item">
+                                <label>经皮冠状<br>动脉介入术</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 冠状动脉旁路移植术 -->
+                            <div class="filter-item">
+                                <label>冠状动脉<br>旁路移植术</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 胸外科医师学会评分 -->
+                            <div class="filter-item">
+                                <label>STS评分</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 氨基末端B型利钠肽前体 -->
+                            <div class="filter-item">
+                                <label>NT-proBNP</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 术前评估筛选项 -->
+                        <div class="tab-content" id="preop-content">
+                            <!-- 左心室射血分数 -->
+                            <div class="filter-item">
+                                <label>左心室射血<br>分数(%)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 24">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 最大主动脉瓣跨瓣压差 -->
+                            <div class="filter-item">
+                                <label>最大主动脉瓣跨瓣压差<br>(mmHg)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 平均主动脉瓣跨瓣压差 -->
+                            <div class="filter-item">
+                                <label>平均主动脉瓣跨瓣压差<br>(mmHg)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 有效瓣口面积(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>有效瓣口面积(主动脉瓣)<br>(cm²)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 有效瓣口面积指数(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>有效瓣口面积指数<br>(主动脉瓣)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 中度以上主动脉瓣反流 -->
+                            <div class="filter-item">
+                                <label>中度以上主动脉瓣反流</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 中度以上二尖瓣反流 -->
+                            <div class="filter-item">
+                                <label>中度以上二尖瓣反流</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 左心室舒张末期容积 -->
+                            <div class="filter-item">
+                                <label>左心室舒张末期容积<br>(ml)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 左心室收缩末期容积 -->
+                            <div class="filter-item">
+                                <label>左心室收缩末期容积<br>(ml)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣环面积(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>瓣环面积(主动脉瓣)(cm²)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣环平均直径(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>瓣环平均直径(主动脉瓣)<br>(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣环最小直径(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>瓣环最小直径(主动脉瓣)<br>(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣环最大直径(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>瓣环最大直径(主动脉瓣)<br>(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣环周径(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>瓣环周径(主动脉瓣)(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣环偏心率(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>瓣环偏心率(主动脉瓣)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 源自面积的瓣环直径(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>源自面积的瓣环<br>直径(主动脉瓣)(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 源自周长的瓣环直径(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>源自周长的瓣环<br>直径(主动脉瓣)(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 主动脉瓣口流速 -->
+                            <div class="filter-item">
+                                <label>主动脉瓣口流速</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 窦管交界高度 -->
+                            <div class="filter-item">
+                                <label>窦管交界高度(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 窦管交界直径 -->
+                            <div class="filter-item">
+                                <label>窦管交界直径(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 窦部直径(主动脉根部) -->
+                            <div class="filter-item">
+                                <label>窦部直径(主动脉根部)(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 升主动脉直径 -->
+                            <div class="filter-item">
+                                <label>升主动脉直径(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣环上钙化(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>瓣环上钙化(主动脉瓣)(mm³)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣环钙化(主动脉瓣) -->
+                            <div class="filter-item">
+                                <label>瓣环钙化(主动脉瓣)(mm³)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 左心室流出道直径 -->
+                            <div class="filter-item">
+                                <label>左心室流出道直径(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 左心室流出道钙化体积 -->
+                            <div class="filter-item">
+                                <label>左心室流出道钙化体积(mm³)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 左冠脉高度(主动脉根部) -->
+                            <div class="filter-item">
+                                <label>左冠脉高度(主动脉根部)(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 右冠脉高度(主动脉根部) -->
+                            <div class="filter-item">
+                                <label>右冠脉高度(主动脉根部)(mm)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 手术信息筛选项 -->
+                        <div class="tab-content" id="surgery-content">
+                            <!-- 经股动脉入路 -->
+                            <div class="filter-item">
+                                <label>经股动脉入路</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 经心尖入路 -->
+                            <div class="filter-item">
+                                <label>经心尖入路</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 其它入路 -->
+                            <div class="filter-item">
+                                <label>其它入路</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">经锁骨下动脉入路</div>
+                                        <div class="dropdown-item">经颈动脉入路</div>
+                                        <div class="dropdown-item">经主动脉入路</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 瓣膜尺寸 -->
+                            <div class="filter-item">
+                                <label>瓣膜尺寸</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 瓣膜类型 -->
+                            <div class="filter-item">
+                                <label>瓣膜类型<br>(自膨胀式/球囊扩张式)</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">自膨胀式</div>
+                                        <div class="dropdown-item">球囊扩张式</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 瓣膜品牌 -->
+                            <div class="filter-item">
+                                <label>瓣膜品牌</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">ACURATE Neo</div>
+                                        <div class="dropdown-item">Avalus</div>
+                                        <div class="dropdown-item">CoreValve</div>
+                                        <div class="dropdown-item">Edwards</div>
+                                        <div class="dropdown-item">Edwards SAPIEN</div>
+                                        <div class="dropdown-item">Evolut</div>
+                                        <div class="dropdown-item">Hancock</div>
+                                        <div class="dropdown-item">INSPIRIS</div>
+                                        <div class="dropdown-item">Inovare</div>
+                                        <div class="dropdown-item">J-Valve</div>
+                                        <div class="dropdown-item">JenaValve</div>
+                                        <div class="dropdown-item">LOTUS</div>
+                                        <div class="dropdown-item">Medtronic</div>
+                                        <div class="dropdown-item">Mosaic</div>
+                                        <div class="dropdown-item">MyVal</div>
+                                        <div class="dropdown-item">Navitor</div>
+                                        <div class="dropdown-item">PERCEVAL-S</div>
+                                        <div class="dropdown-item">Portico</div>
+                                        <div class="dropdown-item">St Jude</div>
+                                        <div class="dropdown-item">Tyshak</div>
+                                        <div class="dropdown-item">Venus</div>
+                                        <div class="dropdown-item">Vitaflow</div>
+                                        <div class="dropdown-item">Liberty</div>
+                                        <div class="dropdown-item">Taurus Elite</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 预扩张 -->
+                            <div class="filter-item">
+                                <label>预扩张</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 后扩张 -->
+                            <div class="filter-item">
+                                <label>后扩张</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 总术时 -->
+                            <div class="filter-item">
+                                <label>总术时</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 透影时间 -->
+                            <div class="filter-item">
+                                <label>透影时间</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 造影量 -->
+                            <div class="filter-item">
+                                <label>造影量</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 术后即刻左心室射血分数 -->
+                            <div class="filter-item">
+                                <label>术后即刻左心室<br>射血分数(%)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 24">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 术后即刻主动脉瓣跨瓣压差 -->
+                            <div class="filter-item">
+                                <label>术后即刻主动脉瓣跨瓣压差</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 主动脉瓣跨瓣压差≥20 mmHg -->
+                            <div class="filter-item">
+                                <label>主动脉瓣跨瓣压差<br>≥20 mmHg</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 严重错位 -->
+                            <div class="filter-item">
+                                <label>严重错位</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 瓣环撕裂 -->
+                            <div class="filter-item">
+                                <label>瓣环撕裂</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 过大尺寸 -->
+                            <div class="filter-item">
+                                <label>过大尺寸</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 尺寸过大≥15% -->
+                            <div class="filter-item">
+                                <label>尺寸过大≥15%</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 术后是否即刻瓣周漏 -->
+                            <div class="filter-item">
+                                <label>术后是否即刻瓣周漏</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 术后即刻瓣周漏程度 -->
+                            <div class="filter-item">
+                                <label>术后即刻瓣周漏程度</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">微量(trace)</div>
+                                        <div class="dropdown-item">轻度(mild)</div>
+                                        <div class="dropdown-item">中度(moderate)</div>
+                                        <div class="dropdown-item">重度(severe)</div>
+                                        <div class="dropdown-item">N/A</div>
+                                        <div class="dropdown-item">Trivial</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 瓣架移位 -->
+                            <div class="filter-item">
+                                <label>瓣架移位</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 转外科开胸手术 -->
+                            <div class="filter-item">
+                                <label>转外科开胸手术</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 转心肺转流术 -->
+                            <div class="filter-item">
+                                <label>转心肺转流术</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 瓣中瓣 -->
+                            <div class="filter-item">
+                                <label>瓣中瓣</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 围术期死亡 -->
+                            <div class="filter-item">
+                                <label>围术期死亡</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 出院前评价筛选项 -->
+                        <div class="tab-content" id="discharge-content">
+                            <!-- 出院前死亡 -->
+                            <div class="filter-item">
+                                <label>出院前死亡</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 卒中 -->
+                            <div class="filter-item">
+                                <label>卒中</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 大出血 -->
+                            <div class="filter-item">
+                                <label>大出血</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 急性肾衰 -->
+                            <div class="filter-item">
+                                <label>急性肾衰</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 严重血管并发症 -->
+                            <div class="filter-item">
+                                <label>严重血管并发症</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 心肌梗死/急性心肌梗死 -->
+                            <div class="filter-item">
+                                <label>心肌梗死/急性心肌梗死</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 急性冠脉综合征/缺血性心脏病 -->
+                            <div class="filter-item">
+                                <label>急性冠脉综合征/缺血性心脏病</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 心力衰竭 -->
+                            <div class="filter-item">
+                                <label>心力衰竭</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 所有原因死亡和心血管死亡 -->
+                            <div class="filter-item">
+                                <label>所有原因死亡和心血管死亡</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 起搏器植入 -->
+                            <div class="filter-item">
+                                <label>起搏器植入</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 出院前是否瓣周漏 -->
+                            <div class="filter-item">
+                                <label>出院前是否瓣周漏</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 出院前瓣周漏程度 -->
+                            <div class="filter-item">
+                                <label>出院前瓣周漏程度</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">微量(trace)</div>
+                                        <div class="dropdown-item">轻度(mild)</div>
+                                        <div class="dropdown-item">中度(moderate)</div>
+                                        <div class="dropdown-item">重度(severe)</div>
+                                        <div class="dropdown-item">N/A</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 出院前最大主动脉瓣跨瓣压差 -->
+                            <div class="filter-item">
+                                <label>出院前最大主动脉瓣跨瓣压差(mmHg)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 出院前主动脉瓣口流速 -->
+                            <div class="filter-item">
+                                <label>出院前主动脉瓣口流速</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 出院前平均主动脉瓣跨瓣压差 -->
+                            <div class="filter-item">
+                                <label>出院前平均主动脉瓣跨瓣压差(mmHg)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 出院前实测有效瓣口面积指数 -->
+                            <div class="filter-item">
+                                <label>出院前实测有效瓣口面积指数</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 随访信息筛选项 -->
+                        <div class="tab-content" id="followup-content">
+                            <!-- 30天全因 -->
+                            <div class="filter-item">
+                                <label>30天全因</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 30天心梗 -->
+                            <div class="filter-item">
+                                <label>30天心梗</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 30天卒中 -->
+                            <div class="filter-item">
+                                <label>30天卒中</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 30天心衰再住院 -->
+                            <div class="filter-item">
+                                <label>30天心衰<br>再住院</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1年全因 -->
+                            <div class="filter-item">
+                                <label>1年全因</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1年心梗 -->
+                            <div class="filter-item">
+                                <label>1年心梗</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1年卒中 -->
+                            <div class="filter-item">
+                                <label>1年卒中</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1年心衰再住院 -->
+                            <div class="filter-item">
+                                <label>1年心衰<br>再住院</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 左心室射血分数 -->
+                            <div class="filter-item">
+                                <label>左心室射血<br>分数(%)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 24">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 纽约心脏协会分级 -->
+                            <div class="filter-item">
+                                <label>纽约心脏协会分级</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">I</div>
+                                        <div class="dropdown-item">II</div>
+                                        <div class="dropdown-item">III</div>
+                                        <div class="dropdown-item">N/A</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 最大主动脉瓣跨瓣压差 -->
+                            <div class="filter-item">
+                                <label>最大主动脉瓣跨瓣压差(mmHg)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 主动脉瓣口流速 -->
+                            <div class="filter-item">
+                                <label>主动脉瓣口<br>流速</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 平均主动脉瓣跨瓣压差 -->
+                            <div class="filter-item">
+                                <label>平均主动脉瓣跨瓣压差(mmHg)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 有效瓣口面积 -->
+                            <div class="filter-item">
+                                <label>有效瓣口面积<br>(cm²)</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="e.g. 2.4">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 有效瓣口面积指数 -->
+                            <div class="filter-item">
+                                <label>有效瓣口面积指数</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 是否瓣周漏 -->
+                            <div class="filter-item">
+                                <label>是否瓣周漏</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 瓣周漏程度 -->
+                            <div class="filter-item">
+                                <label>瓣周漏程度</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">微量(trace)</div>
+                                        <div class="dropdown-item">轻度(mild)</div>
+                                        <div class="dropdown-item">中度(moderate)</div>
+                                        <div class="dropdown-item">重度(severe)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 患者是否因TAVI相关并发症而接受了后续干预 -->
+                            <div class="filter-item">
+                                <label>患者是否因TAVI<br>相关并发症而接受<br>了后续干预</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 后续干预的具体类型和发生时间 -->
+                            <div class="filter-item">
+                                <label>后续干预的具体类型和发生时间</label>
+                                <div class="range-input">
+                                    <input type="text" class="range-min" placeholder="">
+                                    <span class="range-separator">—</span>
+                                    <input type="text" class="range-max" placeholder="">
+                                </div>
+                            </div>
+
+                            <!-- 术后封堵 -->
+                            <div class="filter-item">
+                                <label>术后封堵</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 二次手术 -->
+                            <div class="filter-item">
+                                <label>二次手术</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 术后中转开胸 -->
+                            <div class="filter-item">
+                                <label>术后中转开胸</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 术后起搏器植入 -->
+                            <div class="filter-item">
+                                <label>术后起搏器植入</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 术后瓣膜脱落 -->
+                            <div class="filter-item">
+                                <label>术后瓣膜脱落</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 术后主动脉夹层 -->
+                            <div class="filter-item">
+                                <label>术后主动脉夹层</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 术后血肿 -->
+                            <div class="filter-item">
+                                <label>术后血肿</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 术后心衰 -->
+                            <div class="filter-item">
+                                <label>术后心衰</label>
+                                <div class="dropdown">
+                                    <div class="dropdown-header">
+                                        <span>N/A</span>
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-item">True</div>
+                                        <div class="dropdown-item">False</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧内容区 -->
+                <div class="content-area">
+                    <!-- 图表区域 -->
+                    <div class="charts-container">
+                        <div class="chart expanded" id="ageChartContainer">
+                            <div class="chart-header">
+                                <h3 class="chart-title">年龄分布</h3>
+                                <button class="chart-toggle" onclick="toggleChart('ageChartContainer')">收起</button>
+                            </div>
+                            <div class="chart-content">
+                                <canvas id="ageChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart expanded" id="nyhaChartContainer">
+                            <div class="chart-header">
+                                <h3 class="chart-title">NYHA分级分布</h3>
+                                <button class="chart-toggle" onclick="toggleChart('nyhaChartContainer')">收起</button>
+                            </div>
+                            <div class="chart-content">
+                                <canvas id="nyhaChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据表格 -->
+                    <div class="data-table-container">
+                        <div class="table-scroll-area">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>年龄</th>
+                                        <th>性别</th>
+                                        <th>瓣膜类型</th>
+                                        <th>瓣膜品牌</th>
+                                        <th>NYHA分级</th>
+                                        <th>射血分数(%)</th>
+                                        <th>最大跨瓣压差(mmHg)</th>
+                                        <th>平均跨瓣压差(mmHg)</th>
+                                        <th>有效瓣口面积(cm²)</th>
+                                        <th>术后瓣周漏</th>
+                                        <th>出院前死亡</th>
+                                        <th>详情</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dataTableBody">
+                                    <!-- 数据将通过JavaScript动态填充 -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- 分页控件将通过JavaScript动态添加到这里 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入图表库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入数据标签插件 -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <!-- 引入数据文件 -->
+    <script src="../Progress/520_final_cleaned.js"></script>
+    <!-- 引入自定义脚本 -->
+    <script src="script.js"></script>
+</body>
+</html>
