@@ -1,0 +1,710 @@
+{
+  "schema_version": "1.0",
+  "description": "TAVI (经导管主动脉瓣植入术) 数据记录模板",
+  "categories": {
+    "baseline_characteristics": {
+      "name": "基线资料",
+      "name_en": "Baseline_Characteristics",
+      "fields": {
+        "age": {
+          "name": "年龄",
+          "name_en": "Age",
+          "type": "integer",
+          "range": "0-100",
+          "unit": "岁"
+        },
+        "sex": {
+          "name": "性别",
+          "name_en": "Sex",
+          "type": "string",
+          "options": ["Male", "Female", "N/A"]
+        },
+        "bmi": {
+          "name": "体重指数",
+          "name_en": "Body_Mass_Index_BMI",
+          "type": "float",
+          "unit": "kg/m²"
+        },
+        "surface_area": {
+          "name": "体表面积",
+          "name_en": "Surface_Area",
+          "type": "float",
+          "unit": "m²"
+        },
+        "diabetes_mellitus": {
+          "name": "糖尿病",
+          "name_en": "Diabetes_Mellitus",
+          "type": "boolean"
+        },
+        "hypertension": {
+          "name": "高血压",
+          "name_en": "Hypertension",
+          "type": "boolean"
+        },
+        "hyperlipidemia": {
+          "name": "高脂血症",
+          "name_en": "Hyperlipidemia",
+          "type": "boolean"
+        },
+        "coronary_artery_disease": {
+          "name": "冠心病",
+          "name_en": "Coronary_Artery_Disease",
+          "type": "boolean"
+        },
+        "copd": {
+          "name": "慢阻肺",
+          "name_en": "Chronic_Obstructive_Pulmonary_Disease_COPD",
+          "type": "boolean"
+        },
+        "dialysis": {
+          "name": "透析",
+          "name_en": "Dialysis",
+          "type": "boolean"
+        },
+        "atrial_fibrillation": {
+          "name": "房颤",
+          "name_en": "Atrial_Fibrillation",
+          "type": "boolean"
+        },
+        "nyha_classification": {
+          "name": "纽约心脏病协会分级",
+          "name_en": "New_York_Heart_Association_NYHA_Classification",
+          "type": "string",
+          "options": ["I", "II", "III", "N/A"]
+        },
+        "acei_arb": {
+          "name": "血管紧张素转换酶抑制剂/血管紧张素Ⅱ受体拮抗剂",
+          "name_en": "Angiotensin_Converting_Enzyme_Inhibitor_ACEI_or_Angiotensin_II_Receptor_Blocker_ARB",
+          "type": "boolean"
+        },
+        "beta_blocker": {
+          "name": "Beta受体阻滞剂",
+          "name_en": "Beta_Receptor_Blocker",
+          "type": "boolean"
+        },
+        "calcium_blocker": {
+          "name": "钙离子阻滞剂",
+          "name_en": "Calcium_Ion_Blocker",
+          "type": "boolean"
+        },
+        "diuretic": {
+          "name": "利尿剂",
+          "name_en": "Diuretic",
+          "type": "boolean"
+        },
+        "aspirin": {
+          "name": "阿司匹林",
+          "name_en": "Aspirin",
+          "type": "boolean"
+        },
+        "anticoagulant": {
+          "name": "抗凝药",
+          "name_en": "Anticoagulant",
+          "type": "boolean"
+        },
+        "statins": {
+          "name": "他汀类药物",
+          "name_en": "Statins",
+          "type": "boolean"
+        },
+        "mi_history": {
+          "name": "心梗",
+          "name_en": "Myocardial_Infarction_History",
+          "type": "boolean"
+        },
+        "pci_history": {
+          "name": "经皮冠状动脉介入术",
+          "name_en": "Percutaneous_Coronary_Intervention_PCI_History",
+          "type": "boolean"
+        },
+        "cabg_history": {
+          "name": "冠状动脉旁路移植术",
+          "name_en": "Coronary_Artery_Bypass_Grafting_CABG_History",
+          "type": "boolean"
+        },
+        "sts_score": {
+          "name": "胸外科医师学会评分",
+          "name_en": "Society_of_Thoracic_Surgeons_STS_Score",
+          "type": "float"
+        },
+        "nt_probnp": {
+          "name": "氨基末端B型利钠肽前体",
+          "name_en": "NT_proBNP_Level_Value",
+          "type": "float"
+        },
+        "sglt2_inhibitors": {
+          "name": "钠-葡萄糖共转运蛋白2抑制剂",
+          "name_en": "Sodium-Glucose Cotransporter 2 inhibitors",
+          "type": "boolean"
+        }
+      }
+    },
+    "preprocedural_imaging": {
+      "name": "术前影像学评估",
+      "name_en": "TAVI_R_Preprocedural_Imaging_Assessment",
+      "fields": {
+        "lvef": {
+          "name": "左心室射血分数",
+          "name_en": "LVEF",
+          "type": "float",
+          "unit": "%"
+        },
+        "aortic_valve_peak_pg": {
+          "name": "最大主动脉瓣跨瓣压差",
+          "name_en": "Preprocedural_Aortic_Valve_Peak_PG",
+          "type": "float",
+          "unit": "mmHg"
+        },
+        "aortic_valve_mean_pg": {
+          "name": "平均主动脉瓣跨瓣压差",
+          "name_en": "Preprocedural_Aortic_Valve_Mean_PG",
+          "type": "float",
+          "unit": "mmHg"
+        },
+        "aortic_valve_eoa": {
+          "name": "有效瓣口面积（主动脉瓣）",
+          "name_en": "Aortic_Valve_EOA",
+          "type": "float",
+          "unit": "cm²"
+        },
+        "aortic_valve_eoai": {
+          "name": "有效瓣口面积指数（主动脉瓣）",
+          "name_en": "Aortic_Valve_EOAI",
+          "type": "float"
+        },
+        "moderate_severe_ar": {
+          "name": "中度以上主动脉瓣反流",
+          "name_en": "Moderate_Or_Severe_Aortic_Regurgitation_AR",
+          "type": "boolean"
+        },
+        "moderate_severe_mr": {
+          "name": "中度以上二尖瓣反流",
+          "name_en": "Mitral_Valve_Regurgitation_Is_Moderate_Or_Severe",
+          "type": "boolean"
+        },
+        "lvedv": {
+          "name": "左心室舒张末期容积",
+          "name_en": "Left_Ventricular_End_Diastolic_Volume_LVEDV",
+          "type": "float",
+          "unit": "ml"
+        },
+        "lvesv": {
+          "name": "左心室收缩末期容积",
+          "name_en": "Left_Ventricular_End_Systolic_Volume_LVESV",
+          "type": "float",
+          "unit": "ml"
+        },
+        "annular_area": {
+          "name": "瓣环面积（主动脉瓣）",
+          "name_en": "Aortic_Valve_Annular_Area",
+          "type": "float",
+          "unit": "cm²"
+        },
+        "annular_mean_diameter": {
+          "name": "瓣环平均直径（主动脉瓣）",
+          "name_en": "Aortic_Valve_Annular_Mean_Diameter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "annular_min_diameter": {
+          "name": "瓣环最小直径（主动脉瓣）",
+          "name_en": "Aortic_Valve_Annular_Min_Diameter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "annular_max_diameter": {
+          "name": "瓣环最大直径（主动脉瓣）",
+          "name_en": "Aortic_Valve_Annular_Max_Diameter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "annular_perimeter": {
+          "name": "瓣环周径（主动脉瓣）",
+          "name_en": "Aortic_Valve_Annular_Perimeter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "annular_eccentricity": {
+          "name": "瓣环偏心率（主动脉瓣）",
+          "name_en": "Aortic_Valve_Annular_Eccentricity_Index",
+          "type": "float"
+        },
+        "area_derived_diameter": {
+          "name": "源自面积的瓣环直径（主动脉瓣）",
+          "name_en": "Aortic_Valve_Area_Derived_Annular_Diameter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "perimeter_derived_diameter": {
+          "name": "源自周长的瓣环直径（主动脉瓣）",
+          "name_en": "Aortic_Valve_Perimeter_Derived_Annular_Diameter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "aortic_valve_flow_velocity": {
+          "name": "主动脉瓣口流速",
+          "name_en": "Aortic_Valve_Flow_Velocity",
+          "type": "float"
+        },
+        "stj_height": {
+          "name": "窦管交界高度",
+          "name_en": "Sinotubular_Junction_STJ_Diameter_Height",
+          "type": "float",
+          "unit": "mm"
+        },
+        "stj_diameter": {
+          "name": "窦管交界直径",
+          "name_en": "Sinotubular_Junction_STJ_Diameter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "sinus_diameter": {
+          "name": "窦部直径（主动脉根部）",
+          "name_en": "Sinus_Of_Valsalva_Mean_Diameter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "ascending_aorta_diameter": {
+          "name": "升主动脉直径",
+          "name_en": "Ascending_Aorta_Diameter_At_Pulmonary_Artery_Bifurcation",
+          "type": "float",
+          "unit": "mm"
+        },
+        "supraannular_calcification": {
+          "name": "瓣环上钙化（主动脉瓣）",
+          "name_en": "Aortic_Valve_Supraannular_Calcification_Volume",
+          "type": "float",
+          "unit": "mm³"
+        },
+        "annular_calcification": {
+          "name": "瓣环钙化（主动脉瓣）",
+          "name_en": "Aortic_Valve_Annular_Calcification_Volume",
+          "type": "float",
+          "unit": "mm³"
+        },
+        "lvot_diameter": {
+          "name": "左心室流出道直径",
+          "name_en": "Left_Ventricular_Outflow_Tract_LVOT_Diameter",
+          "type": "float",
+          "unit": "mm"
+        },
+        "lvot_calcification": {
+          "name": "左心室流出道钙化体积",
+          "name_en": "Left_Ventricular_Outflow_Tract_LVOT_Calcification_Volume",
+          "type": "float",
+          "unit": "mm³"
+        },
+        "left_coronary_height": {
+          "name": "左冠脉高度（主动脉根部）",
+          "name_en": "Left_Coronary_Ostium_Height_From_Annulus",
+          "type": "float",
+          "unit": "mm"
+        },
+        "right_coronary_height": {
+          "name": "右冠脉高度（主动脉根部）",
+          "name_en": "Right_Coronary_Ostium_Height_From_Annulus",
+          "type": "float",
+          "unit": "mm"
+        },
+        "annulus_to_mitral_distance": {
+          "name": "瓣环至二尖瓣前叶距离",
+          "name_en": "Annalus_To_Anterior_Leaflet_Of_Mitral_Valve_Distance",
+          "type": "float",
+          "unit": "mm"
+        }
+      }
+    },
+    "procedural_details": {
+      "name": "手术信息",
+      "name_en": "TAVI_R_Procedural_Details",
+      "fields": {
+        "transfemoral_access": {
+          "name": "经股动脉入路",
+          "name_en": "Access_Approach_Transfemoral",
+          "type": "boolean"
+        },
+        "transapical_access": {
+          "name": "经心尖入路",
+          "name_en": "Access_Approach_Transapical",
+          "type": "boolean"
+        },
+        "other_access": {
+          "name": "其它入路",
+          "name_en": "Access_Approach_Other",
+          "type": "string",
+          "options": ["经颈动脉入路", "经锁骨下动脉入路", "经主动脉入路"]
+        },
+        "thv_size": {
+          "name": "瓣膜尺寸",
+          "name_en": "THV_size",
+          "type": "float"
+        },
+        "thv_type": {
+          "name": "瓣膜类型",
+          "name_en": "THV_Type",
+          "type": "string",
+          "options": ["Self-expandable", "Balloon-expandable"]
+        },
+        "thv_brand": {
+          "name": "瓣膜品牌",
+          "name_en": "THV_Brand_name",
+          "type": "string",
+          "options": ["ACURATE Neo", "Avalus", "CoreValve", "Edwards", "Edwards SAPIEN", "Evolut", "Hancock", "INSPIRIS", "Inoue", "Inovare", "J-Valve", "JenaValve", "LOTUS", "Medtronic Mosaic", "MyVal", "Navitor", "PERCEVAL-S", "Portico", "St Jude", "Tyshak", "Venus", "Vitaflow Liberty", "Taurus Elite"]
+        },
+        "pre_dilation": {
+          "name": "预扩张",
+          "name_en": "Pre_Dilation_Performed",
+          "type": "boolean"
+        },
+        "post_dilation": {
+          "name": "后扩张",
+          "name_en": "Post_Dilation_Performed",
+          "type": "boolean"
+        },
+        "total_procedure_time": {
+          "name": "总术时",
+          "name_en": "TAVI_R_Total_Procedure_Time",
+          "type": "float"
+        },
+        "fluoroscopy_time": {
+          "name": "造影时间",
+          "name_en": "TAVI_R_Fluoroscopy_Time",
+          "type": "float"
+        },
+        "contrast_volume": {
+          "name": "造影量",
+          "name_en": "TAVI_R_Contrast_Volume",
+          "type": "float"
+        },
+        "immediate_lvef": {
+          "name": "术后即刻左心室射血分数",
+          "name_en": "TAVI_R_Immediate_PostProcedural_LVEF",
+          "type": "float",
+          "unit": "%"
+        },
+        "immediate_mean_pg": {
+          "name": "术后即刻主动脉瓣跨瓣压差",
+          "name_en": "TAVI_R_Immediate_PostProcedural_Aortic_Valve_Mean_PG",
+          "type": "float",
+          "unit": "mmHg"
+        },
+        "mean_pg_gte_20": {
+          "name": "主动脉瓣跨瓣压差≥20 mmHg",
+          "name_en": "TAVI_R_Immediate_PostProcedural_Aortic_Valve_Mean_PG_gte_20",
+          "type": "boolean"
+        },
+        "prosthesis_malposition": {
+          "name": "严重错位",
+          "name_en": "Prosthesis_Malposition",
+          "type": "boolean"
+        },
+        "annular_rupture": {
+          "name": "瓣环撕裂",
+          "name_en": "Annular_Rupture",
+          "type": "boolean"
+        },
+        "excessive_oversizing": {
+          "name": "过大尺寸",
+          "name_en": "Excessive_Oversizing_Occurred",
+          "type": "boolean"
+        },
+        "oversizing_gte_15": {
+          "name": "尺寸过大≥15%",
+          "name_en": "Oversizing_Rate_gte_15_percent",
+          "type": "boolean"
+        },
+        "immediate_pvl_occurred": {
+          "name": "术后是否即刻瓣周漏",
+          "name_en": "TAVI_R_Immediate_PostProcedural_PVL_Occurred",
+          "type": "boolean"
+        },
+        "immediate_pvl_severity": {
+          "name": "术后即刻瓣周漏程度",
+          "name_en": "TAVI_R_Immediate_PostProcedural_PVL_Severity",
+          "type": "string",
+          "options": ["微量", "轻度", "中度", "重度", "N/A"],
+          "note": "'Trivial'，'Minimal'与'Trace'同义"
+        },
+        "thv_displacement": {
+          "name": "瓣架移位",
+          "name_en": "THV_Displacement_Or_Embolization",
+          "type": "boolean"
+        },
+        "conversion_to_savr": {
+          "name": "转外科开胸手术",
+          "name_en": "Conversion_To_SAVR_Required",
+          "type": "boolean"
+        },
+        "cpb_required": {
+          "name": "转心肺转流术",
+          "name_en": "Cardiopulmonary_Bypass_CPB_Required",
+          "type": "boolean"
+        },
+        "valve_in_valve": {
+          "name": "瓣中瓣",
+          "name_en": "Valve_In_Valve_For_Acute_Failure_Or_Malposition",
+          "type": "boolean"
+        },
+        "periprocedural_death": {
+          "name": "围术期死亡",
+          "name_en": "TAVI_R_Periprocedural_Death_In_Hospital",
+          "type": "boolean"
+        },
+        "mitral_regurgitation_change": {
+          "name": "二尖瓣返流变化",
+          "name_en": "Mitral_Regurgitation_Change",
+          "type": "string",
+          "options": ["增加", "减少", "无变化"]
+        }
+      }
+    },
+    "predischarge_evaluation": {
+      "name": "出院前评价",
+      "name_en": "TAVI_R_Evaluation_PostProcedure_Before_Discharge",
+      "fields": {
+        "death_before_discharge": {
+          "name": "出院前死亡",
+          "name_en": "Death_Before_Discharge",
+          "type": "boolean"
+        },
+        "stroke_before_discharge": {
+          "name": "卒中",
+          "name_en": "Stroke_Before_Discharge",
+          "type": "boolean"
+        },
+        "major_bleeding": {
+          "name": "大出血",
+          "name_en": "Life_Threatening_Bleeding_Before_Discharge",
+          "type": "boolean"
+        },
+        "aki": {
+          "name": "急性肾衰",
+          "name_en": "Acute_Kidney_Injury_AKI_Before_Discharge",
+          "type": "boolean"
+        },
+        "major_vascular_complication": {
+          "name": "严重血管并发症",
+          "name_en": "Major_Vascular_Complication_Before_Discharge",
+          "type": "boolean"
+        },
+        "mi_ami": {
+          "name": "心肌梗死/急性心肌梗死",
+          "name_en": "Myocardial_infarction_or_Acute_myocardial_infarction_Before_Discharge",
+          "type": "boolean"
+        },
+        "acs_ihd": {
+          "name": "急性冠脉综合征/缺血性心脏病",
+          "name_en": "Acute_coronary_syndrome_or_Ischemic_heart_disease_Before_Discharge",
+          "type": "boolean"
+        },
+        "heart_failure": {
+          "name": "心力衰竭",
+          "name_en": "Heart_failure_Before_Discharge",
+          "type": "boolean"
+        },
+        "all_cause_cv_death": {
+          "name": "所有原因死亡和心血管死亡",
+          "name_en": "All_cause_death_and_cardiovascular_death_Before_Discharge",
+          "type": "boolean"
+        },
+        "pacemaker_implantation": {
+          "name": "起搏器植入",
+          "name_en": "New_Permanent_Pacemaker_Implantation_PPMI_Before_Discharge",
+          "type": "boolean"
+        },
+        "pvl_detected": {
+          "name": "出院前是否瓣周漏",
+          "name_en": "PVL_Detected_Before_Discharge",
+          "type": "boolean"
+        },
+        "pvl_severity": {
+          "name": "出院前瓣周漏程度",
+          "name_en": "PVL_Severity_Before_Discharge",
+          "type": "string",
+          "options": ["微量", "轻度", "中度", "重度", "N/A"]
+        },
+        "max_pg": {
+          "name": "出院前最大主动脉瓣跨瓣压差",
+          "name_en": "Aortic_Valve_Max_PG_Before_Discharge",
+          "type": "float",
+          "unit": "mmHg"
+        },
+        "flow_velocity": {
+          "name": "出院前主动脉瓣口流速",
+          "name_en": "Aortic_Valve_Flow_Velocity_Before_Discharge",
+          "type": "float"
+        },
+        "mean_pg": {
+          "name": "出院前平均主动脉瓣跨瓣压差",
+          "name_en": "Aortic_Valve_Mean_PG_Before_Discharge",
+          "type": "float",
+          "unit": "mmHg"
+        },
+        "eoai": {
+          "name": "出院前实测有效瓣口面积指数",
+          "name_en": "Aortic_Valve_EOAI_Before_Discharge",
+          "type": "float"
+        },
+        "mitral_regurgitation_change": {
+          "name": "二尖瓣返流变化",
+          "name_en": "Mitral_Regurgitation_Change",
+          "type": "string",
+          "options": ["增加", "减少", "无变化"]
+        }
+      }
+    },
+    "followup_characteristics": {
+      "name": "随访信息",
+      "name_en": "TAVI_R_Follow_up_Characteristics",
+      "fields": {
+        "mortality_30d": {
+          "name": "30天全因",
+          "name_en": "All_Cause_Mortality_At_30_Days",
+          "type": "boolean"
+        },
+        "mi_30d": {
+          "name": "30天心梗",
+          "name_en": "Myocardial_Infarction_At_30_Days",
+          "type": "boolean"
+        },
+        "stroke_30d": {
+          "name": "30天卒中",
+          "name_en": "Stroke_At_30_Days",
+          "type": "boolean"
+        },
+        "hf_readmission_30d": {
+          "name": "30天心衰再住院",
+          "name_en": "Heart_Failure_Readmission_At_30_Days",
+          "type": "boolean"
+        },
+        "mortality_1y": {
+          "name": "1年全因",
+          "name_en": "All_Cause_Mortality_At_1_Year",
+          "type": "boolean"
+        },
+        "mi_1y": {
+          "name": "1年心梗",
+          "name_en": "Myocardial_Infarction_At_1_Year",
+          "type": "boolean"
+        },
+        "stroke_1y": {
+          "name": "1年卒中",
+          "name_en": "Stroke_At_1_Year",
+          "type": "boolean"
+        },
+        "hf_readmission_1y": {
+          "name": "1年心衰再住院",
+          "name_en": "Heart_Failure_Readmission_At_1_Year",
+          "type": "boolean"
+        },
+        "lvef_last_followup": {
+          "name": "左心室射血分数",
+          "name_en": "LVEF_At_Last_Follow_up",
+          "type": "float",
+          "unit": "%"
+        },
+        "nyha_last_followup": {
+          "name": "纽约心脏病协会分级",
+          "name_en": "New_York_Heart_Association_NYHA_Classification_At_Last_Follow_up",
+          "type": "string",
+          "options": ["I", "II", "III", "N/A"]
+        },
+        "max_pg_last_followup": {
+          "name": "最大主动脉瓣跨瓣压差",
+          "name_en": "Aortic_Valve_Max_PG_At_Last_Follow_up",
+          "type": "float",
+          "unit": "mmHg"
+        },
+        "flow_velocity_last_followup": {
+          "name": "主动脉瓣口流速",
+          "name_en": "Aortic_Valve_Flow_Velocity_At_Last_Follow_up",
+          "type": "float"
+        },
+        "mean_pg_last_followup": {
+          "name": "平均主动脉瓣跨瓣压差",
+          "name_en": "Aortic_Valve_Mean_PG_At_Last_Follow_up",
+          "type": "float",
+          "unit": "mmHg"
+        },
+        "eoa_last_followup": {
+          "name": "有效瓣口面积",
+          "name_en": "Aortic_Valve_EOA_At_Last_Follow_up",
+          "type": "float",
+          "unit": "cm²"
+        },
+        "eoai_last_followup": {
+          "name": "有效瓣口面积指数",
+          "name_en": "Aortic_Valve_EOAI_At_Last_Follow_up",
+          "type": "float"
+        },
+        "pvl_detected_last_followup": {
+          "name": "是否瓣周漏",
+          "name_en": "PVL_Detected_At_Last_Follow_up",
+          "type": "boolean"
+        },
+        "pvl_severity_last_followup": {
+          "name": "瓣周漏程度",
+          "name_en": "PVL_Severity_At_Last_Follow_up",
+          "type": "string",
+          "options": ["微量", "轻度", "中度", "重度", "N/A"]
+        },
+        "subsequent_intervention": {
+          "name": "患者是否因TAVI相关并发症而接受了后续干预",
+          "name_en": "Subsequent_Intervention_For_TAVI_R_Complication_Occurred",
+          "type": "boolean"
+        },
+        "intervention_details": {
+          "name": "后续干预的具体类型和发生时间",
+          "name_en": "Subsequent_Intervention_Type_And_Timing_If_Occurred",
+          "type": "string"
+        },
+        "occlusion_procedure": {
+          "name": "术后封堵",
+          "name_en": "Occlusion_Procedure_Post_TAVI_R",
+          "type": "boolean"
+        },
+        "reoperation": {
+          "name": "二次手术",
+          "name_en": "Reoperation_Post_TAVI_R",
+          "type": "boolean"
+        },
+        "conversion_to_open": {
+          "name": "术后中转开胸",
+          "name_en": "Conversion_to_Open_Surgery_Post_TAVI_R",
+          "type": "boolean"
+        },
+        "pacemaker_post": {
+          "name": "术后起搏器植入",
+          "name_en": "Pacemaker_Implantation_Post_TAVI_R",
+          "type": "boolean"
+        },
+        "valve_dislodgement": {
+          "name": "术后瓣膜脱落",
+          "name_en": "Valve_Dislodgement_Post_TAVI_R",
+          "type": "boolean"
+        },
+        "aortic_dissection": {
+          "name": "术后主动脉夹层",
+          "name_en": "Aortic_Dissection_Post_TAVI_R",
+          "type": "boolean"
+        },
+        "hematoma": {
+          "name": "术后血肿",
+          "name_en": "Hematoma_Post_TAVI_R",
+          "type": "boolean"
+        },
+        "heart_failure_post": {
+          "name": "术后心衰",
+          "name_en": "Heart_Failure_Post_TAVI_R",
+          "type": "boolean"
+        },
+        "mitral_regurgitation_change_followup": {
+          "name": "二尖瓣返流变化",
+          "name_en": "Mitral_Regurgitation_Change",
+          "type": "string",
+          "options": ["增加", "减少", "无变化"]
+        }
+      }
+    }
+  }
+} 

@@ -1,0 +1,71 @@
+## 基线资料	 Baseline_Characteristics	 数据情况
+体表面积	Surface_Area	浮点数（e.g. 2.4 m²）
+糖尿病	Diabetes_Mellitus	布尔值（True/False）
+高血压	Hypertension	布尔值（True/False）
+高脂血症	Hyperlipidemia	布尔值（True/False）
+冠心病	Coronary_Artery_Disease	布尔值（True/False）
+慢阻肺	Chronic_Obstructive_Pulmonary_Disease_COPD	布尔值（True/False）
+透析	Dialysis	布尔值（True/False）
+血管紧张素转换酶抑制剂/血管紧张素Ⅱ受体拮抗剂	Angiotensin_Converting_Enzyme_Inhibitor_ACEI_or_Angiotensin_II_Receptor_Blocker_ARB	布尔值（True/False）
+Beta受体阻滞剂	Beta_Receptor_Blocker	布尔值（True/False）
+钙离子阻滞剂	Calcium_Ion_Blocker	布尔值（True/False）
+利尿剂	Diuretic	布尔值（True/False）
+阿司匹林	Aspirin	布尔值（True/False）
+抗凝药	Anticoagulant	布尔值（True/False）
+他汀类药物	Statins	布尔值（True/False）
+钠-葡萄糖共转运蛋白2抑制剂	Sodium-Glucose Cotransporter 2 inhibitors	布尔值（True/False）
+
+
+##术前影像学评估	TAVI_R_Preprocedural_Imaging_Assessment	数据情况
+有效瓣口面积指数（主动脉瓣）	Aortic_Valve_EOAI	浮点数
+中度以上主动脉瓣反流	Moderate_Or_Severe_Aortic_Regurgitation_AR	布尔值（True/False）
+中度以上二尖瓣反流	Mitral_Valve_Regurgitation_Is_Moderate_Or_Severe	布尔值（True/False）
+左心室舒张末期容积	Left_Ventricular_End_Diastolic_Volume_LVEDV	浮点数（e.g. 2.4 ml）
+左心室收缩末期容积	Left_Ventricular_End_Systolic_Volume_LVESV	浮点数（e.g. 2.4 ml）
+瓣环最小直径（主动脉瓣）	Aortic_Valve_Annular_Min_Diameter	浮点数（e.g. 2.4 mm）
+瓣环偏心率（主动脉瓣）	Aortic_Valve_Annular_Eccentricity_Index	浮点数
+源自面积的瓣环直径（主动脉瓣）	Aortic_Valve_Area_Derived_Annular_Diameter	浮点数（e.g. 2.4 mm）
+源自周长的瓣环直径（主动脉瓣）	Aortic_Valve_Perimeter_Derived_Annular_Diameter	浮点数（e.g. 2.4 mm）
+瓣环上钙化（主动脉瓣）	Aortic_Valve_Supraannular_Calcification_Volume	浮点数（e.g. 2.4 mm³）
+左心室流出道钙化体积	Left_Ventricular_Outflow_Tract_LVOT_Calcification_Volume	浮点数（e.g. 2.4 mm）
+瓣环至二尖瓣前叶距离	Annalus_To_Anterior_Leaflet_Of_Mitral_Valve_Distance	浮点数（e.g. 2.4 mm）
+
+
+## 手术信息	​​TAVI_R_Procedural_Details	数据情况
+预扩张	Pre_Dilation_Performed	布尔值（True/False）
+后扩张	Post_Dilation_Performed	布尔值（True/False）
+总术时	TAVI_R_Total_Procedure_Time	浮点数
+造影时间	TAVI_R_Fluoroscopy_Time	浮点数
+造影量	TAVI_R_Contrast_Volume	浮点数
+术后即刻左心室射血分数	TAVI_R_Immediate_PostProcedural_LVEF	浮点数（e.g. 24%）
+过大尺寸	Excessive_Oversizing_Occurred	布尔值（True/False）
+尺寸过大≥15%	Oversizing_Rate_gte_15_percent	布尔值（True/False）
+二尖瓣返流变化	Mitral_Regurgitation_Change	字符串（增加（Increase）、减少（Decrease）、无变化（Null））
+
+
+## 出院前评价	TAVI_R_Evaluation_PostProcedure_Before_Discharge​	数据情况
+急性冠脉综合征/缺血性心脏病	Acute_coronary_syndrome_or_Ischemic_heart_disease_Before_Discharge	布尔值（True/False）
+出院前瓣周漏程度	PVL_Severity_Before_Discharge	字符串（微量（trace）, 轻度（mild）, 中度（moderate）, 重度（severe），N/A）
+出院前最大主动脉瓣跨瓣压差	Aortic_Valve_Max_PG_Before_Discharge	浮点数（e.g. 2.4 mmHg）
+出院前主动脉瓣口流速	Aortic_Valve_Flow_Velocity_Before_Discharge	浮点数
+出院前平均主动脉瓣跨瓣压差	Aortic_Valve_Mean_PG_Before_Discharge	浮点数（e.g. 2.4 mmHg）
+出院前实测有效瓣口面积指数	Aortic_Valve_EOAI_Before_Discharge	浮点数
+二尖瓣返流变化	Mitral_Regurgitation_Change	字符串（增加（Increase）、减少（Decrease）、无变化（Null））
+
+
+## 随访信息	TAVI_R_Follow_up_Characteristics	数据情况
+左心室射血分数	LVEF_At_Last_Follow_up	浮点数（e.g. 24%）
+纽约心脏病协会分级	New_York_Heart_Association_NYHA_Classification_At_Last_Follow_up	字符串（I, II, III, N/A）
+最大主动脉瓣跨瓣压差	Aortic_Valve_Max_PG_At_Last_Follow_up	浮点数（e.g. 2.4 mmHg）
+主动脉瓣口流速	Aortic_Valve_Flow_Velocity_At_Last_Follow_up	浮点数
+平均主动脉瓣跨瓣压差	Aortic_Valve_Mean_PG_At_Last_Follow_up	浮点数（e.g. 2.4 mmHg）
+有效瓣口面积	Aortic_Valve_EOA_At_Last_Follow_up	浮点数（e.g. 2.4 cm²）
+有效瓣口面积指数	Aortic_Valve_EOAI_At_Last_Follow_up	浮点数
+是否瓣周漏	PVL_Detected_At_Last_Follow_up	布尔值（True/False）
+瓣周漏程度	PVL_Severity_At_Last_Follow_up	字符串（微量（trace）, 轻度（mild）, 中度（moderate）, 重度（severe），N/A）
+​后续干预的具体类型​​ 和 ​​发生时间​​（仅在发生干预时填写）	Subsequent_Intervention_Type_And_Timing_If_Occurred	string
+二次手术	Reoperation_Post_TAVI_R	布尔值
+术后中转开胸	Conversion_to_Open_Surgery_Post_TAVI_R	布尔值
+术后起搏器植入	Pacemaker_Implantation_Post_TAVI_R	布尔值
+术后心衰	Heart_Failure_Post_TAVI_R	布尔值
+二尖瓣返流变化	Mitral_Regurgitation_Change	字符串（增加（Increase）、减少（Decrease）、无变化（Null））

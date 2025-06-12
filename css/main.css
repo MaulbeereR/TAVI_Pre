@@ -31,4 +31,628 @@
 @import './chat.css';
 
 /* 引入响应式布局调整 */
-@import './responsive.css'; 
+@import './responsive.css';
+
+/* 基础样式重置和字体设置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 头部样式 - 紧凑版本 */
+.header-bar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+.header-bar.compact {
+    padding: 0.5rem 1.5rem;
+}
+
+.system-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.header-icon {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    font-size: 1.8rem;
+}
+
+.user-area {
+    color: white;
+}
+
+.user-avatar i {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.5rem;
+}
+
+.auth-buttons .btn {
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* 关键数据展示区域 - 紧凑版本 */
+.key-stats-section {
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+}
+
+.key-stats-section.compact {
+    margin-bottom: 1rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.stat-card.compact {
+    padding: 0.75rem;
+}
+
+.stat-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.stat-card:nth-child(1) .stat-icon {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.stat-card:nth-child(2) .stat-icon {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+}
+
+.stat-card:nth-child(3) .stat-icon {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.stat-card:nth-child(4) .stat-icon {
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+}
+
+.stat-content h3 {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* 筛选区域样式 */
+.filter-section-wrapper {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.filter-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.filter-panel {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.filter-panel:last-child {
+    border-bottom: none;
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-header h4 {
+    margin: 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.filter-header .d-flex {
+    display: flex;
+    align-items: center;
+}
+
+.filter-header .btn {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+}
+
+.toggle-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.filter-header[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.filter-content {
+    padding: 1.5rem;
+}
+
+/* 5列筛选布局 */
+.filter-category {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    height: 100%;
+}
+
+.filter-category h6 {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dee2e6;
+    text-align: center;
+}
+
+/* 内联筛选项样式 */
+.filter-item-inline {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #495057;
+    min-width: 80px;
+    margin: 0;
+}
+
+.range-input-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.range-input-inline input {
+    width: 70px;
+    font-size: 0.8rem;
+}
+
+.range-input-inline span {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.checkbox-group-inline {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.checkbox-group-inline .form-check {
+    margin: 0;
+}
+
+.checkbox-group-inline .form-check-label {
+    font-size: 0.875rem;
+    color: #495057;
+}
+
+.filter-item-inline select {
+    flex: 1;
+    max-width: 120px;
+    font-size: 0.875rem;
+}
+
+/* 筛选操作按钮 */
+.filter-actions {
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* 内容展示区域 */
+.content-section {
+    padding: 0 1rem;
+}
+
+.content-toggle {
+    background: white;
+    border-radius: 8px 8px 0 0;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.content-toggle .btn {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.content-toggle .btn.active {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+/* 图表网格布局 */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0 0 8px 8px;
+}
+
+.chart-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.chart-header {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.chart-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.chart-body {
+    padding: 1rem;
+    height: 300px;
+    position: relative;
+}
+
+/* 表格容器 */
+.table-container {
+    background: white;
+    border-radius: 0 0 8px 8px;
+    padding: 1.5rem;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.table-header h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.table-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.table {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.table thead th {
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+    padding: 0.75rem;
+}
+
+.table tbody td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+}
+
+/* 分页样式 */
+.pagination-container {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    margin: 0;
+}
+
+.pagination .page-link {
+    color: #667eea;
+    border-color: #e9ecef;
+    padding: 0.5rem 0.75rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.pagination .page-link:hover {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+/* 模态框样式 */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: white;
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .charts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+    
+    .filter-content .row .col {
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 992px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-content .row {
+        flex-direction: column;
+    }
+    
+    .filter-content .col {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .filter-item-inline {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .filter-label {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-bar {
+        padding: 0.5rem 1rem;
+    }
+    
+    .system-title {
+        font-size: 1.2rem;
+    }
+    
+    .header-icon {
+        font-size: 1.5rem;
+    }
+    
+    .key-stats-section .row > div {
+        margin-bottom: 0.75rem;
+    }
+    
+    .stat-card {
+        padding: 0.75rem;
+    }
+    
+    .stat-value {
+        font-size: 1.25rem;
+    }
+    
+    .content-toggle {
+        padding: 0.75rem 1rem;
+    }
+    
+    .table-container {
+        padding: 1rem;
+    }
+    
+    .charts-grid {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .chart-body {
+        height: 250px;
+    }
+    
+    .filter-content {
+        padding: 1rem;
+    }
+    
+    .filter-category {
+        padding: 0.75rem;
+    }
+    
+    .filter-item-inline {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-view {
+    animation: fadeIn 0.3s ease;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Toast通知样式 */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 9999;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.toast-notification.show {
+    transform: translateX(0);
+}
+
+/* 其他筛选条件的样式 */
+.additional-filters-toggle {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.additional-filters-toggle .btn {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.additional-filters-toggle .btn i {
+    transition: transform 0.3s ease;
+}
+
+.additional-filters-toggle .btn[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+.additional-filters-content {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f1f3f4;
+}
+
+.additional-filters-content .filter-item-inline {
+    margin-bottom: 0.5rem;
+} 

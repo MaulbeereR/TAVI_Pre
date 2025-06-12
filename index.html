@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAVI交互式智能病例分析系统</title>
+    <title>TAVI智能分析系统</title>
     <!-- 引入Google Noto Sans SC字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- 引入Bootstrap 5 CSS -->
@@ -15,601 +15,1366 @@
 </head>
 <body>
     <div class="container-fluid">
-        <!-- 页面头部 -->
-        <header class="bg-primary text-white p-3 mb-4">
-            <div class="d-flex justify-content-center align-items-center">
-                <i class="bi bi-heart-pulse-fill me-3 fs-1 header-icon"></i>
-                <h1 class="text-center m-0">
-                    <span class="fw-bold">TAVI</span>
-                    <span class="fw-light">交互式智能病例分析系统</span>
-                    <span class="tech-badge ms-2"><i class="bi bi-cpu"></i> AI驱动</span>
-                </h1>
+        <!-- 页面头部 - 缩小高度 -->
+        <header class="header-bar compact">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- 左侧LOGO和系统名称 -->
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-heart-pulse-fill me-2 header-icon"></i>
+                    <h1 class="system-title m-0">TAVI智能分析系统</h1>
+                </div>
+                <!-- 右侧用户区域 -->
+                <div class="user-area d-flex align-items-center">
+                    <div class="user-avatar me-3">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="auth-buttons">
+                        <button class="btn btn-outline-light btn-sm me-2">登录</button>
+                        <button class="btn btn-light btn-sm">注册</button>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <div class="row">
-            <!-- 左侧筛选面板 -->
+        <!-- 关键数据展示区域 - 缩小高度 -->
+        <div class="key-stats-section compact">
+            <div class="row g-3">
             <div class="col-md-3">
-                <!-- 筛选条件卡片 -->
-                <div class="card mb-4">
-                    <div class="card-header bg-light text-dark">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">筛选条件</h4>
-                            <button type="button" id="reset-filter" class="btn btn-outline-primary btn-sm"><i class="bi bi-arrow-counterclockwise"></i> 重置</button>
+                    <div class="stat-card compact">
+                        <div class="stat-icon">
+                            <i class="bi bi-people-fill"></i>
                         </div>
+                        <div class="stat-content">
+                            <h3>总病例数</h3>
+                            <p class="stat-value" id="total-cases">1300</p>
                     </div>
-                    <div class="card-body">
-                        <!-- 筛选表单 -->
-                        <form id="filter-form">                          
-                            <!-- 性别和术后结果筛选 -->
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label">性别</label>
-                                    <div class="d-flex">
-                                        <div class="form-check me-3">
-                                            <input class="form-check-input" type="checkbox" value="Male" id="gender-male">
-                                            <label class="form-check-label" for="gender-male">男</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="Female" id="gender-female">
-                                            <label class="form-check-label" for="gender-female">女</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">术后结果</label>
-                                    <div class="d-flex">
-                                        <div class="form-check me-3">
-                                            <input class="form-check-input" type="checkbox" value="true" id="paravalvular-leak">
-                                            <label class="form-check-label" for="paravalvular-leak">瓣周漏</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="true" id="death">
-                                            <label class="form-check-label" for="death">死亡</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 年龄范围筛选 -->
-                            <div class="mb-3">
-                                <label for="age-range" class="form-label">年龄范围</label>
-                                <div class="d-flex">
-                                    <input type="number" class="form-control me-2" id="age-min" placeholder="最小">
-                                    <span class="align-self-center">-</span>
-                                    <input type="number" class="form-control ms-2" id="age-max" placeholder="最大">
-                                </div>
-                            </div>
-                            
-                            <!-- 瓣膜类型筛选 -->
-                            <div class="mb-3">
-                                <label for="valve-type" class="form-label">瓣膜类型</label>
-                                <div class="valve-type-select">
-                                    <div class="select-header" id="valve-type-header">
-                                        <span>全部</span>
-                                        <i class="bi bi-chevron-down"></i>
-                                    </div>
-                                    <!-- 瓣膜类型下拉选项 -->
-                                    <div class="select-dropdown" id="valve-type-dropdown" style="display: none;">
-                                        <div class="valve-type-checkboxes">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="ACURATE Neo" id="valve-type-acurate-neo">
-                                                <label class="form-check-label" for="valve-type-acurate-neo">ACURATE Neo</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Avalus" id="valve-type-avalus">
-                                                <label class="form-check-label" for="valve-type-avalus">Avalus</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="CoreValve" id="valve-type-corevalve">
-                                                <label class="form-check-label" for="valve-type-corevalve">CoreValve</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Edwards" id="valve-type-edwards">
-                                                <label class="form-check-label" for="valve-type-edwards">Edwards</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Edwards SAPIEN" id="valve-type-edwards-sapien">
-                                                <label class="form-check-label" for="valve-type-edwards-sapien">Edwards SAPIEN</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Evolut" id="valve-type-evolut">
-                                                <label class="form-check-label" for="valve-type-evolut">Evolut</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Hancock" id="valve-type-hancock">
-                                                <label class="form-check-label" for="valve-type-hancock">Hancock</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="INSPIRIS" id="valve-type-inspiris">
-                                                <label class="form-check-label" for="valve-type-inspiris">INSPIRIS</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Inoue" id="valve-type-inoue">
-                                                <label class="form-check-label" for="valve-type-inoue">Inoue</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Inovare" id="valve-type-inovare">
-                                                <label class="form-check-label" for="valve-type-inovare">Inovare</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="J-Valve" id="valve-type-j-valve">
-                                                <label class="form-check-label" for="valve-type-j-valve">J-Valve</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="JenaValve" id="valve-type-jenavalve">
-                                                <label class="form-check-label" for="valve-type-jenavalve">JenaValve</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="LOTUS" id="valve-type-lotus">
-                                                <label class="form-check-label" for="valve-type-lotus">LOTUS</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Medtronic Mosaic" id="valve-type-medtronic-mosaic">
-                                                <label class="form-check-label" for="valve-type-medtronic-mosaic">Medtronic Mosaic</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="MyVal" id="valve-type-myval">
-                                                <label class="form-check-label" for="valve-type-myval">MyVal</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Navitor" id="valve-type-navitor">
-                                                <label class="form-check-label" for="valve-type-navitor">Navitor</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="PERCEVAL-S" id="valve-type-perceval-s">
-                                                <label class="form-check-label" for="valve-type-perceval-s">PERCEVAL-S</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Portico" id="valve-type-portico">
-                                                <label class="form-check-label" for="valve-type-portico">Portico</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="St Jude" id="valve-type-st-jude">
-                                                <label class="form-check-label" for="valve-type-st-jude">St Jude</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Tyshak" id="valve-type-tyshak">
-                                                <label class="form-check-label" for="valve-type-tyshak">Tyshak</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Venus" id="valve-type-venus">
-                                                <label class="form-check-label" for="valve-type-venus">Venus</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="Vitaflow Liberty" id="valve-type-vitaflow-liberty">
-                                                <label class="form-check-label" for="valve-type-vitaflow-liberty">Vitaflow Liberty</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">瓣膜直径</label>
-                                <div class="valve-diameter-select">
-                                    <div class="select-header" id="valve-diameter-header">
-                                        <span>全部</span>
-                                        <i class="bi bi-chevron-down"></i>
-                                    </div>
-                                    <div class="select-dropdown" id="valve-diameter-dropdown" style="display: none;">
-                                        <div class="valve-diameter-checkboxes" style="max-height: 200px; overflow-y: auto;">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="16 mm" id="valve-diameter-16">
-                                                <label class="form-check-label" for="valve-diameter-16">16 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="18 mm" id="valve-diameter-18">
-                                                <label class="form-check-label" for="valve-diameter-18">18 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="19 mm" id="valve-diameter-19">
-                                                <label class="form-check-label" for="valve-diameter-19">19 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="20 mm" id="valve-diameter-20">
-                                                <label class="form-check-label" for="valve-diameter-20">20 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="21 mm" id="valve-diameter-21">
-                                                <label class="form-check-label" for="valve-diameter-21">21 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="22 mm" id="valve-diameter-22">
-                                                <label class="form-check-label" for="valve-diameter-22">22 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="23 mm" id="valve-diameter-23">
-                                                <label class="form-check-label" for="valve-diameter-23">23 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="24 mm" id="valve-diameter-24">
-                                                <label class="form-check-label" for="valve-diameter-24">24 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="25 mm" id="valve-diameter-25">
-                                                <label class="form-check-label" for="valve-diameter-25">25 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="26 mm" id="valve-diameter-26">
-                                                <label class="form-check-label" for="valve-diameter-26">26 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="27 mm" id="valve-diameter-27">
-                                                <label class="form-check-label" for="valve-diameter-27">27 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="28 mm" id="valve-diameter-28">
-                                                <label class="form-check-label" for="valve-diameter-28">28 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="29 mm" id="valve-diameter-29">
-                                                <label class="form-check-label" for="valve-diameter-29">29 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="30 mm" id="valve-diameter-30">
-                                                <label class="form-check-label" for="valve-diameter-30">30 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="31 mm" id="valve-diameter-31">
-                                                <label class="form-check-label" for="valve-diameter-31">31 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="32 mm" id="valve-diameter-32">
-                                                <label class="form-check-label" for="valve-diameter-32">32 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="33 mm" id="valve-diameter-33">
-                                                <label class="form-check-label" for="valve-diameter-33">33 mm</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="34 mm" id="valve-diameter-34">
-                                                <label class="form-check-label" for="valve-diameter-34">34 mm</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- 术前平均跨瓣压差筛选 -->
-                            <div class="mb-3">
-                                <label for="mean-gradient-range" class="form-label">术前平均跨瓣压差 (mmHg)</label>
-                                <div class="d-flex">
-                                    <input type="number" class="form-control me-2" id="mean-gradient-min" placeholder="最小">
-                                    <span class="align-self-center">-</span>
-                                    <input type="number" class="form-control ms-2" id="mean-gradient-max" placeholder="最大">
-                                </div>
-                            </div>
-                                                    
-                            <!-- 应用筛选按钮 -->
-                            <button type="button" id="apply-filter" class="btn btn-primary w-100">应用筛选</button>
-                        </form>
                     </div>
                 </div>
-
-                <!-- AI智能问答模块 -->
-                <div class="card mb-4">
-                    <div class="card-header bg-light text-dark">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">AI智能问答</h4>
-                            <div>
-                                <button id="clear-chat" class="btn btn-outline-primary btn-sm">
-                                    <i class="bi bi-trash"></i> 清空
-                                </button>
-                            </div>
+                <div class="col-md-3">
+                    <div class="stat-card compact">
+                        <div class="stat-icon">
+                            <i class="bi bi-funnel-fill"></i>
                         </div>
-                    </div>
-                    <!-- 聊天界面 -->
-                    <div class="card-body d-flex flex-column" style="height: 500px;">
-                        <div class="chat-container" id="chat-container">
-                            <!-- 聊天消息区域 -->
-                            <div class="chat-messages" id="chat-messages">
-                                <!-- 初始欢迎消息 -->
-                                <div class="message system">
-                                    <div class="message-content">
-                                        <p>你好！我是TAVI/TAVR智能助手，有任何关于TAVI/TAVR手术、瓣膜类型、病例分析的问题，请随时向我提问。</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 聊天输入区域 -->
-                            <div class="chat-input-container">
-                                <textarea id="chat-input" class="form-control" placeholder="请输入您的问题..." rows="2"></textarea>
-                                <button id="send-message" class="btn btn-primary">
-                                    <i class="bi bi-send-fill"></i>
-                                </button>
-                            </div>
+                        <div class="stat-content">
+                            <h3>筛选病例数</h3>
+                            <p class="stat-value" id="filtered-cases">1300</p>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- 右侧内容区域 -->
-            <div class="col-md-9">
-                <!-- 数据统计卡片 -->
-                <div class="row mb-4">
-                    <!-- 总病例数统计 -->
-                    <div class="col-md-3">
-                        <div class="card stats-card total-cases">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">总病例数</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text" id="total-cases">1300</p>
-                            </div>
+                <div class="col-md-3">
+                    <div class="stat-card compact">
+                        <div class="stat-icon">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
                         </div>
-                    </div>
-                    <!-- 筛选病例数统计 -->
-                    <div class="col-md-3">
-                        <div class="card stats-card filtered-cases">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">筛选病例数</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text" id="filtered-cases">1300</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 瓣周漏率统计 -->
-                    <div class="col-md-3">
-                        <div class="card stats-card leak-rate">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">瓣周漏率</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text" id="leak-rate">33%</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 死亡率统计 -->
-                    <div class="col-md-3">
-                        <div class="card stats-card death-rate">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">死亡率</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text" id="death-rate">13%</p>
-                            </div>
+                        <div class="stat-content">
+                            <h3>瓣周漏率</h3>
+                            <p class="stat-value" id="leak-rate">33%</p>
                         </div>
                     </div>
                 </div>
-                
-                <!-- 图表区域 -->
-                <div class="row mb-4">
-                    <!-- 瓣膜类型分布图表 -->
-                    <div class="col-md-6">
-                        <div class="card chart-card">
-                            <div class="card-header">
-                                <h5>瓣膜类型分布</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-container" style="height: 800px;">
-                                    <canvas id="valve-type-chart"></canvas>
-                                </div>
-                            </div>
+            <div class="col-md-3">
+                    <div class="stat-card compact">
+                        <div class="stat-icon">
+                            <i class="bi bi-heart-break-fill"></i>
                         </div>
-                    </div>
-                    <!-- 右侧图表区域 -->
-                    <div class="col-md-6">
-                        <div class="row">
-                            <!-- 瓣膜直径分布图表 -->
-                            <div class="col-12 mb-4">
-                                <div class="card chart-card">
-                                    <div class="card-header">
-                                        <h5>瓣膜直径分布</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container" style="height: 380px;">
-                                            <canvas id="valve-diameter-chart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 术前术后指标对比图表 -->
-                            <div class="col-12">
-                                <div class="card chart-card">
-                                    <div class="card-header">
-                                        <h5>术前术后指标对比</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container" style="height: 380px;">
-                                            <canvas id="pre-post-comparison-chart"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 病例列表区域 -->
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4>病例列表</h4>
-                        <!-- 排序按钮组 -->
-                        <div class="d-flex gap-2">
-                            <button id="sort-by-match" class="btn btn-outline-primary active">
-                                按ID排序 <i id="sort-by-match-arrow" class="bi bi-arrow-up"></i>
-                            </button>
-                            <button id="sort-by-age" class="btn btn-outline-primary">
-                                按年龄排序 <i id="sort-by-age-arrow" class="bi bi-arrow-up"></i>
-                            </button>
-                            <button id="sort-by-year" class="btn btn-outline-primary">
-                                按年份排序 <i id="sort-by-year-arrow" class="bi bi-arrow-up"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- 病例表格 -->
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <!-- 表头 -->
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>论文发表年份</th>
-                                        <th>年龄</th>
-                                        <th>性别</th>
-                                        <th>病症</th>
-                                        <th>瓣膜类型</th>
-                                        <th>瓣膜直径</th>
-                                        <th>术前平均压差</th>
-                                        <th>术后结果</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <!-- 病例数据表格主体 -->
-                                <tbody id="case-list">
-                                    <!-- 病例数据将通过JavaScript动态加载 -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- 分页控件 -->
-                        <div class="d-flex justify-content-center mt-3">
-                            <div id="pagination" class="btn-group"></div>
+                        <div class="stat-content">
+                            <h3>死亡率</h3>
+                            <p class="stat-value" id="death-rate">13%</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- 数据筛选区域 - 占据整个版面宽度 -->
+        <div class="filter-section-wrapper">
+            <div class="filter-container">
+                <!-- 数据筛选（默认展开） -->
+                <div class="filter-panel">
+                    <div class="filter-header" data-bs-toggle="collapse" data-bs-target="#important-filters" aria-expanded="true">
+                        <h4><i class="bi bi-funnel me-2"></i>数据筛选</h4>
+                        <div class="d-flex align-items-center">
+                            <button type="button" class="btn btn-primary btn-sm me-2" id="apply-important-filters">
+                                <i class="bi bi-funnel"></i> 应用筛选
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm me-3" id="reset-important-filters">
+                                <i class="bi bi-arrow-clockwise"></i> 重置
+                            </button>
+                            <i class="bi bi-chevron-down toggle-icon"></i>
+                        </div>
+                    </div>
+                    <div class="collapse show" id="important-filters">
+                        <div class="filter-content">
+                            <!-- 5列布局：基线资料、术前影像学评估、手术信息、出院前评价、随访信息 -->
+                            <div class="row g-3">
+                                <!-- 基线资料 -->
+                                <div class="col">
+                                    <div class="filter-category">
+                                        <h6>基线资料</h6>
+                                        <!-- 年龄 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">年龄</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="age-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="age-max" placeholder="最大">
+                                            </div>
+                                        </div>
+                                        <!-- 性别 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">性别</label>
+                                            <div class="checkbox-group-inline">
+                                                <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value="Male" id="gender-male">
+                                            <label class="form-check-label" for="gender-male">男</label>
+                                        </div>
+                                                <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value="Female" id="gender-female">
+                                            <label class="form-check-label" for="gender-female">女</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                        <!-- 体重指数BMI -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">BMI</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="bmi-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="bmi-max" placeholder="最大">
+                                        </div>
+                                        </div>
+                                        <!-- 房颤 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">房颤</label>
+                                            <select class="form-select form-select-sm" id="atrial-fibrillation">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                    </div>
+                                        <!-- NYHA分级 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">NYHA分级</label>
+                                            <div class="checkbox-group-inline">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" value="I" id="nyha-1">
+                                                    <label class="form-check-label" for="nyha-1">I</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" value="II" id="nyha-2">
+                                                    <label class="form-check-label" for="nyha-2">II</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" value="III" id="nyha-3">
+                                                    <label class="form-check-label" for="nyha-3">III</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" value="IV" id="nyha-4">
+                                                    <label class="form-check-label" for="nyha-4">IV</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 心梗 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">心梗</label>
+                                            <select class="form-select form-select-sm" id="myocardial-infarction">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- PCI史 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">PCI史</label>
+                                            <select class="form-select form-select-sm" id="pci-history">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- CABG史 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">CABG史</label>
+                                            <select class="form-select form-select-sm" id="cabg-history">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- STS评分 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">STS评分</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="sts-score-min" placeholder="最小" step="0.1">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="sts-score-max" placeholder="最大" step="0.1">
+                                            </div>
+                                        </div>
+                                        <!-- NT-proBNP -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">NT-proBNP</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="nt-probnp-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="nt-probnp-max" placeholder="最大">
+                                </div>
+                            </div>
+
+                                        <!-- 其他基线资料展开/收起按钮 -->
+                                        <div class="additional-filters-toggle">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#additional-baseline-filters" aria-expanded="false">
+                                                <i class="bi bi-chevron-down"></i> 更多基线资料
+                                            </button>
+                                        </div>
+
+                                        <!-- 其他基线资料（默认折叠） -->
+                                        <div class="collapse" id="additional-baseline-filters">
+                                            <div class="additional-filters-content">
+                                                <!-- 体表面积 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">体表面积</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="surface-area-min" placeholder="最小(m²)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="surface-area-max" placeholder="最大(m²)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 糖尿病 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">糖尿病</label>
+                                                    <select class="form-select form-select-sm" id="diabetes">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 高血压 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">高血压</label>
+                                                    <select class="form-select form-select-sm" id="hypertension">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 高脂血症 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">高脂血症</label>
+                                                    <select class="form-select form-select-sm" id="hyperlipidemia">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 冠心病 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">冠心病</label>
+                                                    <select class="form-select form-select-sm" id="coronary-artery-disease">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 慢阻肺 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">慢阻肺</label>
+                                                    <select class="form-select form-select-sm" id="copd">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 透析 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">透析</label>
+                                                    <select class="form-select form-select-sm" id="dialysis">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- ACEI/ARB -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">ACEI/ARB</label>
+                                                    <select class="form-select form-select-sm" id="acei-arb">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- Beta受体阻滞剂 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">Beta受体阻滞剂</label>
+                                                    <select class="form-select form-select-sm" id="beta-blocker">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 钙离子阻滞剂 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">钙离子阻滞剂</label>
+                                                    <select class="form-select form-select-sm" id="calcium-blocker">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 利尿剂 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">利尿剂</label>
+                                                    <select class="form-select form-select-sm" id="diuretic">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 阿司匹林 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">阿司匹林</label>
+                                                    <select class="form-select form-select-sm" id="aspirin">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 抗凝药 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">抗凝药</label>
+                                                    <select class="form-select form-select-sm" id="anticoagulant">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 他汀类药物 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">他汀类药物</label>
+                                                    <select class="form-select form-select-sm" id="statins">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- SGLT2抑制剂 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">SGLT2抑制剂</label>
+                                                    <select class="form-select form-select-sm" id="sglt2-inhibitors">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            
+                                <!-- 术前影像学评估 -->
+                                <div class="col">
+                                    <div class="filter-category">
+                                        <h6>术前影像学评估</h6>
+                                        <!-- LVEF -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">LVEF</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="lvef-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="lvef-max" placeholder="最大">
+                                    </div>
+                                            </div>
+                                        <!-- 最大跨瓣压差 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">最大跨瓣压差</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="max-gradient-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="max-gradient-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 平均跨瓣压差 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">平均跨瓣压差</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="mean-gradient-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="mean-gradient-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 有效瓣口面积 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">有效瓣口面积</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="eoa-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="eoa-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 瓣环面积 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣环面积</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="annular-area-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="annular-area-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 瓣环平均直径 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣环平均直径</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="annular-mean-diameter-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="annular-mean-diameter-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 瓣环最大直径 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣环最大直径</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="annular-max-diameter-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="annular-max-diameter-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 瓣环周径 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣环周径</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="annular-perimeter-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="annular-perimeter-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 瓣口流速 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣口流速</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="valve-velocity-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="valve-velocity-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 窦管交界高度 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">窦管交界高度</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="stj-height-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="stj-height-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 窦管交界直径 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">窦管交界直径</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="stj-diameter-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="stj-diameter-max" placeholder="最大">
+                                            </div>
+                                            </div>
+                                        <!-- 窦部直径 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">窦部直径</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="sinus-diameter-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="sinus-diameter-max" placeholder="最大">
+                                            </div>
+                                        </div>
+                                        <!-- 升主动脉直径 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">升主动脉直径</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="ascending-aorta-diameter-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="ascending-aorta-diameter-max" placeholder="最大">
+                                    </div>
+                                        </div>
+                                        <!-- 瓣环钙化 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣环钙化</label>
+                                            <select class="form-select form-select-sm" id="annular-calcification">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- LVOT直径 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">LVOT直径</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="lvot-diameter-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="lvot-diameter-max" placeholder="最大">
+                                            </div>
+                                        </div>
+                                        <!-- LVOT钙化体积 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">LVOT钙化体积</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="lvot-calcification-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="lvot-calcification-max" placeholder="最大">
+                                            </div>
+                                        </div>
+                                        <!-- 左冠脉高度 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">左冠脉高度</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="lca-height-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="lca-height-max" placeholder="最大">
+                                            </div>
+                                        </div>
+                                        <!-- 右冠脉高度 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">右冠脉高度</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="rca-height-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="rca-height-max" placeholder="最大">
+                                </div>
+                            </div>
+                            
+                                        <!-- 其他术前影像学评估展开/收起按钮 -->
+                                        <div class="additional-filters-toggle">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#additional-imaging-filters" aria-expanded="false">
+                                                <i class="bi bi-chevron-down"></i> 更多影像学评估
+                                            </button>
+                                    </div>
+
+                                        <!-- 其他术前影像学评估（默认折叠） -->
+                                        <div class="collapse" id="additional-imaging-filters">
+                                            <div class="additional-filters-content">
+                                                <!-- 有效瓣口面积指数 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">有效瓣口面积指数</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="eoai-min" placeholder="最小" step="0.01">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="eoai-max" placeholder="最大" step="0.01">
+                                            </div>
+                                            </div>
+                                                <!-- 中度以上主动脉瓣反流 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">中度以上主动脉瓣反流</label>
+                                                    <select class="form-select form-select-sm" id="moderate-severe-ar">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                            </div>
+                                                <!-- 中度以上二尖瓣反流 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">中度以上二尖瓣反流</label>
+                                                    <select class="form-select form-select-sm" id="moderate-severe-mr">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                            </div>
+                                                <!-- 左心室舒张末期容积 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">左心室舒张末期容积</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="lvedv-min" placeholder="最小(ml)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="lvedv-max" placeholder="最大(ml)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 左心室收缩末期容积 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">左心室收缩末期容积</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="lvesv-min" placeholder="最小(ml)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="lvesv-max" placeholder="最大(ml)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 瓣环最小直径 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">瓣环最小直径</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="annular-min-diameter-min" placeholder="最小(mm)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="annular-min-diameter-max" placeholder="最大(mm)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 瓣环偏心率 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">瓣环偏心率</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="annular-eccentricity-min" placeholder="最小" step="0.01">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="annular-eccentricity-max" placeholder="最大" step="0.01">
+                                                    </div>
+                                                </div>
+                                                <!-- 源自面积的瓣环直径 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">源自面积的瓣环直径</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="area-derived-diameter-min" placeholder="最小(mm)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="area-derived-diameter-max" placeholder="最大(mm)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 源自周长的瓣环直径 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">源自周长的瓣环直径</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="perimeter-derived-diameter-min" placeholder="最小(mm)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="perimeter-derived-diameter-max" placeholder="最大(mm)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 瓣环上钙化 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">瓣环上钙化</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="supraannular-calcification-min" placeholder="最小(mm³)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="supraannular-calcification-max" placeholder="最大(mm³)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 瓣环至二尖瓣前叶距离 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">瓣环至二尖瓣前叶距离</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="annulus-mitral-distance-min" placeholder="最小(mm)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="annulus-mitral-distance-max" placeholder="最大(mm)" step="0.1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 手术信息 -->
+                                <div class="col">
+                                    <div class="filter-category">
+                                        <h6>手术信息</h6>
+                                        <!-- 经股动脉入路 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">经股动脉入路</label>
+                                            <select class="form-select form-select-sm" id="transfemoral-access">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 经心尖入路 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">经心尖入路</label>
+                                            <select class="form-select form-select-sm" id="transapical-access">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 其它入路 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">其它入路</label>
+                                            <select class="form-select form-select-sm" id="other-access">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 瓣膜尺寸 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣膜尺寸</label>
+                                            <div class="checkbox-group-inline">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" value="23" id="valve-size-23">
+                                                    <label class="form-check-label" for="valve-size-23">23</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" value="26" id="valve-size-26">
+                                                    <label class="form-check-label" for="valve-size-26">26</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" value="29" id="valve-size-29">
+                                                    <label class="form-check-label" for="valve-size-29">29</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 瓣膜类型 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣膜类型</label>
+                                            <select class="form-select form-select-sm" id="valve-type">
+                                                <option value="">N/A</option>
+                                                <option value="球囊扩张式">球囊扩张式</option>
+                                                <option value="自膨胀式">自膨胀式</option>
+                                            </select>
+                                        </div>
+                                        <!-- 瓣膜品牌 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣膜品牌</label>
+                                            <select class="form-select form-select-sm" id="valve-brand">
+                                                <option value="">N/A</option>
+                                                <option value="Edwards">Edwards</option>
+                                                <option value="Medtronic">Medtronic</option>
+                                                <option value="Boston Scientific">Boston Scientific</option>
+                                            </select>
+                                        </div>
+                                        <!-- 术后即刻跨瓣压差 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">术后即刻跨瓣压差</label>
+                                            <div class="range-input-inline">
+                                                <input type="number" class="form-control form-control-sm" id="post-mean-pg-min" placeholder="最小">
+                                                <span>-</span>
+                                                <input type="number" class="form-control form-control-sm" id="post-mean-pg-max" placeholder="最大">
+                                            </div>
+                                        </div>
+                                        <!-- 跨瓣压差≥20mmHg -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">跨瓣压差≥20mmHg</label>
+                                            <select class="form-select form-select-sm" id="mean-pg-gte-20">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 严重错位 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">严重错位</label>
+                                            <select class="form-select form-select-sm" id="prosthesis-malposition">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 瓣环撕裂 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣环撕裂</label>
+                                            <select class="form-select form-select-sm" id="annular-rupture">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 术后即刻瓣周漏 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">术后即刻瓣周漏</label>
+                                            <select class="form-select form-select-sm" id="immediate-pvl">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 术后即刻瓣周漏程度 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣周漏程度</label>
+                                            <select class="form-select form-select-sm" id="pvl-severity">
+                                                <option value="">N/A</option>
+                                                <option value="轻度">轻度</option>
+                                                <option value="中度">中度</option>
+                                                <option value="重度">重度</option>
+                                            </select>
+                                        </div>
+                                        <!-- 瓣架移位 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣架移位</label>
+                                            <select class="form-select form-select-sm" id="valve-displacement">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 转外科开胸手术 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">转外科开胸</label>
+                                            <select class="form-select form-select-sm" id="conversion-to-savr">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 转心肺转流术 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">转心肺转流</label>
+                                            <select class="form-select form-select-sm" id="cpb-required">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 瓣中瓣 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">瓣中瓣</label>
+                                            <select class="form-select form-select-sm" id="valve-in-valve">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 围术期死亡 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">围术期死亡</label>
+                                            <select class="form-select form-select-sm" id="periprocedural-death">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 其他手术信息展开/收起按钮 -->
+                                        <div class="additional-filters-toggle">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#additional-surgery-filters" aria-expanded="false">
+                                                <i class="bi bi-chevron-down"></i> 更多手术信息
+                                            </button>
+                                        </div>
+
+                                        <!-- 其他手术信息（默认折叠） -->
+                                        <div class="collapse" id="additional-surgery-filters">
+                                            <div class="additional-filters-content">
+                                                <!-- 预扩张 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">预扩张</label>
+                                                    <select class="form-select form-select-sm" id="pre-dilatation">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 后扩张 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">后扩张</label>
+                                                    <select class="form-select form-select-sm" id="post-dilatation">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 总术时 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">总术时</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="total-procedure-time-min" placeholder="最小(分钟)">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="total-procedure-time-max" placeholder="最大(分钟)">
+                                                    </div>
+                                                </div>
+                                                <!-- 造影时间 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">造影时间</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="fluoroscopy-time-min" placeholder="最小(分钟)">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="fluoroscopy-time-max" placeholder="最大(分钟)">
+                                                    </div>
+                                                </div>
+                                                <!-- 造影量 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">造影量</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="contrast-volume-min" placeholder="最小(ml)">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="contrast-volume-max" placeholder="最大(ml)">
+                                                    </div>
+                                                </div>
+                                                <!-- 术后即刻左心室射血分数 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">术后即刻LVEF</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="immediate-lvef-min" placeholder="最小(%)" step="1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="immediate-lvef-max" placeholder="最大(%)" step="1">
+                                                    </div>
+                                                </div>
+                                                <!-- 过大尺寸 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">过大尺寸</label>
+                                                    <select class="form-select form-select-sm" id="excessive-oversizing">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 尺寸过大≥15% -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">尺寸过大≥15%</label>
+                                                    <select class="form-select form-select-sm" id="oversizing-gte-15">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 二尖瓣返流变化 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">二尖瓣返流变化</label>
+                                                    <select class="form-select form-select-sm" id="mitral-regurgitation-change">
+                                                        <option value="">N/A</option>
+                                                        <option value="增加">增加</option>
+                                                        <option value="减少">减少</option>
+                                                        <option value="无变化">无变化</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 出院前评价 -->
+                                <div class="col">
+                                    <div class="filter-category">
+                                        <h6>出院前评价</h6>
+                                        <!-- 出院前死亡 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">出院前死亡</label>
+                                            <select class="form-select form-select-sm" id="death-before-discharge">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 卒中 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">卒中</label>
+                                            <select class="form-select form-select-sm" id="stroke-before-discharge">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 大出血 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">大出血</label>
+                                            <select class="form-select form-select-sm" id="major-bleeding">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 急性肾衰 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">急性肾衰</label>
+                                            <select class="form-select form-select-sm" id="acute-kidney-injury">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 严重血管并发症 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">严重血管并发症</label>
+                                            <select class="form-select form-select-sm" id="major-vascular-complications">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 起搏器植入 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">起搏器植入</label>
+                                            <select class="form-select form-select-sm" id="pacemaker-implantation">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 其他出院前评价展开/收起按钮 -->
+                                        <div class="additional-filters-toggle">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#additional-discharge-filters" aria-expanded="false">
+                                                <i class="bi bi-chevron-down"></i> 更多出院前评价
+                                            </button>
+                                        </div>
+
+                                        <!-- 其他出院前评价（默认折叠） -->
+                                        <div class="collapse" id="additional-discharge-filters">
+                                            <div class="additional-filters-content">
+                                                <!-- 急性冠脉综合征/缺血性心脏病 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">急性冠脉综合征</label>
+                                                    <select class="form-select form-select-sm" id="acs-before-discharge">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 出院前瓣周漏程度 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">出院前瓣周漏程度</label>
+                                                    <select class="form-select form-select-sm" id="pvl-severity-discharge">
+                                                        <option value="">N/A</option>
+                                                        <option value="微量">微量</option>
+                                                        <option value="轻度">轻度</option>
+                                                        <option value="中度">中度</option>
+                                                        <option value="重度">重度</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 出院前最大主动脉瓣跨瓣压差 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">出院前最大跨瓣压差</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-max-pg-min" placeholder="最小(mmHg)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-max-pg-max" placeholder="最大(mmHg)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 出院前主动脉瓣口流速 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">出院前瓣口流速</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-flow-velocity-min" placeholder="最小" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-flow-velocity-max" placeholder="最大" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 出院前平均主动脉瓣跨瓣压差 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">出院前平均跨瓣压差</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-mean-pg-min" placeholder="最小(mmHg)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-mean-pg-max" placeholder="最大(mmHg)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 出院前实测有效瓣口面积指数 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">出院前EOAI</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-eoai-min" placeholder="最小" step="0.01">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-eoai-max" placeholder="最大" step="0.01">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 随访信息 -->
+                                <div class="col">
+                                    <div class="filter-category">
+                                        <h6>随访信息</h6>
+                                        <!-- 30天全因死亡 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">30天全因死亡</label>
+                                            <select class="form-select form-select-sm" id="death-30-days">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 30天心梗 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">30天心梗</label>
+                                            <select class="form-select form-select-sm" id="mi-30-days">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 30天卒中 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">30天卒中</label>
+                                            <select class="form-select form-select-sm" id="stroke-30-days">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 30天心衰再住院 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">30天心衰再住院</label>
+                                            <select class="form-select form-select-sm" id="hf-readmission-30-days">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 1年全因死亡 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">1年全因死亡</label>
+                                            <select class="form-select form-select-sm" id="death-1-year">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+                                        <!-- 1年心梗 -->
+                                        <div class="filter-item-inline">
+                                            <label class="filter-label">1年心梗</label>
+                                            <select class="form-select form-select-sm" id="mi-1-year">
+                                                <option value="">N/A</option>
+                                                <option value="true">是</option>
+                                                <option value="false">否</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- 其他随访信息展开/收起按钮 -->
+                                        <div class="additional-filters-toggle">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" data-bs-target="#additional-followup-filters" aria-expanded="false">
+                                                <i class="bi bi-chevron-down"></i> 更多随访信息
+                                            </button>
+                                        </div>
+
+                                        <!-- 其他随访信息（默认折叠） -->
+                                        <div class="collapse" id="additional-followup-filters">
+                                            <div class="additional-filters-content">
+                                                <!-- 随访时左心室射血分数 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时LVEF</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-lvef-min" placeholder="最小(%)" step="1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="followup-lvef-max" placeholder="最大(%)" step="1">
+                                                    </div>
+                                                </div>
+                                                <!-- 随访时NYHA分级 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时NYHA</label>
+                                                    <select class="form-select form-select-sm" id="followup-nyha">
+                                                        <option value="">N/A</option>
+                                                        <option value="I">I</option>
+                                                        <option value="II">II</option>
+                                                        <option value="III">III</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 随访时最大跨瓣压差 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时最大跨瓣压差</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-max-pg-min" placeholder="最小(mmHg)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="followup-max-pg-max" placeholder="最大(mmHg)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 随访时瓣口流速 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时瓣口流速</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-flow-velocity-min" placeholder="最小" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="followup-flow-velocity-max" placeholder="最大" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 随访时平均跨瓣压差 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时平均跨瓣压差</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-mean-pg-min" placeholder="最小(mmHg)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="followup-mean-pg-max" placeholder="最大(mmHg)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 随访时有效瓣口面积 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时EOA</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-eoa-min" placeholder="最小(cm²)" step="0.1">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="followup-eoa-max" placeholder="最大(cm²)" step="0.1">
+                                                    </div>
+                                                </div>
+                                                <!-- 随访时有效瓣口面积指数 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时EOAI</label>
+                                                    <div class="range-input-inline">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-eoai-min" placeholder="最小" step="0.01">
+                                                        <span>-</span>
+                                                        <input type="number" class="form-control form-control-sm" id="followup-eoai-max" placeholder="最大" step="0.01">
+                                                    </div>
+                                                </div>
+                                                <!-- 随访时是否瓣周漏 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时瓣周漏</label>
+                                                    <select class="form-select form-select-sm" id="followup-pvl-detected">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 随访时瓣周漏程度 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">随访时瓣周漏程度</label>
+                                                    <select class="form-select form-select-sm" id="followup-pvl-severity">
+                                                        <option value="">N/A</option>
+                                                        <option value="微量">微量</option>
+                                                        <option value="轻度">轻度</option>
+                                                        <option value="中度">中度</option>
+                                                        <option value="重度">重度</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 后续干预 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">后续干预</label>
+                                                    <select class="form-select form-select-sm" id="subsequent-intervention">
+                                                        <option value="">N/A</option>
+                                                        <option value="有">有</option>
+                                                        <option value="无">无</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 二次手术 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">二次手术</label>
+                                                    <select class="form-select form-select-sm" id="reoperation">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 术后中转开胸 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">术后中转开胸</label>
+                                                    <select class="form-select form-select-sm" id="conversion-to-open-surgery">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 术后起搏器植入 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">术后起搏器植入</label>
+                                                    <select class="form-select form-select-sm" id="pacemaker-post-tavi">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                                <!-- 术后心衰 -->
+                                                <div class="filter-item-inline">
+                                                    <label class="filter-label">术后心衰</label>
+                                                    <select class="form-select form-select-sm" id="heart-failure-post">
+                                                        <option value="">N/A</option>
+                                                        <option value="true">是</option>
+                                                        <option value="false">否</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                                <!-- 移除原来的筛选操作按钮区域 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容切换区域 -->
+        <div class="content-section">
+            <div class="content-toggle">
+                <div class="btn-group" role="group" aria-label="内容视图切换">
+                    <button type="button" class="btn btn-outline-primary active" id="chart-view-btn">
+                        <i class="bi bi-bar-chart-fill me-1"></i>图表分析
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" id="table-view-btn">
+                        <i class="bi bi-table me-1"></i>详细数据
+                    </button>
+                </div>
+            </div>
+
+            <!-- 图表视图 -->
+            <div class="content-view" id="chart-view">
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h5>年龄分布</h5>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="age-distribution-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h5>NYHA分级分布</h5>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="nyha-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h5>瓣膜直径分布</h5>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="valve-diameter-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h5>术前术后指标对比</h5>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="pre-post-comparison-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h5>并发症发生率</h5>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="complications-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <!-- 数据视图 -->
+            <div class="content-view" id="table-view" style="display: none;">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h5>病例数据</h5>
+                        <div class="table-actions">
+                            <button class="btn btn-sm btn-outline-primary" id="export-data">
+                                <i class="bi bi-download"></i> 导出数据
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>年龄</th>
+                                    <th>性别</th>
+                                    <th>瓣膜类型</th>
+                                    <th>瓣膜直径</th>
+                                    <th>术前平均压差</th>
+                                    <th>NYHA分级</th>
+                                    <th>瓣周漏</th>
+                                    <th>死亡</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="case-list">
+                                <!-- 数据将通过JavaScript动态加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页控件 -->
+                    <div class="pagination-container">
+                        <nav aria-label="病例分页">
+                            <ul class="pagination" id="pagination">
+                                <!-- 分页按钮将通过JavaScript动态生成 -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
+
     <!-- 病例详情模态框 -->
     <div class="modal fade" id="case-detail-modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <!-- 模态框头部 -->
                 <div class="modal-header">
                     <h5 class="modal-title">病例详情</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <!-- 模态框内容 -->
                 <div class="modal-body">
-                    <!-- 基本信息和手术方案 -->
-                    <div class="row">
-                        <!-- 基本信息 -->
-                        <div class="col-md-6">
-                            <h6>基本信息</h6>
-                            <table class="table">
-                                <tr>
-                                    <th>年龄</th>
-                                    <td id="modal-age"></td>
-                                </tr>
-                                <tr>
-                                    <th>性别</th>
-                                    <td id="modal-gender"></td>
-                                </tr>
-                                <tr>
-                                    <th>病症</th>
-                                    <td id="modal-case"></td>
-                                </tr>
-                                <tr>
-                                    <th>既往病史</th>
-                                    <td id="modal-history"></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <!-- 手术方案 -->
-                        <div class="col-md-6">
-                            <h6>手术方案</h6>
-                            <table class="table">
-                                <tr>
-                                    <th>瓣膜类型</th>
-                                    <td id="modal-valve-type"></td>
-                                </tr>
-                                <tr>
-                                    <th>瓣膜直径</th>
-                                    <td id="modal-valve-diameter"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- 术前信息和术后结果 -->
-                    <div class="row">
-                        <!-- 术前信息 -->
-                        <div class="col-md-6">
-                            <h6>术前信息</h6>
-                            <table class="table">
-                                <tr>
-                                    <th>平均跨瓣压差</th>
-                                    <td id="modal-pre-mean-gradient"></td>
-                                </tr>
-                                <tr>
-                                    <th>最大跨瓣压差</th>
-                                    <td id="modal-pre-peak-gradient"></td>
-                                </tr>
-                                <tr>
-                                    <th>瓣膜面积</th>
-                                    <td id="modal-pre-valve-area"></td>
-                                </tr>
-                                <tr>
-                                    <th>最大跨瓣流速</th>
-                                    <td id="modal-pre-max-velocity"></td>
-                                </tr>
-                                <tr>
-                                    <th>射血分数</th>
-                                    <td id="modal-pre-ef"></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <!-- 术后结果 -->
-                        <div class="col-md-6">
-                            <h6>术后结果</h6>
-                            <table class="table">
-                                <tr>
-                                    <th>死亡</th>
-                                    <td id="modal-death"></td>
-                                </tr>
-                                <tr>
-                                    <th>瓣周漏</th>
-                                    <td id="modal-leak"></td>
-                                </tr>
-                                <tr>
-                                    <th>术后平均跨瓣压差</th>
-                                    <td id="modal-post-mean-gradient"></td>
-                                </tr>
-                                <tr>
-                                    <th>术后最大跨瓣压差</th>
-                                    <td id="modal-post-peak-gradient"></td>
-                                </tr>
-                                <tr>
-                                    <th>术后瓣膜面积</th>
-                                    <td id="modal-post-valve-area"></td>
-                                </tr>
-                                <tr>
-                                    <th>术后最大跨瓣流速</th>
-                                    <td id="modal-post-max-velocity"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- 报告信息 -->
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <h6>报告信息</h6>
-                            <table class="table">
-                                <tr>
-                                    <th>文件查看</th>
-                                    <td>
-                                        <!-- PDF查看按钮 -->
-                                        <button id="open-pdf-btn" class="btn btn-sm btn-outline-primary me-2">
-                                            <i class="bi bi-file-earmark-pdf"></i> 查看PDF
-                                        </button>
-                                        <!-- 图片查看按钮 -->
-                                        <button id="view-images-btn" class="btn btn-sm btn-outline-info">
-                                            <i class="bi bi-images"></i> 查看详情
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>DOI</th>
-                                    <td id="modal-doi"></td>
-                                </tr>
-                                <tr>
-                                    <th>标题</th>
-                                    <td id="modal-title"></td>
-                                </tr>
-                            </table>
-                        </div>
+                    <!-- 病例详情内容 -->
+                    <div class="case-details" id="case-details-content">
+                        <!-- 详情内容将通过JavaScript动态填充 -->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -622,7 +1387,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./data/db_output.js"></script>
-    <!-- <script src="data.js"></script> -->
     <script src="app.js"></script>
 </body>
 </html> 
