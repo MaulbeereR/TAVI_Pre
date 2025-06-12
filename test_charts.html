@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图表筛选测试</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .filters { background: #f5f5f5; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
+        .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chart-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        canvas { max-height: 300px; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        .stat-value { font-size: 24px; font-weight: bold; color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TAVI图表筛选测试</h1>
+        
+        <!-- 统计卡片 -->
+        <div class="stats">
+            <div class="stat-card">
+                <h3>总病例数</h3>
+                <div class="stat-value" id="total-cases">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>筛选病例数</h3>
+                <div class="stat-value" id="filtered-cases">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>瓣周漏率</h3>
+                <div class="stat-value" id="leak-rate">0%</div>
+            </div>
+            <div class="stat-card">
+                <h3>死亡率</h3>
+                <div class="stat-value" id="death-rate">0%</div>
+            </div>
+        </div>
+        
+        <!-- 筛选器 -->
+        <div class="filters">
+            <h3>筛选条件</h3>
+            <label>年龄范围: </label>
+            <input type="number" id="age-min" placeholder="最小年龄" min="0" max="100">
+            <input type="number" id="age-max" placeholder="最大年龄" min="0" max="100">
+            
+            <label>NYHA分级: </label>
+            <select id="nyha-filter">
+                <option value="">全部</option>
+                <option value="I">I级</option>
+                <option value="II">II级</option>
+                <option value="III">III级</option>
+            </select>
+            
+            <button onclick="applyFilters()">应用筛选</button>
+            <button onclick="resetFilters()">重置</button>
+        </div>
+        
+        <!-- 图表 -->
+        <div class="charts">
+            <div class="chart-container">
+                <h3>年龄分布</h3>
+                <canvas id="age-chart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>NYHA分级分布</h3>
+                <canvas id="nyha-chart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>瓣膜尺寸分布</h3>
+                <canvas id="valve-chart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>并发症发生率</h3>
+                <canvas id="complications-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        let charts = {};
+        
+        // 初始化图表
+        function initCharts() {
+            // 年龄分布图
+            charts.age = new Chart(document.getElementById('age-chart'), {
+                type: 'bar',
+                data: { labels: [], datasets: [{ label: '病例数', data: [], backgroundColor: '#007bff' }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+            
+            // NYHA分级图
+            charts.nyha = new Chart(document.getElementById('nyha-chart'), {
+                type: 'pie',
+                data: { labels: [], datasets: [{ data: [], backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+            
+            // 瓣膜尺寸图
+            charts.valve = new Chart(document.getElementById('valve-chart'), {
+                type: 'bar',
+                data: { labels: [], datasets: [{ label: '病例数', data: [], backgroundColor: '#28a745' }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+            
+            // 并发症图
+            charts.complications = new Chart(document.getElementById('complications-chart'), {
+                type: 'bar',
+                data: { labels: [], datasets: [{ label: '发生率(%)', data: [], backgroundColor: '#dc3545' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+        }
+        
+        // 加载数据
+        async function loadData(filters = {}) {
+            try {
+                console.log('加载数据，筛选条件:', filters);
+                
+                // 加载统计数据
+                const statsResponse = await fetch(`${API_BASE_URL}/statistics`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filters })
+                });
+                const stats = await statsResponse.json();
+                updateStats(stats);
+                
+                // 加载图表数据
+                const chartsResponse = await fetch(`${API_BASE_URL}/charts`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filters })
+                });
+                const chartData = await chartsResponse.json();
+                updateCharts(chartData);
+                
+                console.log('数据加载完成:', { stats, chartData });
+                
+            } catch (error) {
+                console.error('数据加载失败:', error);
+                alert('数据加载失败: ' + error.message);
+            }
+        }
+        
+        // 更新统计数据
+        function updateStats(data) {
+            document.getElementById('total-cases').textContent = data.total_cases || 0;
+            document.getElementById('filtered-cases').textContent = data.filtered_cases || 0;
+            document.getElementById('leak-rate').textContent = data.pvl_rate || '0%';
+            document.getElementById('death-rate').textContent = data.death_rate || '0%';
+        }
+        
+        // 更新图表
+        function updateCharts(data) {
+            // 年龄分布
+            if (data.age_distribution) {
+                const labels = data.age_distribution.map(item => item.age_group);
+                const values = data.age_distribution.map(item => item.count);
+                charts.age.data.labels = labels;
+                charts.age.data.datasets[0].data = values;
+                charts.age.update();
+            }
+            
+            // NYHA分级
+            if (data.nyha_distribution) {
+                const labels = data.nyha_distribution.map(item => item.nyha_classification);
+                const values = data.nyha_distribution.map(item => item.count);
+                charts.nyha.data.labels = labels;
+                charts.nyha.data.datasets[0].data = values;
+                charts.nyha.update();
+            }
+            
+            // 瓣膜尺寸
+            if (data.valve_size_distribution) {
+                const labels = data.valve_size_distribution.map(item => item.thv_size + 'mm');
+                const values = data.valve_size_distribution.map(item => item.count);
+                charts.valve.data.labels = labels;
+                charts.valve.data.datasets[0].data = values;
+                charts.valve.update();
+            }
+            
+            // 并发症
+            if (data.complications) {
+                const labels = data.complications.map(item => item.complication);
+                const values = data.complications.map(item => item.rate);
+                charts.complications.data.labels = labels;
+                charts.complications.data.datasets[0].data = values;
+                charts.complications.update();
+            }
+        }
+        
+        // 应用筛选
+        function applyFilters() {
+            const filters = {};
+            
+            const ageMin = document.getElementById('age-min').value;
+            const ageMax = document.getElementById('age-max').value;
+            const nyha = document.getElementById('nyha-filter').value;
+            
+            if (ageMin) filters.age_min = parseInt(ageMin);
+            if (ageMax) filters.age_max = parseInt(ageMax);
+            if (nyha) filters.nyha_classification = [nyha];
+            
+            loadData(filters);
+        }
+        
+        // 重置筛选
+        function resetFilters() {
+            document.getElementById('age-min').value = '';
+            document.getElementById('age-max').value = '';
+            document.getElementById('nyha-filter').value = '';
+            loadData();
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            loadData(); // 加载初始数据
+        });
+    </script>
+</body>
+</html> 

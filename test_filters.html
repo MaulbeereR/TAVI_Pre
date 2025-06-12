@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>筛选功能测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .test-result { margin: 10px 0; padding: 10px; background: #f5f5f5; }
+        button { margin: 5px; padding: 8px 15px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>TAVI筛选功能测试</h1>
+    
+    <div class="test-section">
+        <h3>基线资料筛选测试</h3>
+        <button onclick="testBasicFilters()">测试基本筛选</button>
+        <button onclick="testExtendedBaseline()">测试扩展基线资料</button>
+        <div id="baseline-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>术前影像学评估筛选测试</h3>
+        <button onclick="testImagingFilters()">测试影像学筛选</button>
+        <div id="imaging-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>手术信息筛选测试</h3>
+        <button onclick="testSurgeryFilters()">测试手术信息筛选</button>
+        <div id="surgery-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>出院前评价筛选测试</h3>
+        <button onclick="testDischargeFilters()">测试出院前评价筛选</button>
+        <div id="discharge-result" class="test-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>随访信息筛选测试</h3>
+        <button onclick="testFollowupFilters()">测试随访信息筛选</button>
+        <div id="followup-result" class="test-result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        
+        async function testAPI(endpoint, filters, description) {
+            try {
+                const response = await fetch(`${API_BASE}/${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(filters)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                return {
+                    success: true,
+                    data: data,
+                    description: description
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    error: error.message,
+                    description: description
+                };
+            }
+        }
+        
+        function displayResult(elementId, results) {
+            const element = document.getElementById(elementId);
+            let html = '';
+            
+            results.forEach(result => {
+                const className = result.success ? 'success' : 'error';
+                html += `<div class="${className}">`;
+                html += `<strong>${result.description}:</strong> `;
+                if (result.success) {
+                    html += `成功 - 返回 ${result.data.total_count || result.data.length || '未知'} 条记录`;
+                } else {
+                    html += `失败 - ${result.error}`;
+                }
+                html += '</div>';
+            });
+            
+            element.innerHTML = html;
+        }
+        
+        async function testBasicFilters() {
+            const tests = [
+                {
+                    filters: { age_min: 70, age_max: 80 },
+                    description: '年龄筛选 (70-80岁)'
+                },
+                {
+                    filters: { gender: ['Male'] },
+                    description: '性别筛选 (男性)'
+                },
+                {
+                    filters: { atrial_fibrillation: true },
+                    description: '房颤筛选 (是)'
+                },
+                {
+                    filters: { nyha_classification: ['III'] },
+                    description: 'NYHA分级筛选 (III级)'
+                }
+            ];
+            
+            const results = [];
+            for (const test of tests) {
+                const result = await testAPI('data', test.filters, test.description);
+                results.push(result);
+            }
+            
+            displayResult('baseline-result', results);
+        }
+        
+        async function testExtendedBaseline() {
+            const tests = [
+                {
+                    filters: { diabetes_mellitus: true },
+                    description: '糖尿病筛选'
+                },
+                {
+                    filters: { hypertension: true },
+                    description: '高血压筛选'
+                },
+                {
+                    filters: { mi_history: true },
+                    description: '心梗史筛选'
+                },
+                {
+                    filters: { sts_score_min: 5, sts_score_max: 10 },
+                    description: 'STS评分筛选 (5-10)'
+                }
+            ];
+            
+            const results = [];
+            for (const test of tests) {
+                const result = await testAPI('data', test.filters, test.description);
+                results.push(result);
+            }
+            
+            displayResult('baseline-result', results);
+        }
+        
+        async function testImagingFilters() {
+            const tests = [
+                {
+                    filters: { lvef_min: 50, lvef_max: 70 },
+                    description: 'LVEF筛选 (50-70%)'
+                },
+                {
+                    filters: { aortic_valve_mean_pg_min: 40, aortic_valve_mean_pg_max: 60 },
+                    description: '平均跨瓣压差筛选 (40-60mmHg)'
+                },
+                {
+                    filters: { annular_area_min: 4, annular_area_max: 6 },
+                    description: '瓣环面积筛选 (4-6cm²)'
+                }
+            ];
+            
+            const results = [];
+            for (const test of tests) {
+                const result = await testAPI('data', test.filters, test.description);
+                results.push(result);
+            }
+            
+            displayResult('imaging-result', results);
+        }
+        
+        async function testSurgeryFilters() {
+            const tests = [
+                {
+                    filters: { transfemoral_access: true },
+                    description: '经股动脉入路筛选'
+                },
+                {
+                    filters: { thv_size: [26] },
+                    description: '瓣膜尺寸筛选 (26mm)'
+                },
+                {
+                    filters: { immediate_pvl_occurred: true },
+                    description: '术后即刻瓣周漏筛选'
+                }
+            ];
+            
+            const results = [];
+            for (const test of tests) {
+                const result = await testAPI('data', test.filters, test.description);
+                results.push(result);
+            }
+            
+            displayResult('surgery-result', results);
+        }
+        
+        async function testDischargeFilters() {
+            const tests = [
+                {
+                    filters: { death_before_discharge: true },
+                    description: '出院前死亡筛选'
+                },
+                {
+                    filters: { major_bleeding: true },
+                    description: '大出血筛选'
+                },
+                {
+                    filters: { pacemaker_implantation: true },
+                    description: '起搏器植入筛选'
+                }
+            ];
+            
+            const results = [];
+            for (const test of tests) {
+                const result = await testAPI('data', test.filters, test.description);
+                results.push(result);
+            }
+            
+            displayResult('discharge-result', results);
+        }
+        
+        async function testFollowupFilters() {
+            const tests = [
+                {
+                    filters: { mortality_30d: true },
+                    description: '30天死亡率筛选'
+                },
+                {
+                    filters: { mortality_1y: true },
+                    description: '1年死亡率筛选'
+                },
+                {
+                    filters: { pvl_detected_last_followup: true },
+                    description: '随访时瓣周漏筛选'
+                }
+            ];
+            
+            const results = [];
+            for (const test of tests) {
+                const result = await testAPI('data', test.filters, test.description);
+                results.push(result);
+            }
+            
+            displayResult('followup-result', results);
+        }
+    </script>
+</body>
+</html> 

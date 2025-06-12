@@ -97,7 +97,7 @@
                             <button type="button" class="btn btn-primary btn-sm me-2" id="apply-important-filters">
                                 <i class="bi bi-funnel"></i> 应用筛选
                             </button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm me-3" id="reset-important-filters">
+                            <button type="button" class="btn btn-secondary btn-sm me-3" id="reset-important-filters">
                                 <i class="bi bi-arrow-clockwise"></i> 重置
                             </button>
                             <i class="bi bi-chevron-down toggle-icon"></i>
@@ -113,7 +113,7 @@
                                         <h6>基线资料</h6>
                                         <!-- 年龄 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">年龄</label>
+                                            <label class="filter-label">年龄 岁</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="age-min" placeholder="最小">
                                                 <span>-</span>
@@ -136,7 +136,7 @@
                                 </div>
                                         <!-- 体重指数BMI -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">BMI</label>
+                                            <label class="filter-label">BMI kg/m²</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="bmi-min" placeholder="最小">
                                                 <span>-</span>
@@ -203,7 +203,7 @@
                                         </div>
                                         <!-- STS评分 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">STS评分</label>
+                                            <label class="filter-label">STS评分 %</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="sts-score-min" placeholder="最小" step="0.1">
                                                 <span>-</span>
@@ -212,7 +212,7 @@
                                         </div>
                                         <!-- NT-proBNP -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">NT-proBNP</label>
+                                            <label class="filter-label">NT-proBNP pg/ml</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="nt-probnp-min" placeholder="最小">
                                                 <span>-</span>
@@ -232,11 +232,11 @@
                                             <div class="additional-filters-content">
                                                 <!-- 体表面积 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">体表面积</label>
+                                                    <label class="filter-label">体表面积 m²</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="surface-area-min" placeholder="最小(m²)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="surface-area-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="surface-area-max" placeholder="最大(m²)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="surface-area-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 糖尿病 -->
@@ -376,7 +376,7 @@
                                         <h6>术前影像学评估</h6>
                                         <!-- LVEF -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">LVEF</label>
+                                            <label class="filter-label">LVEF %</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="lvef-min" placeholder="最小">
                                                 <span>-</span>
@@ -385,7 +385,7 @@
                                             </div>
                                         <!-- 最大跨瓣压差 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">最大跨瓣压差</label>
+                                            <label class="filter-label">最大跨瓣压差 mmHg</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="max-gradient-min" placeholder="最小">
                                                 <span>-</span>
@@ -394,7 +394,7 @@
                                             </div>
                                         <!-- 平均跨瓣压差 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">平均跨瓣压差</label>
+                                            <label class="filter-label">平均跨瓣压差 mmHg</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="mean-gradient-min" placeholder="最小">
                                                 <span>-</span>
@@ -403,7 +403,7 @@
                                             </div>
                                         <!-- 有效瓣口面积 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">有效瓣口面积</label>
+                                            <label class="filter-label">有效瓣口面积 cm²</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="eoa-min" placeholder="最小">
                                                 <span>-</span>
@@ -412,7 +412,7 @@
                                             </div>
                                         <!-- 瓣环面积 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">瓣环面积</label>
+                                            <label class="filter-label">瓣环面积 cm²</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="annular-area-min" placeholder="最小">
                                                 <span>-</span>
@@ -421,7 +421,7 @@
                                             </div>
                                         <!-- 瓣环平均直径 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">瓣环平均直径</label>
+                                            <label class="filter-label">瓣环平均直径 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="annular-mean-diameter-min" placeholder="最小">
                                                 <span>-</span>
@@ -430,7 +430,7 @@
                                             </div>
                                         <!-- 瓣环最大直径 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">瓣环最大直径</label>
+                                            <label class="filter-label">瓣环最大直径 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="annular-max-diameter-min" placeholder="最小">
                                                 <span>-</span>
@@ -439,7 +439,7 @@
                                             </div>
                                         <!-- 瓣环周径 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">瓣环周径</label>
+                                            <label class="filter-label">瓣环周径 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="annular-perimeter-min" placeholder="最小">
                                                 <span>-</span>
@@ -448,7 +448,7 @@
                                             </div>
                                         <!-- 瓣口流速 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">瓣口流速</label>
+                                            <label class="filter-label">瓣口流速 m/s</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="valve-velocity-min" placeholder="最小">
                                                 <span>-</span>
@@ -457,7 +457,7 @@
                                             </div>
                                         <!-- 窦管交界高度 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">窦管交界高度</label>
+                                            <label class="filter-label">窦管交界高度 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="stj-height-min" placeholder="最小">
                                                 <span>-</span>
@@ -466,7 +466,7 @@
                                             </div>
                                         <!-- 窦管交界直径 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">窦管交界直径</label>
+                                            <label class="filter-label">窦管交界直径 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="stj-diameter-min" placeholder="最小">
                                                 <span>-</span>
@@ -475,7 +475,7 @@
                                             </div>
                                         <!-- 窦部直径 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">窦部直径</label>
+                                            <label class="filter-label">窦部直径 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="sinus-diameter-min" placeholder="最小">
                                                 <span>-</span>
@@ -484,7 +484,7 @@
                                         </div>
                                         <!-- 升主动脉直径 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">升主动脉直径</label>
+                                            <label class="filter-label">升主动脉直径 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="ascending-aorta-diameter-min" placeholder="最小">
                                                 <span>-</span>
@@ -502,7 +502,7 @@
                                         </div>
                                         <!-- LVOT直径 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">LVOT直径</label>
+                                            <label class="filter-label">LVOT直径 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="lvot-diameter-min" placeholder="最小">
                                                 <span>-</span>
@@ -511,7 +511,7 @@
                                         </div>
                                         <!-- LVOT钙化体积 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">LVOT钙化体积</label>
+                                            <label class="filter-label">LVOT钙化体积 mm³</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="lvot-calcification-min" placeholder="最小">
                                                 <span>-</span>
@@ -520,7 +520,7 @@
                                         </div>
                                         <!-- 左冠脉高度 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">左冠脉高度</label>
+                                            <label class="filter-label">左冠脉高度 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="lca-height-min" placeholder="最小">
                                                 <span>-</span>
@@ -529,7 +529,7 @@
                                         </div>
                                         <!-- 右冠脉高度 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">右冠脉高度</label>
+                                            <label class="filter-label">右冠脉高度 mm</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="rca-height-min" placeholder="最小">
                                                 <span>-</span>
@@ -549,7 +549,7 @@
                                             <div class="additional-filters-content">
                                                 <!-- 有效瓣口面积指数 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">有效瓣口面积指数</label>
+                                                    <label class="filter-label">有效瓣口面积指数 cm²/m²</label>
                                                     <div class="range-input-inline">
                                                         <input type="number" class="form-control form-control-sm" id="eoai-min" placeholder="最小" step="0.01">
                                                         <span>-</span>
@@ -576,29 +576,29 @@
                                             </div>
                                                 <!-- 左心室舒张末期容积 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">左心室舒张末期容积</label>
+                                                    <label class="filter-label">左心室舒张末期容积 ml</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="lvedv-min" placeholder="最小(ml)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="lvedv-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="lvedv-max" placeholder="最大(ml)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="lvedv-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 左心室收缩末期容积 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">左心室收缩末期容积</label>
+                                                    <label class="filter-label">左心室收缩末期容积 ml</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="lvesv-min" placeholder="最小(ml)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="lvesv-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="lvesv-max" placeholder="最大(ml)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="lvesv-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 瓣环最小直径 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">瓣环最小直径</label>
+                                                    <label class="filter-label">瓣环最小直径 mm</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="annular-min-diameter-min" placeholder="最小(mm)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="annular-min-diameter-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="annular-min-diameter-max" placeholder="最大(mm)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="annular-min-diameter-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 瓣环偏心率 -->
@@ -612,38 +612,38 @@
                                                 </div>
                                                 <!-- 源自面积的瓣环直径 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">源自面积的瓣环直径</label>
+                                                    <label class="filter-label">源自面积的瓣环直径 mm</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="area-derived-diameter-min" placeholder="最小(mm)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="area-derived-diameter-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="area-derived-diameter-max" placeholder="最大(mm)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="area-derived-diameter-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 源自周长的瓣环直径 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">源自周长的瓣环直径</label>
+                                                    <label class="filter-label">源自周长的瓣环直径 mm</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="perimeter-derived-diameter-min" placeholder="最小(mm)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="perimeter-derived-diameter-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="perimeter-derived-diameter-max" placeholder="最大(mm)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="perimeter-derived-diameter-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 瓣环上钙化 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">瓣环上钙化</label>
+                                                    <label class="filter-label">瓣环上钙化 mm³</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="supraannular-calcification-min" placeholder="最小(mm³)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="supraannular-calcification-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="supraannular-calcification-max" placeholder="最大(mm³)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="supraannular-calcification-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 瓣环至二尖瓣前叶距离 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">瓣环至二尖瓣前叶距离</label>
+                                                    <label class="filter-label">瓣环至二尖瓣前叶距离 mm</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="annulus-mitral-distance-min" placeholder="最小(mm)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="annulus-mitral-distance-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="annulus-mitral-distance-max" placeholder="最大(mm)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="annulus-mitral-distance-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -684,7 +684,7 @@
                                         </div>
                                         <!-- 瓣膜尺寸 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">瓣膜尺寸</label>
+                                            <label class="filter-label">瓣膜尺寸 mm</label>
                                             <div class="checkbox-group-inline">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="checkbox" value="23" id="valve-size-23">
@@ -721,7 +721,7 @@
                                         </div>
                                         <!-- 术后即刻跨瓣压差 -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">术后即刻跨瓣压差</label>
+                                            <label class="filter-label">术后即刻跨瓣压差 mmHg</label>
                                             <div class="range-input-inline">
                                                 <input type="number" class="form-control form-control-sm" id="post-mean-pg-min" placeholder="最小">
                                                 <span>-</span>
@@ -730,7 +730,7 @@
                                         </div>
                                         <!-- 跨瓣压差≥20mmHg -->
                                         <div class="filter-item-inline">
-                                            <label class="filter-label">跨瓣压差≥20mmHg</label>
+                                            <label class="filter-label">跨瓣压差≥20 mmHg</label>
                                             <select class="form-select form-select-sm" id="mean-pg-gte-20">
                                                 <option value="">N/A</option>
                                                 <option value="true">是</option>
@@ -850,38 +850,38 @@
                                                 </div>
                                                 <!-- 总术时 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">总术时</label>
+                                                    <label class="filter-label">总术时 min</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="total-procedure-time-min" placeholder="最小(分钟)">
+                                                        <input type="number" class="form-control form-control-sm" id="total-procedure-time-min" placeholder="最小">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="total-procedure-time-max" placeholder="最大(分钟)">
+                                                        <input type="number" class="form-control form-control-sm" id="total-procedure-time-max" placeholder="最大">
                                                     </div>
                                                 </div>
                                                 <!-- 造影时间 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">造影时间</label>
+                                                    <label class="filter-label">造影时间 min</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="fluoroscopy-time-min" placeholder="最小(分钟)">
+                                                        <input type="number" class="form-control form-control-sm" id="fluoroscopy-time-min" placeholder="最小">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="fluoroscopy-time-max" placeholder="最大(分钟)">
+                                                        <input type="number" class="form-control form-control-sm" id="fluoroscopy-time-max" placeholder="最大">
                                                     </div>
                                                 </div>
                                                 <!-- 造影量 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">造影量</label>
+                                                    <label class="filter-label">造影量 ml</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="contrast-volume-min" placeholder="最小(ml)">
+                                                        <input type="number" class="form-control form-control-sm" id="contrast-volume-min" placeholder="最小">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="contrast-volume-max" placeholder="最大(ml)">
+                                                        <input type="number" class="form-control form-control-sm" id="contrast-volume-max" placeholder="最大">
                                                     </div>
                                                 </div>
                                                 <!-- 术后即刻左心室射血分数 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">术后即刻LVEF</label>
+                                                    <label class="filter-label">术后即刻LVEF %</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="immediate-lvef-min" placeholder="最小(%)" step="1">
+                                                        <input type="number" class="form-control form-control-sm" id="immediate-lvef-min" placeholder="最小" step="1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="immediate-lvef-max" placeholder="最大(%)" step="1">
+                                                        <input type="number" class="form-control form-control-sm" id="immediate-lvef-max" placeholder="最大" step="1">
                                                     </div>
                                                 </div>
                                                 <!-- 过大尺寸 -->
@@ -1008,16 +1008,16 @@
                                                 </div>
                                                 <!-- 出院前最大主动脉瓣跨瓣压差 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">出院前最大跨瓣压差</label>
+                                                    <label class="filter-label">出院前最大跨瓣压差 mmHg</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="discharge-max-pg-min" placeholder="最小(mmHg)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-max-pg-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="discharge-max-pg-max" placeholder="最大(mmHg)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-max-pg-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 出院前主动脉瓣口流速 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">出院前瓣口流速</label>
+                                                    <label class="filter-label">出院前瓣口流速 m/s</label>
                                                     <div class="range-input-inline">
                                                         <input type="number" class="form-control form-control-sm" id="discharge-flow-velocity-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
@@ -1026,16 +1026,16 @@
                                                 </div>
                                                 <!-- 出院前平均主动脉瓣跨瓣压差 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">出院前平均跨瓣压差</label>
+                                                    <label class="filter-label">出院前平均跨瓣压差 mmHg</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="discharge-mean-pg-min" placeholder="最小(mmHg)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-mean-pg-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="discharge-mean-pg-max" placeholder="最大(mmHg)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="discharge-mean-pg-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 出院前实测有效瓣口面积指数 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">出院前EOAI</label>
+                                                    <label class="filter-label">出院前EOAI cm²/m²</label>
                                                     <div class="range-input-inline">
                                                         <input type="number" class="form-control form-control-sm" id="discharge-eoai-min" placeholder="最小" step="0.01">
                                                         <span>-</span>
@@ -1118,11 +1118,11 @@
                                             <div class="additional-filters-content">
                                                 <!-- 随访时左心室射血分数 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">随访时LVEF</label>
+                                                    <label class="filter-label">随访时LVEF %</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="followup-lvef-min" placeholder="最小(%)" step="1">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-lvef-min" placeholder="最小" step="1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="followup-lvef-max" placeholder="最大(%)" step="1">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-lvef-max" placeholder="最大" step="1">
                                                     </div>
                                                 </div>
                                                 <!-- 随访时NYHA分级 -->
@@ -1137,16 +1137,16 @@
                                                 </div>
                                                 <!-- 随访时最大跨瓣压差 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">随访时最大跨瓣压差</label>
+                                                    <label class="filter-label">随访时最大跨瓣压差 mmHg</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="followup-max-pg-min" placeholder="最小(mmHg)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-max-pg-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="followup-max-pg-max" placeholder="最大(mmHg)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-max-pg-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 随访时瓣口流速 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">随访时瓣口流速</label>
+                                                    <label class="filter-label">随访时瓣口流速 m/s</label>
                                                     <div class="range-input-inline">
                                                         <input type="number" class="form-control form-control-sm" id="followup-flow-velocity-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
@@ -1155,25 +1155,25 @@
                                                 </div>
                                                 <!-- 随访时平均跨瓣压差 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">随访时平均跨瓣压差</label>
+                                                    <label class="filter-label">随访时平均跨瓣压差 mmHg</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="followup-mean-pg-min" placeholder="最小(mmHg)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-mean-pg-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="followup-mean-pg-max" placeholder="最大(mmHg)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-mean-pg-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 随访时有效瓣口面积 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">随访时EOA</label>
+                                                    <label class="filter-label">随访时EOA cm²</label>
                                                     <div class="range-input-inline">
-                                                        <input type="number" class="form-control form-control-sm" id="followup-eoa-min" placeholder="最小(cm²)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-eoa-min" placeholder="最小" step="0.1">
                                                         <span>-</span>
-                                                        <input type="number" class="form-control form-control-sm" id="followup-eoa-max" placeholder="最大(cm²)" step="0.1">
+                                                        <input type="number" class="form-control form-control-sm" id="followup-eoa-max" placeholder="最大" step="0.1">
                                                     </div>
                                                 </div>
                                                 <!-- 随访时有效瓣口面积指数 -->
                                                 <div class="filter-item-inline">
-                                                    <label class="filter-label">随访时EOAI</label>
+                                                    <label class="filter-label">随访时EOAI cm²/m²</label>
                                                     <div class="range-input-inline">
                                                         <input type="number" class="form-control form-control-sm" id="followup-eoai-min" placeholder="最小" step="0.01">
                                                         <span>-</span>
@@ -1262,13 +1262,20 @@
         <!-- 内容切换区域 -->
         <div class="content-section">
             <div class="content-toggle">
-                <div class="btn-group" role="group" aria-label="内容视图切换">
-                    <button type="button" class="btn btn-outline-primary active" id="chart-view-btn">
-                        <i class="bi bi-bar-chart-fill me-1"></i>图表分析
-                    </button>
-                    <button type="button" class="btn btn-outline-primary" id="table-view-btn">
-                        <i class="bi bi-table me-1"></i>详细数据
-                    </button>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group" role="group" aria-label="内容视图切换">
+                        <button type="button" class="btn btn-outline-primary active" id="chart-view-btn">
+                            <i class="bi bi-bar-chart-fill me-1"></i>图表分析
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" id="table-view-btn">
+                            <i class="bi bi-table me-1"></i>详细数据
+                        </button>
+                    </div>
+                    <div class="chart-controls">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="change-color-scheme" title="切换配色方案">
+                            <i class="bi bi-palette me-1"></i>换色
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -1386,7 +1393,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./data/db_output.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="color-palette.js"></script>
     <script src="app.js"></script>
 </body>
 </html> 

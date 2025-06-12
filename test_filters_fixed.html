@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAVI筛选功能测试 - 修复版</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .test-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .test-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .test-info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">TAVI筛选功能测试 - 修复版</h1>
+        
+        <!-- 基线资料扩展字段测试 -->
+        <div class="test-section">
+            <h3>1. 基线资料扩展字段测试</h3>
+            <button class="btn btn-primary" onclick="testBaselineExtended()">测试基线资料扩展字段</button>
+            <div id="baseline-extended-result" class="test-result"></div>
+        </div>
+        
+        <!-- 术前影像学评估扩展字段测试 -->
+        <div class="test-section">
+            <h3>2. 术前影像学评估扩展字段测试</h3>
+            <button class="btn btn-primary" onclick="testImagingExtended()">测试术前影像学扩展字段</button>
+            <div id="imaging-extended-result" class="test-result"></div>
+        </div>
+        
+        <!-- 手术信息扩展字段测试 -->
+        <div class="test-section">
+            <h3>3. 手术信息扩展字段测试</h3>
+            <button class="btn btn-primary" onclick="testProcedureExtended()">测试手术信息扩展字段</button>
+            <div id="procedure-extended-result" class="test-result"></div>
+        </div>
+        
+        <!-- 出院前评价扩展字段测试 -->
+        <div class="test-section">
+            <h3>4. 出院前评价扩展字段测试</h3>
+            <button class="btn btn-primary" onclick="testDischargeExtended()">测试出院前评价扩展字段</button>
+            <div id="discharge-extended-result" class="test-result"></div>
+        </div>
+        
+        <!-- 随访信息扩展字段测试 -->
+        <div class="test-section">
+            <h3>5. 随访信息扩展字段测试</h3>
+            <button class="btn btn-primary" onclick="testFollowupExtended()">测试随访信息扩展字段</button>
+            <div id="followup-extended-result" class="test-result"></div>
+        </div>
+        
+        <!-- 综合测试 -->
+        <div class="test-section">
+            <h3>6. 综合筛选测试</h3>
+            <button class="btn btn-success" onclick="testCombinedFilters()">测试多字段组合筛选</button>
+            <div id="combined-result" class="test-result"></div>
+        </div>
+        
+        <!-- 全部测试 -->
+        <div class="test-section">
+            <h3>7. 运行所有测试</h3>
+            <button class="btn btn-warning" onclick="runAllTests()">运行所有测试</button>
+            <div id="all-tests-result" class="test-result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        // 测试基线资料扩展字段
+        async function testBaselineExtended() {
+            const resultDiv = document.getElementById('baseline-extended-result');
+            resultDiv.innerHTML = '<div class="test-info">正在测试基线资料扩展字段...</div>';
+            
+            try {
+                // 测试糖尿病筛选
+                const diabetesFilter = { diabetes_mellitus: true };
+                const diabetesResult = await testFilter(diabetesFilter, '糖尿病患者');
+                
+                // 测试高血压筛选
+                const hypertensionFilter = { hypertension: true };
+                const hypertensionResult = await testFilter(hypertensionFilter, '高血压患者');
+                
+                // 测试药物筛选
+                const medicationFilter = { acei_arb: true, beta_blocker: true };
+                const medicationResult = await testFilter(medicationFilter, 'ACEI/ARB + Beta受体阻滞剂');
+                
+                // 测试体表面积范围
+                const surfaceAreaFilter = { surface_area_min: 1.5, surface_area_max: 2.0 };
+                const surfaceAreaResult = await testFilter(surfaceAreaFilter, '体表面积1.5-2.0m²');
+                
+                const results = [diabetesResult, hypertensionResult, medicationResult, surfaceAreaResult];
+                const successCount = results.filter(r => r.success).length;
+                
+                resultDiv.innerHTML = `
+                    <div class="test-${successCount === results.length ? 'success' : 'error'}">
+                        基线资料扩展字段测试完成: ${successCount}/${results.length} 通过
+                        <ul>
+                            ${results.map(r => `<li>${r.name}: ${r.success ? '✓' : '✗'} (${r.count}例)</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-error">测试失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 测试术前影像学评估扩展字段
+        async function testImagingExtended() {
+            const resultDiv = document.getElementById('imaging-extended-result');
+            resultDiv.innerHTML = '<div class="test-info">正在测试术前影像学评估扩展字段...</div>';
+            
+            try {
+                // 测试瓣环参数
+                const annularFilter = { annular_area_min: 3.0, annular_mean_diameter_min: 20.0 };
+                const annularResult = await testFilter(annularFilter, '瓣环面积≥3.0cm²且平均直径≥20mm');
+                
+                // 测试钙化参数
+                const calcificationFilter = { supraannular_calcification_min: 100 };
+                const calcificationResult = await testFilter(calcificationFilter, '瓣环上钙化≥100mm³');
+                
+                // 测试冠脉高度
+                const coronaryFilter = { left_coronary_height_min: 10.0, right_coronary_height_min: 10.0 };
+                const coronaryResult = await testFilter(coronaryFilter, '左右冠脉高度均≥10mm');
+                
+                // 测试LVOT参数
+                const lvotFilter = { lvot_diameter_min: 20.0, lvot_calcification_max: 500 };
+                const lvotResult = await testFilter(lvotFilter, 'LVOT直径≥20mm且钙化≤500mm³');
+                
+                const results = [annularResult, calcificationResult, coronaryResult, lvotResult];
+                const successCount = results.filter(r => r.success).length;
+                
+                resultDiv.innerHTML = `
+                    <div class="test-${successCount === results.length ? 'success' : 'error'}">
+                        术前影像学评估扩展字段测试完成: ${successCount}/${results.length} 通过
+                        <ul>
+                            ${results.map(r => `<li>${r.name}: ${r.success ? '✓' : '✗'} (${r.count}例)</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-error">测试失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 测试手术信息扩展字段
+        async function testProcedureExtended() {
+            const resultDiv = document.getElementById('procedure-extended-result');
+            resultDiv.innerHTML = '<div class="test-info">正在测试手术信息扩展字段...</div>';
+            
+            try {
+                // 测试预扩张和后扩张
+                const dilationFilter = { pre_dilation: true, post_dilation: false };
+                const dilationResult = await testFilter(dilationFilter, '预扩张但未后扩张');
+                
+                // 测试手术时间
+                const timeFilter = { total_procedure_time_min: 60, fluoroscopy_time_max: 30 };
+                const timeResult = await testFilter(timeFilter, '总术时≥60分钟且造影时间≤30分钟');
+                
+                // 测试并发症
+                const complicationFilter = { prosthesis_malposition: true, annular_rupture: false };
+                const complicationResult = await testFilter(complicationFilter, '严重错位但无瓣环撕裂');
+                
+                // 测试术后即刻参数
+                const immediateFilter = { immediate_lvef_min: 50, immediate_mean_pg_max: 15 };
+                const immediateResult = await testFilter(immediateFilter, '术后即刻LVEF≥50%且跨瓣压差≤15mmHg');
+                
+                const results = [dilationResult, timeResult, complicationResult, immediateResult];
+                const successCount = results.filter(r => r.success).length;
+                
+                resultDiv.innerHTML = `
+                    <div class="test-${successCount === results.length ? 'success' : 'error'}">
+                        手术信息扩展字段测试完成: ${successCount}/${results.length} 通过
+                        <ul>
+                            ${results.map(r => `<li>${r.name}: ${r.success ? '✓' : '✗'} (${r.count}例)</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-error">测试失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 测试出院前评价扩展字段
+        async function testDischargeExtended() {
+            const resultDiv = document.getElementById('discharge-extended-result');
+            resultDiv.innerHTML = '<div class="test-info">正在测试出院前评价扩展字段...</div>';
+            
+            try {
+                // 测试并发症组合
+                const complicationFilter = { aki: false, major_vascular_complication: false, mi_ami: false };
+                const complicationResult = await testFilter(complicationFilter, '无急性肾衰、血管并发症和心梗');
+                
+                // 测试出院前血流动力学
+                const hemodynamicFilter = { max_pg_max: 30, flow_velocity_max: 3.0 };
+                const hemodynamicResult = await testFilter(hemodynamicFilter, '出院前最大压差≤30mmHg且流速≤3.0m/s');
+                
+                // 测试瓣周漏
+                const pvlFilter = { pvl_detected: true, pvl_severity: '轻度' };
+                const pvlResult = await testFilter(pvlFilter, '出院前轻度瓣周漏');
+                
+                const results = [complicationResult, hemodynamicResult, pvlResult];
+                const successCount = results.filter(r => r.success).length;
+                
+                resultDiv.innerHTML = `
+                    <div class="test-${successCount === results.length ? 'success' : 'error'}">
+                        出院前评价扩展字段测试完成: ${successCount}/${results.length} 通过
+                        <ul>
+                            ${results.map(r => `<li>${r.name}: ${r.success ? '✓' : '✗'} (${r.count}例)</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-error">测试失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 测试随访信息扩展字段
+        async function testFollowupExtended() {
+            const resultDiv = document.getElementById('followup-extended-result');
+            resultDiv.innerHTML = '<div class="test-info">正在测试随访信息扩展字段...</div>';
+            
+            try {
+                // 测试30天事件
+                const thirtyDayFilter = { mi_30d: false, stroke_30d: false, hf_readmission_30d: false };
+                const thirtyDayResult = await testFilter(thirtyDayFilter, '30天无心梗、卒中、心衰再住院');
+                
+                // 测试随访血流动力学
+                const followupHemoFilter = { lvef_last_followup_min: 55, max_pg_last_followup_max: 25 };
+                const followupHemoResult = await testFilter(followupHemoFilter, '随访LVEF≥55%且最大压差≤25mmHg');
+                
+                // 测试后续干预
+                const interventionFilter = { subsequent_intervention: false, reoperation: false };
+                const interventionResult = await testFilter(interventionFilter, '无后续干预和二次手术');
+                
+                // 测试随访瓣周漏
+                const followupPvlFilter = { pvl_detected_last_followup: false };
+                const followupPvlResult = await testFilter(followupPvlFilter, '随访无瓣周漏');
+                
+                const results = [thirtyDayResult, followupHemoResult, interventionResult, followupPvlResult];
+                const successCount = results.filter(r => r.success).length;
+                
+                resultDiv.innerHTML = `
+                    <div class="test-${successCount === results.length ? 'success' : 'error'}">
+                        随访信息扩展字段测试完成: ${successCount}/${results.length} 通过
+                        <ul>
+                            ${results.map(r => `<li>${r.name}: ${r.success ? '✓' : '✗'} (${r.count}例)</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-error">测试失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 测试组合筛选
+        async function testCombinedFilters() {
+            const resultDiv = document.getElementById('combined-result');
+            resultDiv.innerHTML = '<div class="test-info">正在测试多字段组合筛选...</div>';
+            
+            try {
+                // 复杂组合筛选：高危患者
+                const highRiskFilter = {
+                    age_min: 75,
+                    diabetes_mellitus: true,
+                    lvef_max: 50,
+                    aortic_valve_mean_pg_min: 40,
+                    sts_score_min: 8.0
+                };
+                const highRiskResult = await testFilter(highRiskFilter, '高危患者(年龄≥75岁+糖尿病+LVEF≤50%+平均压差≥40mmHg+STS≥8分)');
+                
+                // 理想结果患者
+                const idealFilter = {
+                    mortality_30d: false,
+                    mortality_1y: false,
+                    immediate_pvl_occurred: false,
+                    pvl_detected_last_followup: false,
+                    major_bleeding: false,
+                    stroke_before_discharge: false
+                };
+                const idealResult = await testFilter(idealFilter, '理想结果患者(无死亡、瓣周漏、大出血、卒中)');
+                
+                const results = [highRiskResult, idealResult];
+                const successCount = results.filter(r => r.success).length;
+                
+                resultDiv.innerHTML = `
+                    <div class="test-${successCount === results.length ? 'success' : 'error'}">
+                        组合筛选测试完成: ${successCount}/${results.length} 通过
+                        <ul>
+                            ${results.map(r => `<li>${r.name}: ${r.success ? '✓' : '✗'} (${r.count}例)</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-error">测试失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 运行所有测试
+        async function runAllTests() {
+            const resultDiv = document.getElementById('all-tests-result');
+            resultDiv.innerHTML = '<div class="test-info">正在运行所有测试...</div>';
+            
+            try {
+                await testBaselineExtended();
+                await testImagingExtended();
+                await testProcedureExtended();
+                await testDischargeExtended();
+                await testFollowupExtended();
+                await testCombinedFilters();
+                
+                resultDiv.innerHTML = '<div class="test-success">所有测试已完成！请查看各个测试部分的详细结果。</div>';
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="test-error">运行测试时出错: ${error.message}</div>`;
+            }
+        }
+        
+        // 通用测试函数
+        async function testFilter(filters, description) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/data`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ filters })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                return {
+                    name: description,
+                    success: true,
+                    count: data.total || 0,
+                    data: data
+                };
+            } catch (error) {
+                return {
+                    name: description,
+                    success: false,
+                    count: 0,
+                    error: error.message
+                };
+            }
+        }
+    </script>
+</body>
+</html> 
