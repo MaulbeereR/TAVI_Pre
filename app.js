@@ -1483,3 +1483,22 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style); 
+
+// === RAGFlow 智能问答悬浮窗控制逻辑 ===
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. 找到我们在 HTML 里添加的按钮和聊天窗口
+    const toggleBtn = document.getElementById('ragflow-chat-toggle-btn');
+    const chatContainer = document.getElementById('ragflow-chat-container');
+
+    // 2. 确保这两个元素都存在，防止出错
+    if (toggleBtn && chatContainer) {
+    
+        // 3. 给按钮添加一个点击事件
+        toggleBtn.addEventListener('click', function() {
+            // 每次点击时，切换聊天窗口的 'show' 类
+            // 如果有 'show' 类，就移除它；如果没有，就添加它。
+            // 这会触发我们在 CSS 里定义的显示/隐藏动画
+            chatContainer.classList.toggle('show');
+        });
+    }
+});
