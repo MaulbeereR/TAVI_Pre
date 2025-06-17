@@ -117,6 +117,7 @@ class TaviDataAPI:
     def build_where_clause(self, filters):
         """根据筛选条件构建WHERE子句"""
         try:
+            logger.info(f"开始构建WHERE子句，筛选条件: {filters}")
             where_conditions = []
             params = []
             
@@ -124,25 +125,31 @@ class TaviDataAPI:
             if filters.get('age_min'):
                 where_conditions.append("age >= %s")
                 params.append(filters['age_min'])
+                logger.info(f"添加年龄最小值筛选: {filters['age_min']}")
             if filters.get('age_max'):
                 where_conditions.append("age <= %s")
                 params.append(filters['age_max'])
+                logger.info(f"添加年龄最大值筛选: {filters['age_max']}")
             
             if filters.get('gender'):
                 if isinstance(filters['gender'], list):
                     placeholders = ','.join(['%s'] * len(filters['gender']))
                     where_conditions.append(f"sex IN ({placeholders})")
                     params.extend(filters['gender'])
+                    logger.info(f"添加性别筛选: {filters['gender']}")
                 else:
                     where_conditions.append("sex = %s")
                     params.append(filters['gender'])
+                    logger.info(f"添加性别筛选: {filters['gender']}")
             
             if filters.get('bmi_min'):
                 where_conditions.append("bmi >= %s")
                 params.append(filters['bmi_min'])
+                logger.info(f"添加BMI最小值筛选: {filters['bmi_min']}")
             if filters.get('bmi_max'):
                 where_conditions.append("bmi <= %s")
                 params.append(filters['bmi_max'])
+                logger.info(f"添加BMI最大值筛选: {filters['bmi_max']}")
             
             if filters.get('surface_area_min'):
                 where_conditions.append("surface_area >= %s")
@@ -155,122 +162,102 @@ class TaviDataAPI:
             if filters.get('diabetes_mellitus') is not None:
                 where_conditions.append("diabetes_mellitus = %s")
                 params.append(filters['diabetes_mellitus'])
+                logger.info(f"添加糖尿病筛选: {filters['diabetes_mellitus']}")
             
             if filters.get('hypertension') is not None:
                 where_conditions.append("hypertension = %s")
                 params.append(filters['hypertension'])
+                logger.info(f"添加高血压筛选: {filters['hypertension']}")
             
             if filters.get('hyperlipidemia') is not None:
                 where_conditions.append("hyperlipidemia = %s")
                 params.append(filters['hyperlipidemia'])
+                logger.info(f"添加高脂血症筛选: {filters['hyperlipidemia']}")
             
             if filters.get('coronary_artery_disease') is not None:
                 where_conditions.append("coronary_artery_disease = %s")
                 params.append(filters['coronary_artery_disease'])
+                logger.info(f"添加冠心病筛选: {filters['coronary_artery_disease']}")
             
             if filters.get('copd') is not None:
                 where_conditions.append("copd = %s")
                 params.append(filters['copd'])
+                logger.info(f"添加COPD筛选: {filters['copd']}")
             
             if filters.get('dialysis') is not None:
                 where_conditions.append("dialysis = %s")
                 params.append(filters['dialysis'])
+                logger.info(f"添加透析筛选: {filters['dialysis']}")
             
             if filters.get('atrial_fibrillation') is not None:
                 where_conditions.append("atrial_fibrillation = %s")
                 params.append(filters['atrial_fibrillation'])
+                logger.info(f"添加房颤筛选: {filters['atrial_fibrillation']}")
             
             if filters.get('nyha_classification'):
                 if isinstance(filters['nyha_classification'], list):
                     placeholders = ','.join(['%s'] * len(filters['nyha_classification']))
                     where_conditions.append(f"nyha_classification IN ({placeholders})")
                     params.extend(filters['nyha_classification'])
+                    logger.info(f"添加NYHA分级筛选: {filters['nyha_classification']}")
                 else:
                     where_conditions.append("nyha_classification = %s")
                     params.append(filters['nyha_classification'])
+                    logger.info(f"添加NYHA分级筛选: {filters['nyha_classification']}")
             
             # 药物治疗
             if filters.get('acei_arb') is not None:
                 where_conditions.append("acei_arb = %s")
                 params.append(filters['acei_arb'])
+                logger.info(f"添加ACEI/ARB筛选: {filters['acei_arb']}")
             
             if filters.get('beta_blocker') is not None:
                 where_conditions.append("beta_blocker = %s")
                 params.append(filters['beta_blocker'])
+                logger.info(f"添加β受体阻滞剂筛选: {filters['beta_blocker']}")
             
             if filters.get('calcium_blocker') is not None:
                 where_conditions.append("calcium_blocker = %s")
                 params.append(filters['calcium_blocker'])
+                logger.info(f"添加钙通道阻滞剂筛选: {filters['calcium_blocker']}")
             
             if filters.get('diuretic') is not None:
                 where_conditions.append("diuretic = %s")
                 params.append(filters['diuretic'])
+                logger.info(f"添加利尿剂筛选: {filters['diuretic']}")
             
             if filters.get('aspirin') is not None:
                 where_conditions.append("aspirin = %s")
                 params.append(filters['aspirin'])
-            
-            if filters.get('anticoagulant') is not None:
-                where_conditions.append("anticoagulant = %s")
-                params.append(filters['anticoagulant'])
-            
-            if filters.get('statins') is not None:
-                where_conditions.append("statins = %s")
-                params.append(filters['statins'])
-            
-            if filters.get('sglt2_inhibitors') is not None:
-                where_conditions.append("sglt2_inhibitors = %s")
-                params.append(filters['sglt2_inhibitors'])
-            
-            # 既往手术史
-            if filters.get('mi_history') is not None:
-                where_conditions.append("mi_history = %s")
-                params.append(filters['mi_history'])
-            
-            if filters.get('pci_history') is not None:
-                where_conditions.append("pci_history = %s")
-                params.append(filters['pci_history'])
-            
-            if filters.get('cabg_history') is not None:
-                where_conditions.append("cabg_history = %s")
-                params.append(filters['cabg_history'])
-            
-            # 评分系统
-            if filters.get('sts_score_min'):
-                where_conditions.append("sts_score >= %s")
-                params.append(filters['sts_score_min'])
-            if filters.get('sts_score_max'):
-                where_conditions.append("sts_score <= %s")
-                params.append(filters['sts_score_max'])
-            
-            if filters.get('nt_probnp_min'):
-                where_conditions.append("nt_probnp >= %s")
-                params.append(filters['nt_probnp_min'])
-            if filters.get('nt_probnp_max'):
-                where_conditions.append("nt_probnp <= %s")
-                params.append(filters['nt_probnp_max'])
+                logger.info(f"添加阿司匹林筛选: {filters['aspirin']}")
             
             # 术前影像学评估筛选
             if filters.get('lvef_min'):
                 where_conditions.append("lvef >= %s")
                 params.append(filters['lvef_min'])
+                logger.info(f"添加LVEF最小值筛选: {filters['lvef_min']}")
             if filters.get('lvef_max'):
                 where_conditions.append("lvef <= %s")
                 params.append(filters['lvef_max'])
+                logger.info(f"添加LVEF最大值筛选: {filters['lvef_max']}")
             
             if filters.get('aortic_valve_peak_pg_min'):
                 where_conditions.append("aortic_valve_peak_pg >= %s")
                 params.append(filters['aortic_valve_peak_pg_min'])
+                logger.info(f"添加最大跨瓣压差最小值筛选: {filters['aortic_valve_peak_pg_min']}")
             if filters.get('aortic_valve_peak_pg_max'):
                 where_conditions.append("aortic_valve_peak_pg <= %s")
                 params.append(filters['aortic_valve_peak_pg_max'])
+                logger.info(f"添加最大跨瓣压差最大值筛选: {filters['aortic_valve_peak_pg_max']}")
             
             if filters.get('aortic_valve_mean_pg_min'):
                 where_conditions.append("aortic_valve_mean_pg >= %s")
                 params.append(filters['aortic_valve_mean_pg_min'])
+                logger.info(f"添加平均跨瓣压差最小值筛选: {filters['aortic_valve_mean_pg_min']}")
             if filters.get('aortic_valve_mean_pg_max'):
                 where_conditions.append("aortic_valve_mean_pg <= %s")
                 params.append(filters['aortic_valve_mean_pg_max'])
+                logger.info(f"添加平均跨瓣压差最大值筛选: {filters['aortic_valve_mean_pg_max']}")
             
             if filters.get('aortic_valve_eoa_min'):
                 where_conditions.append("aortic_valve_eoa >= %s")
@@ -279,36 +266,6 @@ class TaviDataAPI:
                 where_conditions.append("aortic_valve_eoa <= %s")
                 params.append(filters['aortic_valve_eoa_max'])
             
-            if filters.get('aortic_valve_eoai_min'):
-                where_conditions.append("aortic_valve_eoai >= %s")
-                params.append(filters['aortic_valve_eoai_min'])
-            if filters.get('aortic_valve_eoai_max'):
-                where_conditions.append("aortic_valve_eoai <= %s")
-                params.append(filters['aortic_valve_eoai_max'])
-            
-            if filters.get('moderate_severe_ar') is not None:
-                where_conditions.append("moderate_severe_ar = %s")
-                params.append(filters['moderate_severe_ar'])
-            
-            if filters.get('moderate_severe_mr') is not None:
-                where_conditions.append("moderate_severe_mr = %s")
-                params.append(filters['moderate_severe_mr'])
-            
-            if filters.get('lvedv_min'):
-                where_conditions.append("lvedv >= %s")
-                params.append(filters['lvedv_min'])
-            if filters.get('lvedv_max'):
-                where_conditions.append("lvedv <= %s")
-                params.append(filters['lvedv_max'])
-            
-            if filters.get('lvesv_min'):
-                where_conditions.append("lvesv >= %s")
-                params.append(filters['lvesv_min'])
-            if filters.get('lvesv_max'):
-                where_conditions.append("lvesv <= %s")
-                params.append(filters['lvesv_max'])
-            
-            # 瓣环相关参数
             if filters.get('annular_area_min'):
                 where_conditions.append("annular_area >= %s")
                 params.append(filters['annular_area_min'])
@@ -322,13 +279,6 @@ class TaviDataAPI:
             if filters.get('annular_mean_diameter_max'):
                 where_conditions.append("annular_mean_diameter <= %s")
                 params.append(filters['annular_mean_diameter_max'])
-            
-            if filters.get('annular_min_diameter_min'):
-                where_conditions.append("annular_min_diameter >= %s")
-                params.append(filters['annular_min_diameter_min'])
-            if filters.get('annular_min_diameter_max'):
-                where_conditions.append("annular_min_diameter <= %s")
-                params.append(filters['annular_min_diameter_max'])
             
             if filters.get('annular_max_diameter_min'):
                 where_conditions.append("annular_max_diameter >= %s")
@@ -344,28 +294,6 @@ class TaviDataAPI:
                 where_conditions.append("annular_perimeter <= %s")
                 params.append(filters['annular_perimeter_max'])
             
-            if filters.get('annular_eccentricity_min'):
-                where_conditions.append("annular_eccentricity >= %s")
-                params.append(filters['annular_eccentricity_min'])
-            if filters.get('annular_eccentricity_max'):
-                where_conditions.append("annular_eccentricity <= %s")
-                params.append(filters['annular_eccentricity_max'])
-            
-            if filters.get('area_derived_diameter_min'):
-                where_conditions.append("area_derived_diameter >= %s")
-                params.append(filters['area_derived_diameter_min'])
-            if filters.get('area_derived_diameter_max'):
-                where_conditions.append("area_derived_diameter <= %s")
-                params.append(filters['area_derived_diameter_max'])
-            
-            if filters.get('perimeter_derived_diameter_min'):
-                where_conditions.append("perimeter_derived_diameter >= %s")
-                params.append(filters['perimeter_derived_diameter_min'])
-            if filters.get('perimeter_derived_diameter_max'):
-                where_conditions.append("perimeter_derived_diameter <= %s")
-                params.append(filters['perimeter_derived_diameter_max'])
-            
-            # 血流动力学参数
             if filters.get('aortic_valve_flow_velocity_min'):
                 where_conditions.append("aortic_valve_flow_velocity >= %s")
                 params.append(filters['aortic_valve_flow_velocity_min'])
@@ -373,7 +301,6 @@ class TaviDataAPI:
                 where_conditions.append("aortic_valve_flow_velocity <= %s")
                 params.append(filters['aortic_valve_flow_velocity_max'])
             
-            # 解剖结构参数
             if filters.get('stj_height_min'):
                 where_conditions.append("stj_height >= %s")
                 params.append(filters['stj_height_min'])
@@ -462,13 +389,16 @@ class TaviDataAPI:
             if filters.get('transfemoral_access') is not None:
                 where_conditions.append("transfemoral_access = %s")
                 params.append(filters['transfemoral_access'])
+                logger.info(f"添加经股动脉入路筛选: {filters['transfemoral_access']}")
             
             if filters.get('transapical_access') is not None:
                 where_conditions.append("transapical_access = %s")
                 params.append(filters['transapical_access'])
+                logger.info(f"添加经心尖入路筛选: {filters['transapical_access']}")
             
             if filters.get('other_access') is not None:
                 where_conditions.append("other_access IS NOT NULL")
+                logger.info("添加其它入路筛选")
             
             # 瓣膜尺寸筛选 - 支持数值范围和列表筛选
             if filters.get('thv_size_min'):
@@ -486,25 +416,31 @@ class TaviDataAPI:
                     placeholders = ','.join(['%s'] * len(filters['thv_size']))
                     where_conditions.append(f"thv_size IN ({placeholders})")
                     params.extend(filters['thv_size'])
+                    logger.info(f"添加瓣膜尺寸列表筛选: {filters['thv_size']}")
                 else:
                     where_conditions.append("thv_size = %s")
                     params.append(filters['thv_size'])
+                    logger.info(f"添加瓣膜尺寸单个值筛选: {filters['thv_size']}")
             
             if filters.get('thv_type'):
                 where_conditions.append("thv_type = %s")
                 params.append(filters['thv_type'])
+                logger.info(f"添加瓣膜类型筛选: {filters['thv_type']}")
             
             if filters.get('thv_brand'):
                 where_conditions.append("thv_brand LIKE %s")
                 params.append(f"%{filters['thv_brand']}%")
+                logger.info(f"添加瓣膜品牌筛选: {filters['thv_brand']}")
             
             if filters.get('pre_dilation') is not None:
                 where_conditions.append("pre_dilation = %s")
                 params.append(filters['pre_dilation'])
+                logger.info(f"添加预扩张筛选: {filters['pre_dilation']}")
             
             if filters.get('post_dilation') is not None:
                 where_conditions.append("post_dilation = %s")
                 params.append(filters['post_dilation'])
+                logger.info(f"添加后扩张筛选: {filters['post_dilation']}")
             
             # 手术时间参数
             if filters.get('total_procedure_time_min'):
@@ -546,104 +482,134 @@ class TaviDataAPI:
             if filters.get('mean_pg_gte_20') is not None:
                 where_conditions.append("mean_pg_gte_20 = %s")
                 params.append(filters['mean_pg_gte_20'])
+                logger.info(f"添加跨瓣压差≥20mmHg筛选: {filters['mean_pg_gte_20']}")
             
             # 并发症
             if filters.get('prosthesis_malposition') is not None:
                 where_conditions.append("prosthesis_malposition = %s")
                 params.append(filters['prosthesis_malposition'])
+                logger.info(f"添加严重错位筛选: {filters['prosthesis_malposition']}")
             
             if filters.get('annular_rupture') is not None:
                 where_conditions.append("annular_rupture = %s")
                 params.append(filters['annular_rupture'])
+                logger.info(f"添加瓣环撕裂筛选: {filters['annular_rupture']}")
             
             if filters.get('excessive_oversizing') is not None:
                 where_conditions.append("excessive_oversizing = %s")
                 params.append(filters['excessive_oversizing'])
+                logger.info(f"添加过大尺寸筛选: {filters['excessive_oversizing']}")
             
             if filters.get('oversizing_gte_15') is not None:
                 where_conditions.append("oversizing_gte_15 = %s")
                 params.append(filters['oversizing_gte_15'])
+                logger.info(f"添加尺寸过大≥15%筛选: {filters['oversizing_gte_15']}")
             
             if filters.get('immediate_pvl_occurred') is not None:
                 where_conditions.append("immediate_pvl_occurred = %s")
                 params.append(filters['immediate_pvl_occurred'])
+                logger.info(f"添加术后即刻瓣周漏筛选: {filters['immediate_pvl_occurred']}")
             
             if filters.get('immediate_pvl_severity'):
                 where_conditions.append("immediate_pvl_severity = %s")
                 params.append(filters['immediate_pvl_severity'])
+                logger.info(f"添加术后即刻瓣周漏程度筛选: {filters['immediate_pvl_severity']}")
+            
+            if filters.get('pvl_severity'):
+                where_conditions.append("pvl_severity = %s")
+                params.append(filters['pvl_severity'])
+                logger.info(f"添加出院前瓣周漏程度筛选: {filters['pvl_severity']}")
+            
+            if filters.get('pvl_severity_last_followup'):
+                where_conditions.append("pvl_severity_last_followup = %s")
+                params.append(filters['pvl_severity_last_followup'])
+                logger.info(f"添加随访瓣周漏程度筛选: {filters['pvl_severity_last_followup']}")
             
             if filters.get('thv_displacement') is not None:
                 where_conditions.append("thv_displacement = %s")
                 params.append(filters['thv_displacement'])
+                logger.info(f"添加瓣架移位筛选: {filters['thv_displacement']}")
             
             if filters.get('conversion_to_savr') is not None:
                 where_conditions.append("conversion_to_savr = %s")
                 params.append(filters['conversion_to_savr'])
+                logger.info(f"添加转外科开胸筛选: {filters['conversion_to_savr']}")
             
             if filters.get('cpb_required') is not None:
                 where_conditions.append("cpb_required = %s")
                 params.append(filters['cpb_required'])
+                logger.info(f"添加转心肺转流筛选: {filters['cpb_required']}")
             
             if filters.get('valve_in_valve') is not None:
                 where_conditions.append("valve_in_valve = %s")
                 params.append(filters['valve_in_valve'])
+                logger.info(f"添加瓣中瓣筛选: {filters['valve_in_valve']}")
             
             if filters.get('periprocedural_death') is not None:
                 where_conditions.append("periprocedural_death = %s")
                 params.append(filters['periprocedural_death'])
+                logger.info(f"添加围术期死亡筛选: {filters['periprocedural_death']}")
             
             if filters.get('mitral_regurgitation_change_proc'):
                 where_conditions.append("mitral_regurgitation_change_proc = %s")
                 params.append(filters['mitral_regurgitation_change_proc'])
+                logger.info(f"添加二尖瓣返流变化筛选: {filters['mitral_regurgitation_change_proc']}")
             
             # 出院前评价筛选
             if filters.get('death_before_discharge') is not None:
                 where_conditions.append("death_before_discharge = %s")
                 params.append(filters['death_before_discharge'])
+                logger.info(f"添加出院前死亡筛选: {filters['death_before_discharge']}")
             
             if filters.get('stroke_before_discharge') is not None:
                 where_conditions.append("stroke_before_discharge = %s")
                 params.append(filters['stroke_before_discharge'])
+                logger.info(f"添加卒中筛选: {filters['stroke_before_discharge']}")
             
             if filters.get('major_bleeding') is not None:
                 where_conditions.append("major_bleeding = %s")
                 params.append(filters['major_bleeding'])
+                logger.info(f"添加大出血筛选: {filters['major_bleeding']}")
             
             if filters.get('aki') is not None:
                 where_conditions.append("aki = %s")
                 params.append(filters['aki'])
+                logger.info(f"添加急性肾衰筛选: {filters['aki']}")
             
             if filters.get('major_vascular_complication') is not None:
                 where_conditions.append("major_vascular_complication = %s")
                 params.append(filters['major_vascular_complication'])
+                logger.info(f"添加严重血管并发症筛选: {filters['major_vascular_complication']}")
             
             if filters.get('mi_ami') is not None:
                 where_conditions.append("mi_ami = %s")
                 params.append(filters['mi_ami'])
+                logger.info(f"添加心梗筛选: {filters['mi_ami']}")
             
             if filters.get('acs_ihd') is not None:
                 where_conditions.append("acs_ihd = %s")
                 params.append(filters['acs_ihd'])
+                logger.info(f"添加急性冠脉综合征筛选: {filters['acs_ihd']}")
             
             if filters.get('heart_failure') is not None:
                 where_conditions.append("heart_failure = %s")
                 params.append(filters['heart_failure'])
+                logger.info(f"添加心衰筛选: {filters['heart_failure']}")
             
             if filters.get('all_cause_cv_death') is not None:
                 where_conditions.append("all_cause_cv_death = %s")
                 params.append(filters['all_cause_cv_death'])
+                logger.info(f"添加全因心血管死亡筛选: {filters['all_cause_cv_death']}")
             
             if filters.get('pacemaker_implantation') is not None:
                 where_conditions.append("pacemaker_implantation = %s")
                 params.append(filters['pacemaker_implantation'])
+                logger.info(f"添加起搏器植入筛选: {filters['pacemaker_implantation']}")
             
             if filters.get('pvl_detected') is not None:
                 where_conditions.append("pvl_detected = %s")
                 params.append(filters['pvl_detected'])
-            
-            if filters.get('pvl_severity'):
-                where_conditions.append("pvl_severity = %s")
-                params.append(filters['pvl_severity'])
+                logger.info(f"添加瓣周漏检出筛选: {filters['pvl_detected']}")
             
             if filters.get('max_pg_min'):
                 where_conditions.append("max_pg >= %s")
@@ -676,138 +642,69 @@ class TaviDataAPI:
             if filters.get('mitral_regurgitation_change'):
                 where_conditions.append("mitral_regurgitation_change = %s")
                 params.append(filters['mitral_regurgitation_change'])
+                logger.info(f"添加二尖瓣返流变化筛选: {filters['mitral_regurgitation_change']}")
             
             # 随访信息筛选
             if filters.get('mortality_30d') is not None:
                 where_conditions.append("mortality_30d = %s")
                 params.append(filters['mortality_30d'])
+                logger.info(f"添加30天死亡筛选: {filters['mortality_30d']}")
             
             if filters.get('mi_30d') is not None:
                 where_conditions.append("mi_30d = %s")
                 params.append(filters['mi_30d'])
+                logger.info(f"添加30天心梗筛选: {filters['mi_30d']}")
             
             if filters.get('stroke_30d') is not None:
                 where_conditions.append("stroke_30d = %s")
                 params.append(filters['stroke_30d'])
+                logger.info(f"添加30天卒中筛选: {filters['stroke_30d']}")
             
             if filters.get('hf_readmission_30d') is not None:
                 where_conditions.append("hf_readmission_30d = %s")
                 params.append(filters['hf_readmission_30d'])
+                logger.info(f"添加30天心衰再住院筛选: {filters['hf_readmission_30d']}")
             
             if filters.get('mortality_1y') is not None:
                 where_conditions.append("mortality_1y = %s")
                 params.append(filters['mortality_1y'])
+                logger.info(f"添加1年死亡筛选: {filters['mortality_1y']}")
             
             if filters.get('mi_1y') is not None:
                 where_conditions.append("mi_1y = %s")
                 params.append(filters['mi_1y'])
+                logger.info(f"添加1年心梗筛选: {filters['mi_1y']}")
             
             if filters.get('stroke_1y') is not None:
                 where_conditions.append("stroke_1y = %s")
                 params.append(filters['stroke_1y'])
+                logger.info(f"添加1年卒中筛选: {filters['stroke_1y']}")
             
             if filters.get('hf_readmission_1y') is not None:
                 where_conditions.append("hf_readmission_1y = %s")
                 params.append(filters['hf_readmission_1y'])
+                logger.info(f"添加1年心衰再住院筛选: {filters['hf_readmission_1y']}")
             
-            # 随访时血流动力学参数
-            if filters.get('lvef_last_followup_min'):
-                where_conditions.append("lvef_last_followup >= %s")
-                params.append(filters['lvef_last_followup_min'])
-            if filters.get('lvef_last_followup_max'):
-                where_conditions.append("lvef_last_followup <= %s")
-                params.append(filters['lvef_last_followup_max'])
-            
-            if filters.get('nyha_last_followup'):
-                where_conditions.append("nyha_last_followup = %s")
-                params.append(filters['nyha_last_followup'])
-            
-            if filters.get('max_pg_last_followup_min'):
-                where_conditions.append("max_pg_last_followup >= %s")
-                params.append(filters['max_pg_last_followup_min'])
-            if filters.get('max_pg_last_followup_max'):
-                where_conditions.append("max_pg_last_followup <= %s")
-                params.append(filters['max_pg_last_followup_max'])
-            
-            if filters.get('flow_velocity_last_followup_min'):
-                where_conditions.append("flow_velocity_last_followup >= %s")
-                params.append(filters['flow_velocity_last_followup_min'])
-            if filters.get('flow_velocity_last_followup_max'):
-                where_conditions.append("flow_velocity_last_followup <= %s")
-                params.append(filters['flow_velocity_last_followup_max'])
-            
-            if filters.get('mean_pg_last_followup_min'):
-                where_conditions.append("mean_pg_last_followup >= %s")
-                params.append(filters['mean_pg_last_followup_min'])
-            if filters.get('mean_pg_last_followup_max'):
-                where_conditions.append("mean_pg_last_followup <= %s")
-                params.append(filters['mean_pg_last_followup_max'])
-            
-            if filters.get('eoa_last_followup_min'):
-                where_conditions.append("eoa_last_followup >= %s")
-                params.append(filters['eoa_last_followup_min'])
-            if filters.get('eoa_last_followup_max'):
-                where_conditions.append("eoa_last_followup <= %s")
-                params.append(filters['eoa_last_followup_max'])
-            
-            if filters.get('eoai_last_followup_min'):
-                where_conditions.append("eoai_last_followup >= %s")
-                params.append(filters['eoai_last_followup_min'])
-            if filters.get('eoai_last_followup_max'):
-                where_conditions.append("eoai_last_followup <= %s")
-                params.append(filters['eoai_last_followup_max'])
-            
-            if filters.get('pvl_detected_last_followup') is not None:
-                where_conditions.append("pvl_detected_last_followup = %s")
-                params.append(filters['pvl_detected_last_followup'])
-            
-            if filters.get('pvl_severity_last_followup'):
-                where_conditions.append("pvl_severity_last_followup = %s")
-                params.append(filters['pvl_severity_last_followup'])
-            
-            # 后续干预和并发症
             if filters.get('subsequent_intervention') is not None:
                 where_conditions.append("subsequent_intervention = %s")
                 params.append(filters['subsequent_intervention'])
-            
-            if filters.get('occlusion_procedure') is not None:
-                where_conditions.append("occlusion_procedure = %s")
-                params.append(filters['occlusion_procedure'])
-            
-            if filters.get('reoperation') is not None:
-                where_conditions.append("reoperation = %s")
-                params.append(filters['reoperation'])
-            
-            if filters.get('conversion_to_open') is not None:
-                where_conditions.append("conversion_to_open = %s")
-                params.append(filters['conversion_to_open'])
-            
-            if filters.get('pacemaker_post') is not None:
-                where_conditions.append("pacemaker_post = %s")
-                params.append(filters['pacemaker_post'])
-            
-            if filters.get('valve_dislodgement') is not None:
-                where_conditions.append("valve_dislodgement = %s")
-                params.append(filters['valve_dislodgement'])
-            
-            if filters.get('aortic_dissection') is not None:
-                where_conditions.append("aortic_dissection = %s")
-                params.append(filters['aortic_dissection'])
-            
-            if filters.get('hematoma') is not None:
-                where_conditions.append("hematoma = %s")
-                params.append(filters['hematoma'])
-            
-            if filters.get('heart_failure_post') is not None:
-                where_conditions.append("heart_failure_post = %s")
-                params.append(filters['heart_failure_post'])
+                logger.info(f"添加后续干预筛选: {filters['subsequent_intervention']}")
             
             if filters.get('mitral_regurgitation_change_followup'):
                 where_conditions.append("mitral_regurgitation_change_followup = %s")
                 params.append(filters['mitral_regurgitation_change_followup'])
+                logger.info(f"添加随访二尖瓣返流变化筛选: {filters['mitral_regurgitation_change_followup']}")
+            
+            # 支持DOI（patient_id）唯一筛选
+            if filters.get('patient_id'):
+                where_conditions.append("patient_id = %s")
+                params.append(filters['patient_id'])
+                logger.info(f"添加DOI筛选: {filters['patient_id']}")
             
             # 组合WHERE子句
             where_clause = " AND ".join(where_conditions) if where_conditions else "1=1"
+            logger.info(f"最终WHERE子句: {where_clause}")
+            logger.info(f"查询参数: {params}")
             return where_clause, params
 
         except Exception as e:

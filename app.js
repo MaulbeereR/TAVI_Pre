@@ -673,18 +673,20 @@ function updateTableDisplay(data) {
     
     tbody.innerHTML = '';
     
-    data.data.forEach(patient => {
+    data.data.forEach((patient, idx) => {
         const row = document.createElement('tr');
         row.innerHTML = `
+            <td>${(data.page - 1) * data.page_size + idx + 1}</td>
             <td>${patient.patient_id || 'N/A'}</td>
             <td>${patient.age || 'N/A'}</td>
-            <td>${patient.sex || 'N/A'}</td>
+            <td>${patient.sex === 'Male' ? '男' : patient.sex === 'Female' ? '女' : 'N/A'}</td>
+            <td>${patient.nyha_classification || 'N/A'}</td>
             <td>${patient.thv_type || 'N/A'}</td>
+            <td>${patient.thv_brand || 'N/A'}</td>
             <td>${patient.thv_size || 'N/A'}</td>
             <td>${patient.aortic_valve_mean_pg || 'N/A'}</td>
-            <td>${patient.nyha_classification || 'N/A'}</td>
             <td>${patient.immediate_pvl_occurred ? '是' : '否'}</td>
-            <td>${patient.mortality_30d || patient.mortality_1y || patient.death_before_discharge ? '是' : '否'}</td>
+            <td>${patient.mortality_30d ? '是' : '否'}</td>
             <td>
                 <button class="btn btn-sm btn-outline-primary" onclick="showCaseDetail('${patient.patient_id}')">
                     详情
@@ -1248,46 +1250,194 @@ async function showCaseDetail(patientId) {
             return;
         }
         
+        // 自动生成的key->name映射表（来自TAVI_variables_schema_0530.json）
+        const fieldMap = {
+            "age": "年龄",
+            "sex": "性别",
+            "bmi": "体重指数",
+            "surface_area": "体表面积",
+            "diabetes_mellitus": "糖尿病",
+            "hypertension": "高血压",
+            "hyperlipidemia": "高脂血症",
+            "coronary_artery_disease": "冠心病",
+            "copd": "慢阻肺",
+            "dialysis": "透析",
+            "atrial_fibrillation": "房颤",
+            "nyha_classification": "纽约心脏病协会分级",
+            "acei_arb": "血管紧张素转换酶抑制剂/血管紧张素Ⅱ受体拮抗剂",
+            "beta_blocker": "Beta受体阻滞剂",
+            "calcium_blocker": "钙离子阻滞剂",
+            "diuretic": "利尿剂",
+            "aspirin": "阿司匹林",
+            "anticoagulant": "抗凝药",
+            "statins": "他汀类药物",
+            "mi_history": "心梗",
+            "pci_history": "经皮冠状动脉介入术",
+            "cabg_history": "冠状动脉旁路移植术",
+            "sts_score": "胸外科医师学会评分",
+            "nt_probnp": "氨基末端B型利钠肽前体",
+            "sglt2_inhibitors": "钠-葡萄糖共转运蛋白2抑制剂",
+            "lvef": "左心室射血分数",
+            "aortic_valve_peak_pg": "最大主动脉瓣跨瓣压差",
+            "aortic_valve_mean_pg": "平均主动脉瓣跨瓣压差",
+            "aortic_valve_eoa": "有效瓣口面积（主动脉瓣）",
+            "aortic_valve_eoai": "有效瓣口面积指数（主动脉瓣）",
+            "moderate_severe_ar": "中度以上主动脉瓣反流",
+            "moderate_severe_mr": "中度以上二尖瓣反流",
+            "lvedv": "左心室舒张末期容积",
+            "lvesv": "左心室收缩末期容积",
+            "annular_area": "瓣环面积（主动脉瓣）",
+            "annular_mean_diameter": "瓣环平均直径（主动脉瓣）",
+            "annular_min_diameter": "瓣环最小直径（主动脉瓣）",
+            "annular_max_diameter": "瓣环最大直径（主动脉瓣）",
+            "annular_perimeter": "瓣环周径（主动脉瓣）",
+            "annular_eccentricity": "瓣环偏心率（主动脉瓣）",
+            "area_derived_diameter": "源自面积的瓣环直径（主动脉瓣）",
+            "perimeter_derived_diameter": "源自周长的瓣环直径（主动脉瓣）",
+            "aortic_valve_flow_velocity": "主动脉瓣口流速",
+            "stj_height": "窦管交界高度",
+            "stj_diameter": "窦管交界直径",
+            "sinus_diameter": "窦部直径（主动脉根部）",
+            "ascending_aorta_diameter": "升主动脉直径",
+            "supraannular_calcification": "瓣环上钙化（主动脉瓣）",
+            "annular_calcification": "瓣环钙化（主动脉瓣）",
+            "lvot_diameter": "左心室流出道直径",
+            "lvot_calcification": "左心室流出道钙化体积",
+            "left_coronary_height": "左冠脉高度（主动脉根部）",
+            "right_coronary_height": "右冠脉高度（主动脉根部）",
+            "annulus_to_mitral_distance": "瓣环至二尖瓣前叶距离",
+            "transfemoral_access": "经股动脉入路",
+            "transapical_access": "经心尖入路",
+            "other_access": "其它入路",
+            "thv_size": "瓣膜尺寸",
+            "thv_type": "瓣膜类型",
+            "thv_brand": "瓣膜品牌",
+            "pre_dilation": "预扩张",
+            "post_dilation": "后扩张",
+            "total_procedure_time": "总术时",
+            "fluoroscopy_time": "造影时间",
+            "contrast_volume": "造影量",
+            "immediate_lvef": "术后即刻左心室射血分数",
+            "immediate_mean_pg": "术后即刻主动脉瓣跨瓣压差",
+            "mean_pg_gte_20": "主动脉瓣跨瓣压差≥20 mmHg",
+            "prosthesis_malposition": "严重错位",
+            "annular_rupture": "瓣环撕裂",
+            "excessive_oversizing": "过大尺寸",
+            "oversizing_gte_15": "尺寸过大≥15%",
+            "immediate_pvl_occurred": "术后是否即刻瓣周漏",
+            "immediate_pvl_severity": "术后即刻瓣周漏程度",
+            "thv_displacement": "瓣架移位",
+            "conversion_to_savr": "转外科开胸手术",
+            "cpb_required": "转心肺转流术",
+            "valve_in_valve": "瓣中瓣",
+            "periprocedural_death": "围术期死亡",
+            "mitral_regurgitation_change": "二尖瓣返流变化",
+            "death_before_discharge": "出院前死亡",
+            "stroke_before_discharge": "卒中",
+            "major_bleeding": "大出血",
+            "aki": "急性肾衰",
+            "major_vascular_complication": "严重血管并发症",
+            "mi_ami": "心肌梗死/急性心肌梗死",
+            "acs_ihd": "急性冠脉综合征/缺血性心脏病",
+            "heart_failure": "心力衰竭",
+            "all_cause_cv_death": "所有原因死亡和心血管死亡",
+            "pacemaker_implantation": "起搏器植入",
+            "pvl_detected": "出院前是否瓣周漏",
+            "pvl_severity": "出院前瓣周漏程度",
+            "max_pg": "出院前最大主动脉瓣跨瓣压差",
+            "flow_velocity": "出院前主动脉瓣口流速",
+            "mean_pg": "出院前平均主动脉瓣跨瓣压差",
+            "eoai": "出院前实测有效瓣口面积指数",
+            "mortality_30d": "30天全因",
+            "mi_30d": "30天心梗",
+            "stroke_30d": "30天卒中",
+            "hf_readmission_30d": "30天心衰再住院",
+            "mortality_1y": "1年全因",
+            "mi_1y": "1年心梗",
+            "stroke_1y": "1年卒中",
+            "hf_readmission_1y": "1年心衰再住院",
+            "lvef_last_followup": "左心室射血分数",
+            "nyha_last_followup": "纽约心脏病协会分级",
+            "max_pg_last_followup": "最大主动脉瓣跨瓣压差",
+            "flow_velocity_last_followup": "主动脉瓣口流速",
+            "mean_pg_last_followup": "平均主动脉瓣跨瓣压差",
+            "eoa_last_followup": "有效瓣口面积",
+            "eoai_last_followup": "有效瓣口面积指数",
+            "pvl_detected_last_followup": "是否瓣周漏",
+            "pvl_severity_last_followup": "瓣周漏程度",
+            "subsequent_intervention": "患者是否因TAVI相关并发症而接受了后续干预",
+            "intervention_details": "后续干预的具体类型和发生时间",
+            "occlusion_procedure": "术后封堵",
+            "reoperation": "二次手术",
+            "conversion_to_open": "术后中转开胸",
+            "pacemaker_post": "术后起搏器植入",
+            "valve_dislodgement": "术后瓣膜脱落",
+            "aortic_dissection": "术后主动脉夹层",
+            "hematoma": "术后血肿",
+            "heart_failure_post": "术后心衰",
+            "mitral_regurgitation_change_followup": "二尖瓣返流变化"
+        };
+
+        // 各分组字段key
+        const groupFields = {
+            "基线资料": [
+                "age", "sex", "bmi", "surface_area", "diabetes_mellitus", "hypertension", "hyperlipidemia", "coronary_artery_disease", "copd", "dialysis", "atrial_fibrillation", "nyha_classification", "acei_arb", "beta_blocker", "calcium_blocker", "diuretic", "aspirin", "anticoagulant", "statins", "mi_history", "pci_history", "cabg_history", "sts_score", "nt_probnp", "sglt2_inhibitors"
+            ],
+            "术前影像学评估": [
+                "lvef", "aortic_valve_peak_pg", "aortic_valve_mean_pg", "aortic_valve_eoa", "aortic_valve_eoai", "moderate_severe_ar", "moderate_severe_mr", "lvedv", "lvesv", "annular_area", "annular_mean_diameter", "annular_min_diameter", "annular_max_diameter", "annular_perimeter", "annular_eccentricity", "area_derived_diameter", "perimeter_derived_diameter", "aortic_valve_flow_velocity", "stj_height", "stj_diameter", "sinus_diameter", "ascending_aorta_diameter", "supraannular_calcification", "annular_calcification", "lvot_diameter", "lvot_calcification", "left_coronary_height", "right_coronary_height", "annulus_to_mitral_distance"
+            ],
+            "手术信息": [
+                "transfemoral_access", "transapical_access", "other_access", "thv_size", "thv_type", "thv_brand", "pre_dilation", "post_dilation", "total_procedure_time", "fluoroscopy_time", "contrast_volume", "immediate_lvef", "immediate_mean_pg", "mean_pg_gte_20", "prosthesis_malposition", "annular_rupture", "excessive_oversizing", "oversizing_gte_15", "immediate_pvl_occurred", "immediate_pvl_severity", "thv_displacement", "conversion_to_savr", "cpb_required", "valve_in_valve", "periprocedural_death", "mitral_regurgitation_change"
+            ],
+            "出院前评价": [
+                "death_before_discharge", "stroke_before_discharge", "major_bleeding", "aki", "major_vascular_complication", "mi_ami", "acs_ihd", "heart_failure", "all_cause_cv_death", "pacemaker_implantation", "pvl_detected", "pvl_severity", "max_pg", "flow_velocity", "mean_pg", "eoai", "mitral_regurgitation_change"
+            ],
+            "随访信息": [
+                "mortality_30d", "mi_30d", "stroke_30d", "hf_readmission_30d", "mortality_1y", "mi_1y", "stroke_1y", "hf_readmission_1y", "lvef_last_followup", "nyha_last_followup", "max_pg_last_followup", "flow_velocity_last_followup", "mean_pg_last_followup", "eoa_last_followup", "eoai_last_followup", "pvl_detected_last_followup", "pvl_severity_last_followup", "subsequent_intervention", "intervention_details", "occlusion_procedure", "reoperation", "conversion_to_open", "pacemaker_post", "valve_dislodgement", "aortic_dissection", "hematoma", "heart_failure_post", "mitral_regurgitation_change_followup"
+            ]
+        };
+
+        // 友好值处理
+        function formatValue(key, value) {
+            if (key === 'sex') return value === 'Male' ? '男' : value === 'Female' ? '女' : value;
+            if (typeof value === 'boolean') return value ? '是' : '否';
+            if (value === null || value === undefined || value === '') return 'N/A';
+            return value;
+        }
+
+        // 分组渲染
+        function renderGroup(title, keys) {
+            const items = keys.filter(k => caseData[k] !== null && caseData[k] !== undefined && caseData[k] !== '').map(k =>
+                `<tr><th>${fieldMap[k] || k}</th><td>${formatValue(k, caseData[k])}</td></tr>`
+            );
+            if (items.length === 0) return '';
+            return `
+                <div class="detail-group">
+                    <h6 class="detail-group-title">${title}</h6>
+                    <table class="table table-bordered table-sm detail-table">
+                        <tbody>
+                            ${items.join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // 两列布局
+        const leftGroups = ["基线资料", "手术信息", "随访信息"];
+        const rightGroups = ["术前影像学评估", "出院前评价"];
+        let leftHtml = leftGroups.map(g => renderGroup(g, groupFields[g])).join('');
+        let rightHtml = rightGroups.map(g => renderGroup(g, groupFields[g])).join('');
+
         const modal = new bootstrap.Modal(document.getElementById('case-detail-modal'));
         const content = document.getElementById('case-details-content');
-        
         content.innerHTML = `
             <div class="row">
-                <div class="col-md-6">
-                    <h6>基本信息</h6>
-                    <table class="table table-sm">
-                        <tr><th>患者ID</th><td>${caseData.patient_id || 'N/A'}</td></tr>
-                        <tr><th>年龄</th><td>${caseData.age || 'N/A'}岁</td></tr>
-                        <tr><th>性别</th><td>${caseData.sex === 'Male' ? '男' : caseData.sex === 'Female' ? '女' : 'N/A'}</td></tr>
-                        <tr><th>BMI</th><td>${caseData.bmi || 'N/A'}</td></tr>
-                        <tr><th>NYHA分级</th><td>${caseData.nyha_classification || 'N/A'}</td></tr>
-                    </table>
-                </div>
-                <div class="col-md-6">
-                    <h6>手术信息</h6>
-                    <table class="table table-sm">
-                        <tr><th>瓣膜类型</th><td>${caseData.thv_type || 'N/A'}</td></tr>
-                        <tr><th>瓣膜尺寸</th><td>${caseData.thv_size || 'N/A'}mm</td></tr>
-                        <tr><th>瓣膜品牌</th><td>${caseData.thv_brand || 'N/A'}</td></tr>
-                        <tr><th>术前平均压差</th><td>${caseData.aortic_valve_mean_pg || 'N/A'}mmHg</td></tr>
-                    </table>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <h6>术后结果</h6>
-                    <table class="table table-sm">
-                        <tr><th>术后即刻瓣周漏</th><td>${caseData.immediate_pvl_occurred ? '是' : '否'}</td></tr>
-                        <tr><th>瓣周漏程度</th><td>${caseData.immediate_pvl_severity || 'N/A'}</td></tr>
-                        <tr><th>30天死亡</th><td>${caseData.mortality_30d ? '是' : '否'}</td></tr>
-                        <tr><th>1年死亡</th><td>${caseData.mortality_1y ? '是' : '否'}</td></tr>
-                    </table>
-                </div>
+                <div class="col-md-6">${leftHtml}</div>
+                <div class="col-md-6">${rightHtml}</div>
             </div>
         `;
-        
         modal.show();
-        
     } catch (error) {
         console.error('获取病例详情失败:', error);
         showError('获取病例详情失败，请重试');

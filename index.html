@@ -90,6 +90,34 @@
         .checkbox-group-inline .form-check:last-child {
             margin-right: 0;
         }
+        
+        .detail-group {
+            margin-bottom: 1.5rem;
+            padding: 1rem 1rem 0.5rem 1rem;
+            background: #f8f9fa;
+            border-radius: 0.5rem;
+            border: 1px solid #e3e3e3;
+        }
+        .detail-group-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            border-left: 4px solid #007bff;
+            padding-left: 0.5rem;
+        }
+        .detail-table th {
+            width: 40%;
+            background: #f0f4f8;
+            font-weight: 500;
+        }
+        .detail-table td {
+            width: 60%;
+        }
+        @media (max-width: 768px) {
+            .detail-group { padding: 0.5rem; }
+            .detail-group-title { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
@@ -1544,14 +1572,16 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>DOI</th>
                                     <th>年龄</th>
                                     <th>性别</th>
-                                    <th>瓣膜类型</th>
-                                    <th>瓣膜直径</th>
-                                    <th>术前平均压差</th>
                                     <th>NYHA分级</th>
-                                    <th>瓣周漏</th>
-                                    <th>死亡</th>
+                                    <th>瓣膜类型</th>
+                                    <th>瓣膜品牌</th>
+                                    <th>瓣膜尺寸</th>
+                                    <th>术前平均跨瓣压差</th>
+                                    <th>术后即刻瓣周漏</th>
+                                    <th>30天死亡</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -1575,7 +1605,7 @@
 
     <!-- 病例详情模态框 -->
     <div class="modal fade" id="case-detail-modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">病例详情</h5>
