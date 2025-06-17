@@ -1412,3 +1412,117 @@
 2025-06-17 15:49:27 - INFO - 最终WHERE子句: patient_id = %s
 2025-06-17 15:49:27 - INFO - 查询参数: ['10.7759_cureus.32292']
 2025-06-17 15:49:27 - INFO - 查询成功，返回 1 条记录
+2025-06-17 15:52:13 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-17 15:52:13 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-17 15:52:19 - INFO - 数据库连接成功
+2025-06-17 15:52:19 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-17 15:52:19 - INFO - 最终WHERE子句: 1=1
+2025-06-17 15:52:19 - INFO - 查询参数: []
+2025-06-17 15:52:19 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-17 15:52:19 - INFO - 页码: 1, 每页大小: 20
+2025-06-17 15:52:19 - INFO - 数据库连接成功
+2025-06-17 15:52:19 - INFO - 数据库连接成功
+2025-06-17 15:52:19 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-17 15:52:19 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-17 15:52:19 - INFO - 最终WHERE子句: 1=1
+2025-06-17 15:52:19 - INFO - 最终WHERE子句: 1=1
+2025-06-17 15:52:19 - INFO - 查询参数: []
+2025-06-17 15:52:19 - INFO - 查询参数: []
+2025-06-17 15:52:19 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-17 15:52:19 - INFO - 查询参数: []
+2025-06-17 15:52:19 - INFO - 查询成功，返回 20 条记录
+2025-06-17 15:52:29 - INFO - 数据库连接成功
+2025-06-17 15:52:29 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Female'], 'thv_brand': 'Evolut', 'nyha_classification': ['III']}
+2025-06-17 15:52:29 - INFO - 添加性别筛选: ['Female']
+2025-06-17 15:52:29 - INFO - 添加NYHA分级筛选: ['III']
+2025-06-17 15:52:29 - INFO - 添加瓣膜品牌筛选: Evolut
+2025-06-17 15:52:29 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification IN (%s) AND thv_brand LIKE %s
+2025-06-17 15:52:29 - INFO - 查询参数: ['Female', 'III', '%Evolut%']
+2025-06-17 15:52:29 - INFO - 收到数据请求 - 筛选条件: {'gender': ['Female'], 'thv_brand': 'Evolut', 'nyha_classification': ['III']}
+2025-06-17 15:52:29 - INFO - 页码: 1, 每页大小: 20
+2025-06-17 15:52:29 - INFO - 数据库连接成功
+2025-06-17 15:52:29 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Female'], 'thv_brand': 'Evolut', 'nyha_classification': ['III']}
+2025-06-17 15:52:29 - INFO - 添加性别筛选: ['Female']
+2025-06-17 15:52:29 - INFO - 添加NYHA分级筛选: ['III']
+2025-06-17 15:52:29 - INFO - 添加瓣膜品牌筛选: Evolut
+2025-06-17 15:52:29 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification IN (%s) AND thv_brand LIKE %s
+2025-06-17 15:52:29 - INFO - 数据库连接成功
+2025-06-17 15:52:29 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Female'], 'thv_brand': 'Evolut', 'nyha_classification': ['III']}
+2025-06-17 15:52:29 - INFO - 添加性别筛选: ['Female']
+2025-06-17 15:52:29 - INFO - 添加NYHA分级筛选: ['III']
+2025-06-17 15:52:29 - INFO - 查询参数: ['Female', 'III', '%Evolut%']
+2025-06-17 15:52:29 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE sex IN (%s) AND nyha_classification IN (%s) AND thv_brand LIKE %s
+2025-06-17 15:52:29 - INFO - 查询参数: ['Female', 'III', '%Evolut%']
+2025-06-17 15:52:29 - INFO - 添加瓣膜品牌筛选: Evolut
+2025-06-17 15:52:29 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification IN (%s) AND thv_brand LIKE %s
+2025-06-17 15:52:29 - INFO - 查询参数: ['Female', 'III', '%Evolut%']
+2025-06-17 15:52:29 - INFO - 查询成功，返回 12 条记录
+2025-06-17 15:52:34 - INFO - 收到数据请求 - 筛选条件: {'patient_id': '10.1002_ccd.27812'}
+2025-06-17 15:52:34 - INFO - 页码: 1, 每页大小: 1
+2025-06-17 15:52:34 - INFO - 数据库连接成功
+2025-06-17 15:52:34 - INFO - 开始构建WHERE子句，筛选条件: {'patient_id': '10.1002_ccd.27812'}
+2025-06-17 15:52:34 - INFO - 添加DOI筛选: 10.1002_ccd.27812
+2025-06-17 15:52:34 - INFO - 最终WHERE子句: patient_id = %s
+2025-06-17 15:52:34 - INFO - 查询参数: ['10.1002_ccd.27812']
+2025-06-17 15:52:34 - INFO - 查询成功，返回 1 条记录
+2025-06-17 15:53:20 - INFO - 收到数据请求 - 筛选条件: {'patient_id': '10.1016_j.hlc.2014.10.012'}
+2025-06-17 15:53:20 - INFO - 页码: 1, 每页大小: 1
+2025-06-17 15:53:20 - INFO - 数据库连接成功
+2025-06-17 15:53:20 - INFO - 开始构建WHERE子句，筛选条件: {'patient_id': '10.1016_j.hlc.2014.10.012'}
+2025-06-17 15:53:20 - INFO - 添加DOI筛选: 10.1016_j.hlc.2014.10.012
+2025-06-17 15:53:20 - INFO - 最终WHERE子句: patient_id = %s
+2025-06-17 15:53:20 - INFO - 查询参数: ['10.1016_j.hlc.2014.10.012']
+2025-06-17 15:53:20 - INFO - 查询成功，返回 1 条记录
+2025-06-17 15:58:33 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-17 15:58:33 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-17 15:58:38 - INFO - 数据库连接成功
+2025-06-17 15:58:38 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-17 15:58:38 - INFO - 最终WHERE子句: 1=1
+2025-06-17 15:58:38 - INFO - 查询参数: []
+2025-06-17 15:58:38 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-17 15:58:38 - INFO - 页码: 1, 每页大小: 20
+2025-06-17 15:58:38 - INFO - 数据库连接成功
+2025-06-17 15:58:38 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-17 15:58:38 - INFO - 最终WHERE子句: 1=1
+2025-06-17 15:58:38 - INFO - 查询参数: []
+2025-06-17 15:58:38 - INFO - 数据库连接成功
+2025-06-17 15:58:38 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-17 15:58:38 - INFO - 最终WHERE子句: 1=1
+2025-06-17 15:58:38 - INFO - 查询参数: []
+2025-06-17 15:58:38 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-17 15:58:38 - INFO - 查询参数: []
+2025-06-17 15:58:38 - INFO - 查询成功，返回 20 条记录
+2025-06-17 15:58:48 - INFO - 数据库连接成功
+2025-06-17 15:58:48 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Female'], 'thv_brand': 'Evolut', 'nyha_classification': ['II']}
+2025-06-17 15:58:48 - INFO - 添加性别筛选: ['Female']
+2025-06-17 15:58:48 - INFO - 添加NYHA分级筛选: ['II']
+2025-06-17 15:58:48 - INFO - 添加瓣膜品牌筛选: Evolut
+2025-06-17 15:58:48 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification IN (%s) AND thv_brand LIKE %s
+2025-06-17 15:58:48 - INFO - 查询参数: ['Female', 'II', '%Evolut%']
+2025-06-17 15:58:48 - INFO - 收到数据请求 - 筛选条件: {'gender': ['Female'], 'thv_brand': 'Evolut', 'nyha_classification': ['II']}
+2025-06-17 15:58:48 - INFO - 页码: 1, 每页大小: 20
+2025-06-17 15:58:48 - INFO - 数据库连接成功
+2025-06-17 15:58:48 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Female'], 'thv_brand': 'Evolut', 'nyha_classification': ['II']}
+2025-06-17 15:58:48 - INFO - 数据库连接成功
+2025-06-17 15:58:48 - INFO - 添加性别筛选: ['Female']
+2025-06-17 15:58:48 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Female'], 'thv_brand': 'Evolut', 'nyha_classification': ['II']}
+2025-06-17 15:58:48 - INFO - 添加NYHA分级筛选: ['II']
+2025-06-17 15:58:48 - INFO - 添加性别筛选: ['Female']
+2025-06-17 15:58:48 - INFO - 添加瓣膜品牌筛选: Evolut
+2025-06-17 15:58:48 - INFO - 添加NYHA分级筛选: ['II']
+2025-06-17 15:58:48 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification IN (%s) AND thv_brand LIKE %s
+2025-06-17 15:58:48 - INFO - 添加瓣膜品牌筛选: Evolut
+2025-06-17 15:58:48 - INFO - 查询参数: ['Female', 'II', '%Evolut%']
+2025-06-17 15:58:48 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification IN (%s) AND thv_brand LIKE %s
+2025-06-17 15:58:48 - INFO - 查询参数: ['Female', 'II', '%Evolut%']
+2025-06-17 15:58:48 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE sex IN (%s) AND nyha_classification IN (%s) AND thv_brand LIKE %s
+2025-06-17 15:58:48 - INFO - 查询参数: ['Female', 'II', '%Evolut%']
+2025-06-17 15:58:48 - INFO - 查询成功，返回 1 条记录
+2025-06-17 15:58:52 - INFO - 收到数据请求 - 筛选条件: {'patient_id': '10.1016_j.jccase.2022.07.010'}
+2025-06-17 15:58:52 - INFO - 页码: 1, 每页大小: 1
+2025-06-17 15:58:52 - INFO - 数据库连接成功
+2025-06-17 15:58:52 - INFO - 开始构建WHERE子句，筛选条件: {'patient_id': '10.1016_j.jccase.2022.07.010'}
+2025-06-17 15:58:52 - INFO - 添加DOI筛选: 10.1016_j.jccase.2022.07.010
+2025-06-17 15:58:52 - INFO - 最终WHERE子句: patient_id = %s
+2025-06-17 15:58:52 - INFO - 查询参数: ['10.1016_j.jccase.2022.07.010']
+2025-06-17 15:58:52 - INFO - 查询成功，返回 1 条记录

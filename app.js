@@ -1401,6 +1401,8 @@ async function showCaseDetail(patientId) {
         function formatValue(key, value) {
             if (key === 'sex') return value === 'Male' ? '男' : value === 'Female' ? '女' : value;
             if (typeof value === 'boolean') return value ? '是' : '否';
+            if (value === 1) return '是';
+            if (value === 0) return '否';
             if (value === null || value === undefined || value === '') return 'N/A';
             return value;
         }
