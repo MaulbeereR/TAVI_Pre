@@ -77,7 +77,7 @@
 1年心梗	Myocardial_Infarction_At_1_Year
 1年卒中	Stroke_At_1_Year
 1年心衰再住院	Heart_Failure_Readmission_At_1_Year
-患者是否因 ​​TAVI（经导管主动脉瓣植入术）相关并发症​​ 而接受了 ​​后续干预​​（如二次手术、补救治疗等）	Subsequent_Intervention_For_TAVI_R_Complication_Occurred
+是否因TAVI并发症​​接受后续干预​​	Subsequent_Intervention_For_TAVI_R_Complication_Occurred
 术后封堵	Occlusion_Procedure_Post_TAVI_R
 术后瓣膜脱落	Valve_Dislodgement_Post_TAVI_R
 术后主动脉夹层	Aortic_Dissection_Post_TAVI_R

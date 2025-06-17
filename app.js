@@ -129,7 +129,13 @@ async function loadTableData(filters = {}, page = 1, pageSize = 20) {
 // 生成模拟数据
 function generateMockData() {
     const mockData = [];
-    const valveTypes = ['Edwards SAPIEN', 'Evolut', 'ACURATE Neo', 'CoreValve'];
+    const valveTypes = [
+        'ACURATE Neo', 'Avalus', 'CoreValve', 'Edwards', 'Edwards SAPIEN',
+        'Evolut', 'Hancock', 'INSPIRIS', 'Inoue', 'Inovare', 'J-Valve',
+        'JenaValve', 'LOTUS', 'Medtronic Mosaic', 'MyVal', 'Navitor',
+        'PERCEVAL-S', 'Portico', 'St Jude', 'Tyshak', 'Venus',
+        'Vitaflow Liberty', 'Taurus Elite'
+    ];
     const genders = ['Male', 'Female'];
     const nyhaClasses = ['I', 'II', 'III'];
     
@@ -218,32 +224,54 @@ function bindEventListeners() {
             loadChartData(currentFilters);
         });
     }
+
+    // 为所有筛选字段添加事件监听器
+    document.addEventListener('input', updateFilterVisualFeedback);
+    document.addEventListener('change', updateFilterVisualFeedback);
+    
+    // 初始化视觉反馈
+    setTimeout(updateFilterVisualFeedback, 100);
 }
 
 // 应用筛选
 async function applyFilters() {
     try {
+        console.log('开始应用筛选...'); // 调试日志
         showLoading(true);
         
         // 收集筛选条件
         const filters = collectFilterValues();
+        console.log('收集到的筛选条件:', filters); // 调试日志
         currentFilters = filters;
         
         // 重置到第一页
         currentPage = 1;
         
         // 并行加载所有数据
-        await Promise.all([
+        console.log('开始加载数据...'); // 调试日志
+        const [statsData, chartData, tableData] = await Promise.all([
             loadStatistics(filters),
             loadChartData(filters),
             loadTableData(filters, currentPage, casesPerPage)
         ]);
         
+        console.log('数据加载完成:', { statsData, chartData, tableData }); // 调试日志
+        
+        // 更新显示
+        updateStatisticsDisplay(statsData);
+        updateChartsWithData(chartData);
+        updateTableDisplay(tableData);
+        
         showLoading(false);
         showFilterResult();
         
+        // 更新视觉反馈
+        updateFilterVisualFeedback();
+        
     } catch (error) {
         console.error('筛选失败:', error);
+        console.error('错误详情:', error.message); // 调试日志
+        console.error('错误堆栈:', error.stack); // 调试日志
         showLoading(false);
         showError('筛选失败，请重试');
     }
@@ -253,547 +281,264 @@ async function applyFilters() {
 function collectFilterValues() {
     const filters = {};
     
-    // 基线资料
+    console.log('开始收集筛选条件...'); // 调试日志
+    
+    // 收集年龄范围
     const ageMin = document.getElementById('age-min')?.value;
     const ageMax = document.getElementById('age-max')?.value;
     if (ageMin) filters.age_min = parseInt(ageMin);
     if (ageMax) filters.age_max = parseInt(ageMax);
     
-    // 性别筛选
-    const genderValues = [];
-    if (document.getElementById('gender-male')?.checked) genderValues.push('Male');
-    if (document.getElementById('gender-female')?.checked) genderValues.push('Female');
-    if (genderValues.length > 0) filters.gender = genderValues;
+    // 收集性别
+    const gender = [];
+    if (document.getElementById('gender-male')?.checked) gender.push('Male');
+    if (document.getElementById('gender-female')?.checked) gender.push('Female');
+    if (gender.length > 0) filters.gender = gender;
     
-    // BMI筛选
+    // 收集BMI范围
     const bmiMin = document.getElementById('bmi-min')?.value;
     const bmiMax = document.getElementById('bmi-max')?.value;
     if (bmiMin) filters.bmi_min = parseFloat(bmiMin);
     if (bmiMax) filters.bmi_max = parseFloat(bmiMax);
     
-    // 房颤筛选
-    const atrialFib = document.getElementById('atrial-fibrillation')?.value;
-    if (atrialFib !== '') filters.atrial_fibrillation = atrialFib === 'true';
+    // 收集瓣膜类型
+    const valveType = document.getElementById('valve-type')?.value;
+    if (valveType) {
+        // 瓣膜类型中英文映射
+        const valveTypeMapping = {
+            '球囊扩张式': 'Balloon-expandable',
+            '自膨胀式': 'Self-expandable'
+        };
+        filters.thv_type = valveTypeMapping[valveType] || valveType;
+    }
     
-    // NYHA分级筛选
-    const nyhaValues = [];
-    ['1', '2', '3', '4'].forEach(grade => {
-        const checkbox = document.getElementById(`nyha-${grade}`);
-        if (checkbox?.checked) {
-            nyhaValues.push(['I', 'II', 'III', 'IV'][parseInt(grade) - 1]);
-        }
+    // 收集瓣膜品牌
+    const valveBrand = document.getElementById('valve-brand')?.value;
+    if (valveBrand && valveBrand.trim() !== '') {
+        const brandValue = valveBrand.trim();
+        console.log('选择的瓣膜品牌:', brandValue);
+        filters.thv_brand = brandValue;
+    }
+    
+    // 收集瓣膜尺寸
+    const valveSizeMin = document.getElementById('valve-size-min')?.value;
+    const valveSizeMax = document.getElementById('valve-size-max')?.value;
+    if (valveSizeMin) filters.thv_size_min = parseFloat(valveSizeMin);
+    if (valveSizeMax) filters.thv_size_max = parseFloat(valveSizeMax);
+    
+    // 收集NYHA分级
+    const nyhaGrades = [];
+    document.querySelectorAll('input[id^="nyha-"]:checked').forEach(checkbox => {
+        nyhaGrades.push(checkbox.value);
     });
-    if (nyhaValues.length > 0) filters.nyha_classification = nyhaValues;
+    if (nyhaGrades.length > 0) {
+        filters.nyha_classification = nyhaGrades;
+    }
     
-    // 心梗史
-    const miHistory = document.getElementById('myocardial-infarction')?.value;
-    if (miHistory !== '') filters.mi_history = miHistory === 'true';
-    
-    // PCI史
-    const pciHistory = document.getElementById('pci-history')?.value;
-    if (pciHistory !== '') filters.pci_history = pciHistory === 'true';
-    
-    // CABG史
-    const cabgHistory = document.getElementById('cabg-history')?.value;
-    if (cabgHistory !== '') filters.cabg_history = cabgHistory === 'true';
-    
-    // STS评分
-    const stsScoreMin = document.getElementById('sts-score-min')?.value;
-    const stsScoreMax = document.getElementById('sts-score-max')?.value;
-    if (stsScoreMin) filters.sts_score_min = parseFloat(stsScoreMin);
-    if (stsScoreMax) filters.sts_score_max = parseFloat(stsScoreMax);
-    
-    // NT-proBNP
-    const ntProbnpMin = document.getElementById('nt-probnp-min')?.value;
-    const ntProbnpMax = document.getElementById('nt-probnp-max')?.value;
-    if (ntProbnpMin) filters.nt_probnp_min = parseFloat(ntProbnpMin);
-    if (ntProbnpMax) filters.nt_probnp_max = parseFloat(ntProbnpMax);
-    
-    // 更多基线资料字段
-    // 体表面积
-    const surfaceAreaMin = document.getElementById('surface-area-min')?.value;
-    const surfaceAreaMax = document.getElementById('surface-area-max')?.value;
-    if (surfaceAreaMin) filters.surface_area_min = parseFloat(surfaceAreaMin);
-    if (surfaceAreaMax) filters.surface_area_max = parseFloat(surfaceAreaMax);
-    
-    // 糖尿病
-    const diabetes = document.getElementById('diabetes')?.value;
-    if (diabetes !== '') filters.diabetes_mellitus = diabetes === 'true';
-    
-    // 高血压
-    const hypertension = document.getElementById('hypertension')?.value;
-    if (hypertension !== '') filters.hypertension = hypertension === 'true';
-    
-    // 高脂血症
-    const hyperlipidemia = document.getElementById('hyperlipidemia')?.value;
-    if (hyperlipidemia !== '') filters.hyperlipidemia = hyperlipidemia === 'true';
-    
-    // 冠心病
-    const coronaryArteryDisease = document.getElementById('coronary-artery-disease')?.value;
-    if (coronaryArteryDisease !== '') filters.coronary_artery_disease = coronaryArteryDisease === 'true';
-    
-    // 慢阻肺
-    const copd = document.getElementById('copd')?.value;
-    if (copd !== '') filters.copd = copd === 'true';
-    
-    // 透析
-    const dialysis = document.getElementById('dialysis')?.value;
-    if (dialysis !== '') filters.dialysis = dialysis === 'true';
-    
-    // ACEI/ARB
-    const aceiArb = document.getElementById('acei-arb')?.value;
-    if (aceiArb !== '') filters.acei_arb = aceiArb === 'true';
-    
-    // Beta受体阻滞剂
-    const betaBlocker = document.getElementById('beta-blocker')?.value;
-    if (betaBlocker !== '') filters.beta_blocker = betaBlocker === 'true';
-    
-    // 钙离子阻滞剂
-    const calciumBlocker = document.getElementById('calcium-blocker')?.value;
-    if (calciumBlocker !== '') filters.calcium_blocker = calciumBlocker === 'true';
-    
-    // 利尿剂
-    const diuretic = document.getElementById('diuretic')?.value;
-    if (diuretic !== '') filters.diuretic = diuretic === 'true';
-    
-    // 阿司匹林
-    const aspirin = document.getElementById('aspirin')?.value;
-    if (aspirin !== '') filters.aspirin = aspirin === 'true';
-    
-    // 抗凝药
-    const anticoagulant = document.getElementById('anticoagulant')?.value;
-    if (anticoagulant !== '') filters.anticoagulant = anticoagulant === 'true';
-    
-    // 他汀类药物
-    const statins = document.getElementById('statins')?.value;
-    if (statins !== '') filters.statins = statins === 'true';
-    
-    // SGLT2抑制剂
-    const sglt2Inhibitors = document.getElementById('sglt2-inhibitors')?.value;
-    if (sglt2Inhibitors !== '') filters.sglt2_inhibitors = sglt2Inhibitors === 'true';
-    
-    // 术前影像学评估
-    const lvefMin = document.getElementById('lvef-min')?.value;
-    const lvefMax = document.getElementById('lvef-max')?.value;
-    if (lvefMin) filters.lvef_min = parseFloat(lvefMin);
-    if (lvefMax) filters.lvef_max = parseFloat(lvefMax);
-    
-    const maxGradientMin = document.getElementById('max-gradient-min')?.value;
-    const maxGradientMax = document.getElementById('max-gradient-max')?.value;
-    if (maxGradientMin) filters.aortic_valve_peak_pg_min = parseFloat(maxGradientMin);
-    if (maxGradientMax) filters.aortic_valve_peak_pg_max = parseFloat(maxGradientMax);
-    
+    // 收集平均跨瓣压差范围
     const meanGradientMin = document.getElementById('mean-gradient-min')?.value;
     const meanGradientMax = document.getElementById('mean-gradient-max')?.value;
     if (meanGradientMin) filters.aortic_valve_mean_pg_min = parseFloat(meanGradientMin);
     if (meanGradientMax) filters.aortic_valve_mean_pg_max = parseFloat(meanGradientMax);
     
-    // 有效瓣口面积
-    const eoaMin = document.getElementById('eoa-min')?.value;
-    const eoaMax = document.getElementById('eoa-max')?.value;
-    if (eoaMin) filters.aortic_valve_eoa_min = parseFloat(eoaMin);
-    if (eoaMax) filters.aortic_valve_eoa_max = parseFloat(eoaMax);
+    // 收集基线资料布尔值筛选条件
+    const baselineBooleanFilters = {
+        'atrial-fibrillation': 'atrial_fibrillation',
+        'myocardial-infarction': 'myocardial_infarction',
+        'pci-history': 'pci_history',
+        'cabg-history': 'cabg_history',
+        'diabetes': 'diabetes_mellitus',
+        'hypertension': 'hypertension',
+        'hyperlipidemia': 'hyperlipidemia',
+        'coronary-artery-disease': 'coronary_artery_disease',
+        'copd': 'copd',
+        'dialysis': 'dialysis',
+        'acei-arb': 'acei_arb',
+        'beta-blocker': 'beta_blocker',
+        'calcium-blocker': 'calcium_blocker',
+        'diuretic': 'diuretic',
+        'aspirin': 'aspirin'
+    };
     
-    // 瓣环面积
-    const annularAreaMin = document.getElementById('annular-area-min')?.value;
-    const annularAreaMax = document.getElementById('annular-area-max')?.value;
-    if (annularAreaMin) filters.annular_area_min = parseFloat(annularAreaMin);
-    if (annularAreaMax) filters.annular_area_max = parseFloat(annularAreaMax);
+    // 收集术前影像学评估数值范围筛选条件
+    const imagingNumericFilters = {
+        'lvef': 'lvef',
+        'max-gradient': 'aortic_valve_peak_pg',
+        'eoa': 'aortic_valve_eoa',
+        'annular-area': 'annular_area',
+        'annular-mean-diameter': 'annular_mean_diameter',
+        'annular-max-diameter': 'annular_max_diameter',
+        'annular-perimeter': 'annular_perimeter',
+        'valve-velocity': 'aortic_valve_flow_velocity',
+        'stj-height': 'stj_height',
+        'stj-diameter': 'stj_diameter',
+        'sinus-diameter': 'sinus_diameter',
+        'ascending-aorta-diameter': 'ascending_aorta_diameter',
+        'lvot-diameter': 'lvot_diameter',
+        'lvot-calcification': 'lvot_calcification',
+        'lca-height': 'left_coronary_height',
+        'rca-height': 'right_coronary_height',
+        'eoai': 'aortic_valve_eoai',
+        'lvedv': 'lvedv',
+        'lvesv': 'lvesv',
+        'annular-min-diameter': 'annular_min_diameter',
+        'annular-calcification': 'annular_calcification',
+        'supraannular-calcification': 'supraannular_calcification'
+    };
     
-    // 瓣环平均直径
-    const annularMeanDiameterMin = document.getElementById('annular-mean-diameter-min')?.value;
-    const annularMeanDiameterMax = document.getElementById('annular-mean-diameter-max')?.value;
-    if (annularMeanDiameterMin) filters.annular_mean_diameter_min = parseFloat(annularMeanDiameterMin);
-    if (annularMeanDiameterMax) filters.annular_mean_diameter_max = parseFloat(annularMeanDiameterMax);
+    // 收集术前影像学评估布尔值筛选条件
+    const imagingBooleanFilters = {
+        'moderate-severe-ar': 'moderate_severe_ar',
+        'moderate-severe-mr': 'moderate_severe_mr'
+    };
     
-    // 瓣环最大直径
-    const annularMaxDiameterMin = document.getElementById('annular-max-diameter-min')?.value;
-    const annularMaxDiameterMax = document.getElementById('annular-max-diameter-max')?.value;
-    if (annularMaxDiameterMin) filters.annular_max_diameter_min = parseFloat(annularMaxDiameterMin);
-    if (annularMaxDiameterMax) filters.annular_max_diameter_max = parseFloat(annularMaxDiameterMax);
+    // 收集手术信息布尔值筛选条件
+    const surgeryBooleanFilters = {
+        'transfemoral-access': 'transfemoral_access',
+        'transapical-access': 'transapical_access',
+        'mean-pg-gte-20': 'mean_pg_gte_20',
+        'prosthesis-malposition': 'prosthesis_malposition',
+        'annular-rupture': 'annular_rupture',
+        'immediate-pvl': 'immediate_pvl_occurred',
+        'valve-displacement': 'thv_displacement',
+        'conversion-to-savr': 'conversion_to_savr',
+        'cpb-required': 'cpb_required',
+        'valve-in-valve': 'valve_in_valve',
+        'periprocedural-death': 'periprocedural_death',
+        'pre-dilatation': 'pre_dilation',
+        'post-dilatation': 'post_dilation',
+        'excessive-oversizing': 'excessive_oversizing',
+        'oversizing-gte-15': 'oversizing_gte_15'
+    };
     
-    // 瓣环周径
-    const annularPerimeterMin = document.getElementById('annular-perimeter-min')?.value;
-    const annularPerimeterMax = document.getElementById('annular-perimeter-max')?.value;
-    if (annularPerimeterMin) filters.annular_perimeter_min = parseFloat(annularPerimeterMin);
-    if (annularPerimeterMax) filters.annular_perimeter_max = parseFloat(annularPerimeterMax);
+    // 收集手术信息数值范围筛选条件
+    const surgeryNumericFilters = {
+        'valve-size': 'thv_size',
+        'post-mean-pg': 'immediate_mean_pg',
+        'total-procedure-time': 'total_procedure_time',
+        'fluoroscopy-time': 'fluoroscopy_time',
+        'contrast-volume': 'contrast_volume',
+        'immediate-lvef': 'immediate_lvef'
+    };
     
-    // 瓣口流速
-    const valveVelocityMin = document.getElementById('valve-velocity-min')?.value;
-    const valveVelocityMax = document.getElementById('valve-velocity-max')?.value;
-    if (valveVelocityMin) filters.aortic_valve_flow_velocity_min = parseFloat(valveVelocityMin);
-    if (valveVelocityMax) filters.aortic_valve_flow_velocity_max = parseFloat(valveVelocityMax);
+    // 收集出院前评价布尔值筛选条件
+    const dischargeBooleanFilters = {
+        'death-before-discharge': 'death_before_discharge',
+        'stroke-before-discharge': 'stroke_before_discharge',
+        'major-bleeding': 'major_bleeding',
+        'acute-kidney-injury': 'aki',
+        'major-vascular-complications': 'major_vascular_complication',
+        'mi-ami': 'mi_ami',
+        'heart-failure': 'heart_failure',
+        'all-cause-cv-death': 'all_cause_cv_death',
+        'pacemaker-implantation': 'pacemaker_implantation',
+        'pvl-detected': 'pvl_detected',
+        'acs-ihd': 'acs_ihd'
+    };
     
-    // 窦管交界高度
-    const stjHeightMin = document.getElementById('stj-height-min')?.value;
-    const stjHeightMax = document.getElementById('stj-height-max')?.value;
-    if (stjHeightMin) filters.stj_height_min = parseFloat(stjHeightMin);
-    if (stjHeightMax) filters.stj_height_max = parseFloat(stjHeightMax);
+    // 收集出院前评价数值范围筛选条件
+    const dischargeNumericFilters = {
+        'flow-velocity': 'flow_velocity',
+        'mean-pg': 'mean_pg',
+        'max-pg': 'max_pg',
+        'eoai': 'eoai'
+    };
     
-    // 窦管交界直径
-    const stjDiameterMin = document.getElementById('stj-diameter-min')?.value;
-    const stjDiameterMax = document.getElementById('stj-diameter-max')?.value;
-    if (stjDiameterMin) filters.stj_diameter_min = parseFloat(stjDiameterMin);
-    if (stjDiameterMax) filters.stj_diameter_max = parseFloat(stjDiameterMax);
+    // 收集随访信息布尔值筛选条件
+    const followupBooleanFilters = {
+        'death-30-days': 'mortality_30d',
+        'mi-30-days': 'mi_30d',
+        'stroke-30-days': 'stroke_30d',
+        'hf-readmission-30-days': 'hf_readmission_30d',
+        'death-1-year': 'mortality_1y',
+        'mi-1-year': 'mi_1y',
+        'stroke-1-year': 'stroke_1y',
+        'hf-readmission-1-year': 'hf_readmission_1y',
+        'subsequent-intervention': 'subsequent_intervention'
+    };
     
-    // 窦部直径
-    const sinusDiameterMin = document.getElementById('sinus-diameter-min')?.value;
-    const sinusDiameterMax = document.getElementById('sinus-diameter-max')?.value;
-    if (sinusDiameterMin) filters.sinus_diameter_min = parseFloat(sinusDiameterMin);
-    if (sinusDiameterMax) filters.sinus_diameter_max = parseFloat(sinusDiameterMax);
+    // 收集基线资料数值范围筛选条件
+    const baselineNumericFilters = {
+        'sts-score': 'sts_score',
+        'nt-probnp': 'nt_probnp',
+        'surface-area': 'surface_area'
+    };
     
-    // 升主动脉直径
-    const ascendingAortaDiameterMin = document.getElementById('ascending-aorta-diameter-min')?.value;
-    const ascendingAortaDiameterMax = document.getElementById('ascending-aorta-diameter-max')?.value;
-    if (ascendingAortaDiameterMin) filters.ascending_aorta_diameter_min = parseFloat(ascendingAortaDiameterMin);
-    if (ascendingAortaDiameterMax) filters.ascending_aorta_diameter_max = parseFloat(ascendingAortaDiameterMax);
+    console.log('开始处理布尔值筛选条件'); // 调试日志
     
-    // 瓣环钙化
-    const annularCalcification = document.getElementById('annular-calcification')?.value;
-    if (annularCalcification !== '') filters.annular_calcification = annularCalcification === 'true';
+    // 处理所有布尔值筛选条件
+    const allBooleanFilters = {
+        ...baselineBooleanFilters,
+        ...imagingBooleanFilters,
+        ...surgeryBooleanFilters,
+        ...dischargeBooleanFilters,
+        ...followupBooleanFilters
+    };
     
-    // LVOT直径
-    const lvotDiameterMin = document.getElementById('lvot-diameter-min')?.value;
-    const lvotDiameterMax = document.getElementById('lvot-diameter-max')?.value;
-    if (lvotDiameterMin) filters.lvot_diameter_min = parseFloat(lvotDiameterMin);
-    if (lvotDiameterMax) filters.lvot_diameter_max = parseFloat(lvotDiameterMax);
-    
-    // LVOT钙化体积
-    const lvotCalcificationMin = document.getElementById('lvot-calcification-min')?.value;
-    const lvotCalcificationMax = document.getElementById('lvot-calcification-max')?.value;
-    if (lvotCalcificationMin) filters.lvot_calcification_min = parseFloat(lvotCalcificationMin);
-    if (lvotCalcificationMax) filters.lvot_calcification_max = parseFloat(lvotCalcificationMax);
-    
-    // 左冠脉高度
-    const lcaHeightMin = document.getElementById('lca-height-min')?.value;
-    const lcaHeightMax = document.getElementById('lca-height-max')?.value;
-    if (lcaHeightMin) filters.left_coronary_height_min = parseFloat(lcaHeightMin);
-    if (lcaHeightMax) filters.left_coronary_height_max = parseFloat(lcaHeightMax);
-    
-    // 右冠脉高度
-    const rcaHeightMin = document.getElementById('rca-height-min')?.value;
-    const rcaHeightMax = document.getElementById('rca-height-max')?.value;
-    if (rcaHeightMin) filters.right_coronary_height_min = parseFloat(rcaHeightMin);
-    if (rcaHeightMax) filters.right_coronary_height_max = parseFloat(rcaHeightMax);
-    
-    // 更多术前影像学评估字段
-    // 有效瓣口面积指数
-    const eoaiMin = document.getElementById('eoai-min')?.value;
-    const eoaiMax = document.getElementById('eoai-max')?.value;
-    if (eoaiMin) filters.aortic_valve_eoai_min = parseFloat(eoaiMin);
-    if (eoaiMax) filters.aortic_valve_eoai_max = parseFloat(eoaiMax);
-    
-    // 中度以上主动脉瓣反流
-    const moderateSevereAr = document.getElementById('moderate-severe-ar')?.value;
-    if (moderateSevereAr !== '') filters.moderate_severe_ar = moderateSevereAr === 'true';
-    
-    // 中度以上二尖瓣反流
-    const moderateSevereMr = document.getElementById('moderate-severe-mr')?.value;
-    if (moderateSevereMr !== '') filters.moderate_severe_mr = moderateSevereMr === 'true';
-    
-    // 左心室舒张末期容积
-    const lvedvMin = document.getElementById('lvedv-min')?.value;
-    const lvedvMax = document.getElementById('lvedv-max')?.value;
-    if (lvedvMin) filters.lvedv_min = parseFloat(lvedvMin);
-    if (lvedvMax) filters.lvedv_max = parseFloat(lvedvMax);
-    
-    // 左心室收缩末期容积
-    const lvesvMin = document.getElementById('lvesv-min')?.value;
-    const lvesvMax = document.getElementById('lvesv-max')?.value;
-    if (lvesvMin) filters.lvesv_min = parseFloat(lvesvMin);
-    if (lvesvMax) filters.lvesv_max = parseFloat(lvesvMax);
-    
-    // 瓣环最小直径
-    const annularMinDiameterMin = document.getElementById('annular-min-diameter-min')?.value;
-    const annularMinDiameterMax = document.getElementById('annular-min-diameter-max')?.value;
-    if (annularMinDiameterMin) filters.annular_min_diameter_min = parseFloat(annularMinDiameterMin);
-    if (annularMinDiameterMax) filters.annular_min_diameter_max = parseFloat(annularMinDiameterMax);
-    
-    // 瓣环偏心率
-    const annularEccentricityMin = document.getElementById('annular-eccentricity-min')?.value;
-    const annularEccentricityMax = document.getElementById('annular-eccentricity-max')?.value;
-    if (annularEccentricityMin) filters.annular_eccentricity_min = parseFloat(annularEccentricityMin);
-    if (annularEccentricityMax) filters.annular_eccentricity_max = parseFloat(annularEccentricityMax);
-    
-    // 源自面积的瓣环直径
-    const areaDerivedDiameterMin = document.getElementById('area-derived-diameter-min')?.value;
-    const areaDerivedDiameterMax = document.getElementById('area-derived-diameter-max')?.value;
-    if (areaDerivedDiameterMin) filters.area_derived_diameter_min = parseFloat(areaDerivedDiameterMin);
-    if (areaDerivedDiameterMax) filters.area_derived_diameter_max = parseFloat(areaDerivedDiameterMax);
-    
-    // 源自周长的瓣环直径
-    const perimeterDerivedDiameterMin = document.getElementById('perimeter-derived-diameter-min')?.value;
-    const perimeterDerivedDiameterMax = document.getElementById('perimeter-derived-diameter-max')?.value;
-    if (perimeterDerivedDiameterMin) filters.perimeter_derived_diameter_min = parseFloat(perimeterDerivedDiameterMin);
-    if (perimeterDerivedDiameterMax) filters.perimeter_derived_diameter_max = parseFloat(perimeterDerivedDiameterMax);
-    
-    // 瓣环上钙化
-    const supraannularCalcificationMin = document.getElementById('supraannular-calcification-min')?.value;
-    const supraannularCalcificationMax = document.getElementById('supraannular-calcification-max')?.value;
-    if (supraannularCalcificationMin) filters.supraannular_calcification_min = parseFloat(supraannularCalcificationMin);
-    if (supraannularCalcificationMax) filters.supraannular_calcification_max = parseFloat(supraannularCalcificationMax);
-    
-    // 瓣环至二尖瓣前叶距离
-    const annulusMitralDistanceMin = document.getElementById('annulus-mitral-distance-min')?.value;
-    const annulusMitralDistanceMax = document.getElementById('annulus-mitral-distance-max')?.value;
-    if (annulusMitralDistanceMin) filters.annulus_to_mitral_distance_min = parseFloat(annulusMitralDistanceMin);
-    if (annulusMitralDistanceMax) filters.annulus_to_mitral_distance_max = parseFloat(annulusMitralDistanceMax);
-    
-    // 手术信息
-    const transfemoralAccess = document.getElementById('transfemoral-access')?.value;
-    if (transfemoralAccess !== '') filters.transfemoral_access = transfemoralAccess === 'true';
-    
-    const transapicalAccess = document.getElementById('transapical-access')?.value;
-    if (transapicalAccess !== '') filters.transapical_access = transapicalAccess === 'true';
-    
-    const otherAccess = document.getElementById('other-access')?.value;
-    if (otherAccess !== '') filters.other_access = otherAccess === 'true';
-    
-    // 瓣膜尺寸
-    const valveSizes = [];
-    ['23', '26', '29'].forEach(size => {
-        const checkbox = document.getElementById(`valve-size-${size}`);
-        if (checkbox?.checked) {
-            valveSizes.push(parseFloat(size));
+    for (const [filterId, fieldName] of Object.entries(allBooleanFilters)) {
+        const select = document.getElementById(filterId);
+        console.log(`检查筛选字段 ${filterId}:`, select);
+        if (select && select.value) {
+            console.log(`${filterId} 的值:`, select.value);
+            if (select.value === 'true') {
+                filters[fieldName] = true;
+                console.log(`设置 ${fieldName} = true`);
+            } else if (select.value === 'false') {
+                filters[fieldName] = false;
+                console.log(`设置 ${fieldName} = false`);
+            }
         }
-    });
-    if (valveSizes.length > 0) filters.thv_size = valveSizes;
+    }
     
-    const valveType = document.getElementById('valve-type')?.value;
-    if (valveType) filters.thv_type = valveType;
+    // 处理所有数值范围筛选条件
+    const allNumericFilters = {
+        ...baselineNumericFilters,
+        ...imagingNumericFilters,
+        ...surgeryNumericFilters,
+        ...dischargeNumericFilters
+    };
     
-    const valveBrand = document.getElementById('valve-brand')?.value;
-    if (valveBrand) filters.thv_brand = valveBrand;
+    for (const [prefix, fieldName] of Object.entries(allNumericFilters)) {
+        const minInput = document.getElementById(`${prefix}-min`);
+        const maxInput = document.getElementById(`${prefix}-max`);
+        
+        console.log(`检查数值范围字段 ${prefix}:`, { minInput, maxInput, minValue: minInput?.value, maxValue: maxInput?.value });
+        
+        if (minInput && minInput.value) {
+            filters[`${fieldName}_min`] = parseFloat(minInput.value);
+            console.log(`设置 ${fieldName}_min = ${parseFloat(minInput.value)}`);
+        }
+        if (maxInput && maxInput.value) {
+            filters[`${fieldName}_max`] = parseFloat(maxInput.value);
+            console.log(`设置 ${fieldName}_max = ${parseFloat(maxInput.value)}`);
+        }
+    }
     
-    // 术后即刻跨瓣压差
-    const postMeanPgMin = document.getElementById('post-mean-pg-min')?.value;
-    const postMeanPgMax = document.getElementById('post-mean-pg-max')?.value;
-    if (postMeanPgMin) filters.immediate_mean_pg_min = parseFloat(postMeanPgMin);
-    if (postMeanPgMax) filters.immediate_mean_pg_max = parseFloat(postMeanPgMax);
+    // 收集分类值筛选条件
+    const categoryFilters = {
+        'other-access': 'other_access',
+        'immediate-pvl-severity': 'immediate_pvl_severity',
+        'discharge-pvl-severity': 'pvl_severity',
+        'followup-pvl-severity': 'pvl_severity_last_followup',
+        'mitral-regurgitation-change': 'mitral_regurgitation_change'
+    };
     
-    // 跨瓣压差≥20mmHg
-    const meanPgGte20 = document.getElementById('mean-pg-gte-20')?.value;
-    if (meanPgGte20 !== '') filters.mean_pg_gte_20 = meanPgGte20 === 'true';
+    for (const [filterId, fieldName] of Object.entries(categoryFilters)) {
+        const select = document.getElementById(filterId);
+        if (select && select.value) {
+            filters[fieldName] = select.value;
+        }
+    }
     
-    // 严重错位
-    const prosthesisMalposition = document.getElementById('prosthesis-malposition')?.value;
-    if (prosthesisMalposition !== '') filters.prosthesis_malposition = prosthesisMalposition === 'true';
+    // 收集瓣周漏和死亡结果（保持原有的复选框逻辑作为备用）
+    if (document.getElementById('paravalvular-leak')?.checked) {
+        filters.immediate_pvl_occurred = true;
+    }
+    if (document.getElementById('death')?.checked) {
+        filters.death_before_discharge = true;
+    }
     
-    // 瓣环撕裂
-    const annularRupture = document.getElementById('annular-rupture')?.value;
-    if (annularRupture !== '') filters.annular_rupture = annularRupture === 'true';
-    
-    // 术后即刻瓣周漏
-    const immediatePvl = document.getElementById('immediate-pvl')?.value;
-    if (immediatePvl !== '') filters.immediate_pvl_occurred = immediatePvl === 'true';
-    
-    // 术后即刻瓣周漏程度
-    const pvlSeverity = document.getElementById('pvl-severity')?.value;
-    if (pvlSeverity) filters.immediate_pvl_severity = pvlSeverity;
-    
-    // 瓣架移位
-    const valveDisplacement = document.getElementById('valve-displacement')?.value;
-    if (valveDisplacement !== '') filters.thv_displacement = valveDisplacement === 'true';
-    
-    // 转外科开胸手术
-    const conversionToSavr = document.getElementById('conversion-to-savr')?.value;
-    if (conversionToSavr !== '') filters.conversion_to_savr = conversionToSavr === 'true';
-    
-    // 转心肺转流术
-    const cpbRequired = document.getElementById('cpb-required')?.value;
-    if (cpbRequired !== '') filters.cpb_required = cpbRequired === 'true';
-    
-    // 瓣中瓣
-    const valveInValve = document.getElementById('valve-in-valve')?.value;
-    if (valveInValve !== '') filters.valve_in_valve = valveInValve === 'true';
-    
-    // 围术期死亡
-    const periproceduralDeath = document.getElementById('periprocedural-death')?.value;
-    if (periproceduralDeath !== '') filters.periprocedural_death = periproceduralDeath === 'true';
-    
-    // 更多手术信息字段
-    // 预扩张
-    const preDilatation = document.getElementById('pre-dilatation')?.value;
-    if (preDilatation !== '') filters.pre_dilation = preDilatation === 'true';
-    
-    // 后扩张
-    const postDilatation = document.getElementById('post-dilatation')?.value;
-    if (postDilatation !== '') filters.post_dilation = postDilatation === 'true';
-    
-    // 总术时
-    const totalProcedureTimeMin = document.getElementById('total-procedure-time-min')?.value;
-    const totalProcedureTimeMax = document.getElementById('total-procedure-time-max')?.value;
-    if (totalProcedureTimeMin) filters.total_procedure_time_min = parseFloat(totalProcedureTimeMin);
-    if (totalProcedureTimeMax) filters.total_procedure_time_max = parseFloat(totalProcedureTimeMax);
-    
-    // 造影时间
-    const fluoroscopyTimeMin = document.getElementById('fluoroscopy-time-min')?.value;
-    const fluoroscopyTimeMax = document.getElementById('fluoroscopy-time-max')?.value;
-    if (fluoroscopyTimeMin) filters.fluoroscopy_time_min = parseFloat(fluoroscopyTimeMin);
-    if (fluoroscopyTimeMax) filters.fluoroscopy_time_max = parseFloat(fluoroscopyTimeMax);
-    
-    // 造影量
-    const contrastVolumeMin = document.getElementById('contrast-volume-min')?.value;
-    const contrastVolumeMax = document.getElementById('contrast-volume-max')?.value;
-    if (contrastVolumeMin) filters.contrast_volume_min = parseFloat(contrastVolumeMin);
-    if (contrastVolumeMax) filters.contrast_volume_max = parseFloat(contrastVolumeMax);
-    
-    // 术后即刻左心室射血分数
-    const immediateLvefMin = document.getElementById('immediate-lvef-min')?.value;
-    const immediateLvefMax = document.getElementById('immediate-lvef-max')?.value;
-    if (immediateLvefMin) filters.immediate_lvef_min = parseFloat(immediateLvefMin);
-    if (immediateLvefMax) filters.immediate_lvef_max = parseFloat(immediateLvefMax);
-    
-    // 过大尺寸
-    const excessiveOversizing = document.getElementById('excessive-oversizing')?.value;
-    if (excessiveOversizing !== '') filters.excessive_oversizing = excessiveOversizing === 'true';
-    
-    // 尺寸过大≥15%
-    const oversizingGte15 = document.getElementById('oversizing-gte-15')?.value;
-    if (oversizingGte15 !== '') filters.oversizing_gte_15 = oversizingGte15 === 'true';
-    
-    // 二尖瓣返流变化
-    const mitralRegurgitationChange = document.getElementById('mitral-regurgitation-change')?.value;
-    if (mitralRegurgitationChange) filters.mitral_regurgitation_change_proc = mitralRegurgitationChange;
-    
-    // 出院前评价
-    const deathBeforeDischarge = document.getElementById('death-before-discharge')?.value;
-    if (deathBeforeDischarge !== '') filters.death_before_discharge = deathBeforeDischarge === 'true';
-    
-    const strokeBeforeDischarge = document.getElementById('stroke-before-discharge')?.value;
-    if (strokeBeforeDischarge !== '') filters.stroke_before_discharge = strokeBeforeDischarge === 'true';
-    
-    const majorBleeding = document.getElementById('major-bleeding')?.value;
-    if (majorBleeding !== '') filters.major_bleeding = majorBleeding === 'true';
-    
-    const acuteKidneyInjury = document.getElementById('acute-kidney-injury')?.value;
-    if (acuteKidneyInjury !== '') filters.aki = acuteKidneyInjury === 'true';
-    
-    const majorVascularComplications = document.getElementById('major-vascular-complications')?.value;
-    if (majorVascularComplications !== '') filters.major_vascular_complication = majorVascularComplications === 'true';
-    
-    const pacemakerImplantation = document.getElementById('pacemaker-implantation')?.value;
-    if (pacemakerImplantation !== '') filters.pacemaker_implantation = pacemakerImplantation === 'true';
-    
-    // 更多出院前评价字段
-    const acsBeforeDischarge = document.getElementById('acs-before-discharge')?.value;
-    if (acsBeforeDischarge !== '') filters.acs_ihd = acsBeforeDischarge === 'true';
-    
-    const pvlSeverityDischarge = document.getElementById('pvl-severity-discharge')?.value;
-    if (pvlSeverityDischarge) filters.pvl_severity = pvlSeverityDischarge;
-    
-    // 出院前最大主动脉瓣跨瓣压差
-    const dischargeMaxPgMin = document.getElementById('discharge-max-pg-min')?.value;
-    const dischargeMaxPgMax = document.getElementById('discharge-max-pg-max')?.value;
-    if (dischargeMaxPgMin) filters.max_pg_min = parseFloat(dischargeMaxPgMin);
-    if (dischargeMaxPgMax) filters.max_pg_max = parseFloat(dischargeMaxPgMax);
-    
-    // 出院前主动脉瓣口流速
-    const dischargeFlowVelocityMin = document.getElementById('discharge-flow-velocity-min')?.value;
-    const dischargeFlowVelocityMax = document.getElementById('discharge-flow-velocity-max')?.value;
-    if (dischargeFlowVelocityMin) filters.flow_velocity_min = parseFloat(dischargeFlowVelocityMin);
-    if (dischargeFlowVelocityMax) filters.flow_velocity_max = parseFloat(dischargeFlowVelocityMax);
-    
-    // 出院前平均主动脉瓣跨瓣压差
-    const dischargeMeanPgMin = document.getElementById('discharge-mean-pg-min')?.value;
-    const dischargeMeanPgMax = document.getElementById('discharge-mean-pg-max')?.value;
-    if (dischargeMeanPgMin) filters.mean_pg_min = parseFloat(dischargeMeanPgMin);
-    if (dischargeMeanPgMax) filters.mean_pg_max = parseFloat(dischargeMeanPgMax);
-    
-    // 出院前实测有效瓣口面积指数
-    const dischargeEoaiMin = document.getElementById('discharge-eoai-min')?.value;
-    const dischargeEoaiMax = document.getElementById('discharge-eoai-max')?.value;
-    if (dischargeEoaiMin) filters.eoai_min = parseFloat(dischargeEoaiMin);
-    if (dischargeEoaiMax) filters.eoai_max = parseFloat(dischargeEoaiMax);
-    
-    // 随访信息
-    const mortality30d = document.getElementById('death-30-days')?.value;
-    if (mortality30d !== '') filters.mortality_30d = mortality30d === 'true';
-    
-    const mi30d = document.getElementById('mi-30-days')?.value;
-    if (mi30d !== '') filters.mi_30d = mi30d === 'true';
-    
-    const stroke30d = document.getElementById('stroke-30-days')?.value;
-    if (stroke30d !== '') filters.stroke_30d = stroke30d === 'true';
-    
-    const hfReadmission30d = document.getElementById('hf-readmission-30-days')?.value;
-    if (hfReadmission30d !== '') filters.hf_readmission_30d = hfReadmission30d === 'true';
-    
-    const mortality1y = document.getElementById('death-1-year')?.value;
-    if (mortality1y !== '') filters.mortality_1y = mortality1y === 'true';
-    
-    const mi1y = document.getElementById('mi-1-year')?.value;
-    if (mi1y !== '') filters.mi_1y = mi1y === 'true';
-    
-    // 更多随访信息字段
-    // 随访时左心室射血分数
-    const followupLvefMin = document.getElementById('followup-lvef-min')?.value;
-    const followupLvefMax = document.getElementById('followup-lvef-max')?.value;
-    if (followupLvefMin) filters.lvef_last_followup_min = parseFloat(followupLvefMin);
-    if (followupLvefMax) filters.lvef_last_followup_max = parseFloat(followupLvefMax);
-    
-    // 随访时NYHA分级
-    const followupNyha = document.getElementById('followup-nyha')?.value;
-    if (followupNyha) filters.nyha_last_followup = followupNyha;
-    
-    // 随访时最大跨瓣压差
-    const followupMaxPgMin = document.getElementById('followup-max-pg-min')?.value;
-    const followupMaxPgMax = document.getElementById('followup-max-pg-max')?.value;
-    if (followupMaxPgMin) filters.max_pg_last_followup_min = parseFloat(followupMaxPgMin);
-    if (followupMaxPgMax) filters.max_pg_last_followup_max = parseFloat(followupMaxPgMax);
-    
-    // 随访时瓣口流速
-    const followupFlowVelocityMin = document.getElementById('followup-flow-velocity-min')?.value;
-    const followupFlowVelocityMax = document.getElementById('followup-flow-velocity-max')?.value;
-    if (followupFlowVelocityMin) filters.flow_velocity_last_followup_min = parseFloat(followupFlowVelocityMin);
-    if (followupFlowVelocityMax) filters.flow_velocity_last_followup_max = parseFloat(followupFlowVelocityMax);
-    
-    // 随访时平均跨瓣压差
-    const followupMeanPgMin = document.getElementById('followup-mean-pg-min')?.value;
-    const followupMeanPgMax = document.getElementById('followup-mean-pg-max')?.value;
-    if (followupMeanPgMin) filters.mean_pg_last_followup_min = parseFloat(followupMeanPgMin);
-    if (followupMeanPgMax) filters.mean_pg_last_followup_max = parseFloat(followupMeanPgMax);
-    
-    // 随访时有效瓣口面积
-    const followupEoaMin = document.getElementById('followup-eoa-min')?.value;
-    const followupEoaMax = document.getElementById('followup-eoa-max')?.value;
-    if (followupEoaMin) filters.eoa_last_followup_min = parseFloat(followupEoaMin);
-    if (followupEoaMax) filters.eoa_last_followup_max = parseFloat(followupEoaMax);
-    
-    // 随访时有效瓣口面积指数
-    const followupEoaiMin = document.getElementById('followup-eoai-min')?.value;
-    const followupEoaiMax = document.getElementById('followup-eoai-max')?.value;
-    if (followupEoaiMin) filters.eoai_last_followup_min = parseFloat(followupEoaiMin);
-    if (followupEoaiMax) filters.eoai_last_followup_max = parseFloat(followupEoaiMax);
-    
-    // 随访时是否瓣周漏
-    const followupPvlDetected = document.getElementById('followup-pvl-detected')?.value;
-    if (followupPvlDetected !== '') filters.pvl_detected_last_followup = followupPvlDetected === 'true';
-    
-    // 随访时瓣周漏程度
-    const followupPvlSeverity = document.getElementById('followup-pvl-severity')?.value;
-    if (followupPvlSeverity) filters.pvl_severity_last_followup = followupPvlSeverity;
-    
-    // 后续干预
-    const subsequentIntervention = document.getElementById('subsequent-intervention')?.value;
-    if (subsequentIntervention !== '') filters.subsequent_intervention = subsequentIntervention === '有';
-    
-    // 二次手术
-    const reoperation = document.getElementById('reoperation')?.value;
-    if (reoperation !== '') filters.reoperation = reoperation === 'true';
-    
-    // 术后中转开胸
-    const conversionToOpenSurgery = document.getElementById('conversion-to-open-surgery')?.value;
-    if (conversionToOpenSurgery !== '') filters.conversion_to_open = conversionToOpenSurgery === 'true';
-    
-    // 术后起搏器植入
-    const pacemakerPostTavi = document.getElementById('pacemaker-post-tavi')?.value;
-    if (pacemakerPostTavi !== '') filters.pacemaker_post = pacemakerPostTavi === 'true';
-    
-    // 术后心衰
-    const heartFailurePost = document.getElementById('heart-failure-post')?.value;
-    if (heartFailurePost !== '') filters.heart_failure_post = heartFailurePost === 'true';
-    
+    console.log('最终收集到的筛选条件:', filters); // 调试日志
     return filters;
 }
 
@@ -988,34 +733,128 @@ function updatePaginationDisplay(data) {
 }
 
 // 重置筛选
-async function resetFilters() {
-    try {
-        // 清空所有输入框
-        document.querySelectorAll('.filter-content input[type="number"]').forEach(input => {
-            input.value = '';
-        });
-        
-        // 取消所有复选框
-        document.querySelectorAll('.filter-content input[type="checkbox"]').forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        
-        // 重置所有选择框
-        document.querySelectorAll('.filter-content select').forEach(select => {
-            select.selectedIndex = 0;
-        });
-        
-        // 清空当前筛选条件
-        currentFilters = {};
-        currentPage = 1;
-        
-        // 重新加载所有数据
-        await loadInitialData();
-        
-    } catch (error) {
-        console.error('重置筛选失败:', error);
-        showError('重置筛选失败，请重试');
-    }
+function resetFilters() {
+    console.log('开始重置所有筛选条件...'); // 调试日志
+    
+    // 重置年龄范围
+    const ageMin = document.getElementById('age-min');
+    const ageMax = document.getElementById('age-max');
+    if (ageMin) ageMin.value = '';
+    if (ageMax) ageMax.value = '';
+    
+    // 重置性别
+    const genderMale = document.getElementById('gender-male');
+    const genderFemale = document.getElementById('gender-female');
+    if (genderMale) genderMale.checked = false;
+    if (genderFemale) genderFemale.checked = false;
+    
+    // 重置BMI范围
+    const bmiMin = document.getElementById('bmi-min');
+    const bmiMax = document.getElementById('bmi-max');
+    if (bmiMin) bmiMin.value = '';
+    if (bmiMax) bmiMax.value = '';
+    
+    // 重置瓣膜类型
+    const valveType = document.getElementById('valve-type');
+    if (valveType) valveType.value = '';
+    
+    // 重置瓣膜品牌
+    const valveBrand = document.getElementById('valve-brand');
+    if (valveBrand) valveBrand.value = '';
+    
+    // 重置瓣膜尺寸范围
+    const valveSizeMin = document.getElementById('valve-size-min');
+    const valveSizeMax = document.getElementById('valve-size-max');
+    if (valveSizeMin) valveSizeMin.value = '';
+    if (valveSizeMax) valveSizeMax.value = '';
+    
+    // 重置NYHA分级复选框
+    document.querySelectorAll('input[id^="nyha-"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // 重置平均跨瓣压差范围
+    const meanGradientMin = document.getElementById('mean-gradient-min');
+    const meanGradientMax = document.getElementById('mean-gradient-max');
+    if (meanGradientMin) meanGradientMin.value = '';
+    if (meanGradientMax) meanGradientMax.value = '';
+    
+    // 重置所有布尔值筛选条件
+    const allBooleanFilterIds = [
+        // 基线资料
+        'atrial-fibrillation', 'myocardial-infarction', 'pci-history', 'cabg-history',
+        'diabetes', 'hypertension', 'hyperlipidemia', 'coronary-artery-disease',
+        'copd', 'dialysis', 'acei-arb', 'beta-blocker', 'calcium-blocker', 'diuretic', 'aspirin',
+        // 术前影像学评估
+        'moderate-severe-ar', 'moderate-severe-mr',
+        // 手术信息
+        'transfemoral-access', 'transapical-access', 'mean-pg-gte-20', 'prosthesis-malposition',
+        'annular-rupture', 'immediate-pvl', 'valve-displacement', 'conversion-to-savr',
+        'cpb-required', 'valve-in-valve', 'periprocedural-death', 'pre-dilatation',
+        'post-dilatation', 'excessive-oversizing', 'oversizing-gte-15',
+        // 出院前评价
+        'death-before-discharge', 'stroke-before-discharge', 'major-bleeding',
+        'acute-kidney-injury', 'major-vascular-complications', 'mi-ami', 'heart-failure',
+        'all-cause-cv-death', 'pacemaker-implantation', 'pvl-detected', 'acs-ihd',
+        // 随访信息
+        'death-30-days', 'mi-30-days', 'stroke-30-days', 'hf-readmission-30-days',
+        'death-1-year', 'mi-1-year', 'stroke-1-year', 'hf-readmission-1-year',
+        'subsequent-intervention'
+    ];
+    
+    allBooleanFilterIds.forEach(filterId => {
+        const select = document.getElementById(filterId);
+        if (select) {
+            select.value = '';
+        }
+    });
+    
+    // 重置所有数值范围筛选条件
+    const allNumericFilterPrefixes = [
+        // 基线资料
+        'sts-score', 'nt-probnp', 'surface-area',
+        // 术前影像学评估
+        'lvef', 'max-gradient', 'eoa', 'annular-area', 'annular-mean-diameter',
+        'annular-max-diameter', 'annular-perimeter', 'valve-velocity', 'stj-height',
+        'stj-diameter', 'sinus-diameter', 'ascending-aorta-diameter', 'lvot-diameter',
+        'lvot-calcification', 'lca-height', 'rca-height', 'eoai', 'lvedv', 'lvesv',
+        'annular-min-diameter', 'annular-calcification', 'supraannular-calcification',
+        // 手术信息
+        'valve-size', 'post-mean-pg', 'total-procedure-time', 'fluoroscopy-time', 'contrast-volume',
+        'immediate-lvef',
+        // 出院前评价
+        'flow-velocity', 'mean-pg', 'max-pg'
+    ];
+    
+    allNumericFilterPrefixes.forEach(prefix => {
+        const minInput = document.getElementById(`${prefix}-min`);
+        const maxInput = document.getElementById(`${prefix}-max`);
+        if (minInput) minInput.value = '';
+        if (maxInput) maxInput.value = '';
+    });
+    
+    // 重置分类值筛选条件
+    const categoryFilterIds = ['other-access', 'immediate-pvl-severity', 'discharge-pvl-severity', 'followup-pvl-severity', 'mitral-regurgitation-change'];
+    categoryFilterIds.forEach(filterId => {
+        const select = document.getElementById(filterId);
+        if (select) {
+            select.value = '';
+        }
+    });
+    
+    // 重置瓣周漏和死亡结果复选框
+    const paravalvularLeak = document.getElementById('paravalvular-leak');
+    const death = document.getElementById('death');
+    if (paravalvularLeak) paravalvularLeak.checked = false;
+    if (death) death.checked = false;
+    
+    console.log('所有筛选条件已重置'); // 调试日志
+    
+    // 更新视觉反馈
+    updateFilterVisualFeedback();
+    
+    // 重新加载数据（不应用任何筛选条件）
+    applyFilters();
 }
 
 // 切换视图
@@ -1056,6 +895,7 @@ function initializeCharts() {
     createAgeDistributionChart();
     createNyhaChart();
     createValveDiameterChart();
+    createValveBrandChart();
     createPrePostComparisonChart();
     createComplicationsChart();
 }
@@ -1159,6 +999,80 @@ function createValveDiameterChart() {
     if (!ctx) return;
     
     charts.valveDiameter = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: '病例数',
+                data: [],
+                backgroundColor: [] // 将在数据更新时动态设置
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    ticks: {
+                        callback: function(value, index, ticks) {
+                            // 获取原始标签
+                            let label = this.getLabelForValue(value);
+                            // 去掉单位mm
+                            label = label.replace('mm', '');
+                            // 转为数字
+                            let num = Number(label);
+                            if (isNaN(num)) return label;
+                            // 判断是否为整数
+                            if (Number.isInteger(num)) {
+                                return num + 'mm';
+                            } else {
+                                // 保留1位小数
+                                return num.toFixed(1) + 'mm';
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    align: 'start',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'rect',
+                        padding: 20,
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#333',
+                    font: {
+                        weight: 'bold',
+                        size: 12
+                    },
+                    formatter: function(value) {
+                        return value;
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+}
+
+// 创建瓣膜品牌分布图
+function createValveBrandChart() {
+    const ctx = document.getElementById('valve-brand-chart');
+    if (!ctx) return;
+    
+    charts.valveBrand = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: [],
@@ -1281,7 +1195,7 @@ function createComplicationsChart() {
 }
 
 // 更新图表
-function updateCharts() {
+function updateCharts(data) {
     // 销毁现有图表
     Object.values(charts).forEach(chart => {
         if (chart) {
@@ -1482,4 +1396,88 @@ style.textContent = `
         transform: translateX(0);
     }
 `;
-document.head.appendChild(style); 
+document.head.appendChild(style);
+
+// 更新筛选字段的视觉反馈
+function updateFilterVisualFeedback() {
+    // 检查数值范围字段
+    const rangeInputs = document.querySelectorAll('input[type="number"]');
+    rangeInputs.forEach(input => {
+        const filterItem = input.closest('.filter-item-inline');
+        if (filterItem) {
+            const minInput = filterItem.querySelector('input[placeholder="最小"]');
+            const maxInput = filterItem.querySelector('input[placeholder="最大"]');
+            
+            if ((minInput && minInput.value) || (maxInput && maxInput.value)) {
+                filterItem.classList.add('has-value');
+            } else {
+                filterItem.classList.remove('has-value');
+            }
+        }
+    });
+    
+    // 检查下拉菜单字段
+    const selectInputs = document.querySelectorAll('select[id]');
+    selectInputs.forEach(select => {
+        const filterItem = select.closest('.filter-item-inline');
+        if (filterItem && select.value) {
+            filterItem.classList.add('has-value');
+        } else if (filterItem) {
+            filterItem.classList.remove('has-value');
+        }
+    });
+    
+    // 检查复选框字段 - 包括NYHA分级
+    const checkboxGroups = document.querySelectorAll('.checkbox-group-inline');
+    checkboxGroups.forEach(group => {
+        const filterItem = group.closest('.filter-item-inline');
+        if (filterItem) {
+            const checkedBoxes = group.querySelectorAll('input[type="checkbox"]:checked');
+            if (checkedBoxes.length > 0) {
+                filterItem.classList.add('has-value');
+            } else {
+                filterItem.classList.remove('has-value');
+            }
+        }
+    });
+    
+    // 检查性别复选框
+    const genderMale = document.getElementById('gender-male');
+    const genderFemale = document.getElementById('gender-female');
+    if (genderMale && genderFemale) {
+        const genderFilterItem = genderMale.closest('.filter-item-inline');
+        if (genderFilterItem) {
+            if (genderMale.checked || genderFemale.checked) {
+                genderFilterItem.classList.add('has-value');
+            } else {
+                genderFilterItem.classList.remove('has-value');
+            }
+        }
+    }
+    
+    // 检查瓣周漏和死亡结果复选框
+    const paravalvularLeak = document.getElementById('paravalvular-leak');
+    const death = document.getElementById('death');
+    
+    if (paravalvularLeak) {
+        const filterItem = paravalvularLeak.closest('.filter-item-inline');
+        if (filterItem) {
+            if (paravalvularLeak.checked) {
+                filterItem.classList.add('has-value');
+            } else {
+                filterItem.classList.remove('has-value');
+            }
+        }
+    }
+    
+    if (death) {
+        const filterItem = death.closest('.filter-item-inline');
+        if (filterItem) {
+            if (death.checked) {
+                filterItem.classList.add('has-value');
+            } else {
+                filterItem.classList.remove('has-value');
+            }
+        }
+    }
+} 

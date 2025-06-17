@@ -166,7 +166,7 @@ function processData() {
             }
         }
         
-        // 提取出院前死亡 - 从TAVI_R_Evaluation_PostProcedure_Before_Discharge.All_Cause_Mortality_Before_Discharge
+        // 提取出院前死亡
         let death = null;
         if (item.TAVI_R_Evaluation_PostProcedure_Before_Discharge && 
             item.TAVI_R_Evaluation_PostProcedure_Before_Discharge.All_Cause_Mortality_Before_Discharge !== null &&
@@ -177,6 +177,78 @@ function processData() {
             } else if (typeof deathValue === 'string') {
                 const deathStr = deathValue.toLowerCase();
                 death = deathStr === 'true' || deathStr === 'yes' || deathStr === '是';
+            }
+        }
+        
+        // 提取出院前评价其他字段
+        let stroke = null;
+        let majorBleeding = null;
+        let aki = null;
+        let majorVascularComplication = null;
+        let miAmi = null;
+        let acsIhd = null;
+        let heartFailure = null;
+        let allCauseCvDeath = null;
+        let pacemakerImplantation = null;
+        let pvlSeverity = null;
+        let maxPg = null;
+        let flowVelocity = null;
+        let meanPg = null;
+        let eoai = null;
+        let mitralRegurgitationChange = null;
+
+        if (item.TAVI_R_Evaluation_PostProcedure_Before_Discharge) {
+            const eval = item.TAVI_R_Evaluation_PostProcedure_Before_Discharge;
+            
+            // 处理布尔值字段
+            const booleanFields = {
+                'stroke': 'Stroke_Before_Discharge',
+                'majorBleeding': 'Life_Threatening_Bleeding_Before_Discharge',
+                'aki': 'Acute_Kidney_Injury_AKI_Before_Discharge',
+                'majorVascularComplication': 'Major_Vascular_Complication_Before_Discharge',
+                'miAmi': 'Myocardial_infarction_or_Acute_myocardial_infarction_Before_Discharge',
+                'acsIhd': 'Acute_coronary_syndrome_or_Ischemic_heart_disease_Before_Discharge',
+                'heartFailure': 'Heart_failure_Before_Discharge',
+                'allCauseCvDeath': 'All_cause_death_and_cardiovascular_death_Before_Discharge',
+                'pacemakerImplantation': 'New_Permanent_Pacemaker_Implantation_PPMI_Before_Discharge'
+            };
+
+            for (const [field, key] of Object.entries(booleanFields)) {
+                if (eval[key] !== null && eval[key] !== undefined) {
+                    const value = eval[key];
+                    if (typeof value === 'boolean') {
+                        eval[field] = value;
+                    } else if (typeof value === 'string') {
+                        const strValue = value.toLowerCase();
+                        eval[field] = strValue === 'true' || strValue === 'yes' || strValue === '是';
+                    }
+                }
+            }
+
+            // 处理瓣周漏程度
+            if (eval.PVL_Severity_Before_Discharge) {
+                pvlSeverity = eval.PVL_Severity_Before_Discharge.toString();
+            }
+
+            // 处理数值字段
+            const numericFields = {
+                'maxPg': 'Aortic_Valve_Max_PG_Before_Discharge',
+                'flowVelocity': 'Aortic_Valve_Flow_Velocity_Before_Discharge',
+                'meanPg': 'Aortic_Valve_Mean_PG_Before_Discharge',
+                'eoai': 'Aortic_Valve_EOAI_Before_Discharge'
+            };
+
+            for (const [field, key] of Object.entries(numericFields)) {
+                if (eval[key] !== null && eval[key] !== undefined) {
+                    const value = eval[key];
+                    eval[field] = typeof value === 'string' ? parseFloat(value) : value;
+                    if (isNaN(eval[field])) eval[field] = null;
+                }
+            }
+
+            // 处理二尖瓣返流变化
+            if (eval.Mitral_Regurgitation_Change) {
+                mitralRegurgitationChange = eval.Mitral_Regurgitation_Change.toString();
             }
         }
         
@@ -193,6 +265,21 @@ function processData() {
             effectiveArea: effectiveArea,
             pvl: pvl,
             death: death,
+            stroke: stroke,
+            majorBleeding: majorBleeding,
+            aki: aki,
+            majorVascularComplication: majorVascularComplication,
+            miAmi: miAmi,
+            acsIhd: acsIhd,
+            heartFailure: heartFailure,
+            allCauseCvDeath: allCauseCvDeath,
+            pacemakerImplantation: pacemakerImplantation,
+            pvlSeverity: pvlSeverity,
+            maxPg: maxPg,
+            flowVelocity: flowVelocity,
+            meanPg: meanPg,
+            eoai: eoai,
+            mitralRegurgitationChange: mitralRegurgitationChange,
             originalData: item
         };
     });
@@ -433,76 +520,183 @@ function initializeFilters() {
 }
 
 // 应用筛选器
-function applyFilters() {
-    console.log('应用筛选器...');
-    
-    if (!allData || allData.length === 0) {
-        console.warn('没有数据可筛选');
-        return;
-    }
-    
-    // 获取年龄筛选条件
-    const ageMin = document.querySelector('.range-min');
-    const ageMax = document.querySelector('.range-max');
-    
-    let minAge = null;
-    let maxAge = null;
-    
-    if (ageMin && ageMin.value) {
-        minAge = parseInt(ageMin.value);
-    }
-    if (ageMax && ageMax.value) {
-        maxAge = parseInt(ageMax.value);
-    }
-    
-    // 获取性别筛选条件
-    const genderDropdown = document.querySelector('[data-filter="gender"]');
-    let selectedGender = null;
-    if (genderDropdown) {
-        const selectedItem = genderDropdown.querySelector('.dropdown-item.selected');
-        if (selectedItem) {
-            const genderText = selectedItem.textContent.trim();
-            if (genderText === '男性') selectedGender = 'male';
-            else if (genderText === '女性') selectedGender = 'female';
+async function applyFilters() {
+    try {
+        console.log('开始应用筛选...');
+        const filters = {};
+        
+        // 收集年龄筛选条件
+        const ageMin = document.querySelector('.range-min');
+        const ageMax = document.querySelector('.range-max');
+        if (ageMin && ageMin.value) {
+            filters.age_min = parseInt(ageMin.value);
         }
-    }
-    
-    // 应用筛选
-    filteredData = allData.map(item => {
-        // 重新处理数据以确保格式正确
-        return processDataItem(item);
-    }).filter(item => {
-        // 年龄筛选
-        if (minAge !== null && (item.age === null || item.age < minAge)) return false;
-        if (maxAge !== null && (item.age === null || item.age > maxAge)) return false;
+        if (ageMax && ageMax.value) {
+            filters.age_max = parseInt(ageMax.value);
+        }
         
-        // 性别筛选
-        if (selectedGender && item.gender !== selectedGender) return false;
+        // 收集性别筛选条件
+        const genderDropdown = document.querySelector('.dropdown');
+        if (genderDropdown) {
+            const selectedItem = genderDropdown.querySelector('.dropdown-item.selected');
+            if (selectedItem) {
+                const genderText = selectedItem.textContent.trim();
+                if (genderText === 'Male') filters.gender = 'male';
+                else if (genderText === 'Female') filters.gender = 'female';
+            }
+        }
         
-        return true;
-    });
-    
-    // 按ID排序
-    filteredData.sort((a, b) => {
-        const aId = isNaN(a.id) ? a.id : parseInt(a.id);
-        const bId = isNaN(b.id) ? b.id : parseInt(b.id);
+        // 收集BMI筛选条件
+        const bmiInputs = document.querySelectorAll('.range-input input');
+        if (bmiInputs.length >= 4) { // 假设前两个是年龄，后两个是BMI
+            const bmiMin = bmiInputs[2];
+            const bmiMax = bmiInputs[3];
+            if (bmiMin && bmiMin.value) {
+                filters.bmi_min = parseFloat(bmiMin.value);
+            }
+            if (bmiMax && bmiMax.value) {
+                filters.bmi_max = parseFloat(bmiMax.value);
+            }
+        }
         
-        if (typeof aId === 'number' && typeof bId === 'number') {
-            return aId - bId;
+        // 收集布尔值筛选条件
+        const booleanFilters = {
+            'diabetes': 'diabetes_mellitus',
+            'hypertension': 'hypertension',
+            'hyperlipidemia': 'hyperlipidemia',
+            'coronary-artery-disease': 'coronary_artery_disease',
+            'copd': 'copd',
+            'dialysis': 'dialysis',
+            'atrial-fibrillation': 'atrial_fibrillation'
+        };
+        
+        for (const [filterId, fieldName] of Object.entries(booleanFilters)) {
+            const dropdown = document.getElementById(filterId);
+            if (dropdown) {
+                const selectedItem = dropdown.querySelector('.dropdown-item.selected');
+                if (selectedItem) {
+                    const value = selectedItem.textContent.trim();
+                    if (value === 'True') {
+                        filters[fieldName] = true;
+                    } else if (value === 'False') {
+                        filters[fieldName] = false;
+                    }
+                }
+            }
+        }
+        
+        // 收集出院前评价筛选条件
+        const dischargeFilters = {
+            'death-before-discharge': 'death_before_discharge',
+            'stroke-before-discharge': 'stroke_before_discharge',
+            'major-bleeding': 'major_bleeding',
+            'aki': 'aki',
+            'major-vascular-complication': 'major_vascular_complication',
+            'mi-ami': 'mi_ami',
+            'acs-ihd': 'acs_ihd',
+            'heart-failure': 'heart_failure',
+            'all-cause-cv-death': 'all_cause_cv_death',
+            'pacemaker-implantation': 'pacemaker_implantation',
+            'pvl-detected': 'pvl_detected'
+        };
+        
+        for (const [filterId, fieldName] of Object.entries(dischargeFilters)) {
+            const dropdown = document.getElementById(filterId);
+            if (dropdown) {
+                const selectedItem = dropdown.querySelector('.dropdown-item.selected');
+                if (selectedItem) {
+                    const value = selectedItem.textContent.trim();
+                    if (value === 'True') {
+                        filters[fieldName] = true;
+                    } else if (value === 'False') {
+                        filters[fieldName] = false;
+                    }
+                }
+            }
+        }
+        
+        // 收集瓣周漏程度筛选条件
+        const pvlSeverityDropdown = document.getElementById('pvl-severity');
+        if (pvlSeverityDropdown) {
+            const selectedItem = pvlSeverityDropdown.querySelector('.dropdown-item.selected');
+            if (selectedItem) {
+                filters.pvl_severity = selectedItem.textContent.trim();
+            }
+        }
+        
+        // 收集数值范围筛选条件
+        const numericFilters = {
+            'max-pg': 'max_pg',
+            'flow-velocity': 'flow_velocity',
+            'mean-pg': 'mean_pg',
+            'eoai': 'eoai'
+        };
+        
+        for (const [prefix, fieldName] of Object.entries(numericFilters)) {
+            const minInput = document.getElementById(`${prefix}-min`);
+            const maxInput = document.getElementById(`${prefix}-max`);
+            
+            if (minInput && minInput.value) {
+                filters[`${fieldName}_min`] = parseFloat(minInput.value);
+            }
+            if (maxInput && maxInput.value) {
+                filters[`${fieldName}_max`] = parseFloat(maxInput.value);
+            }
+        }
+        
+        // 收集二尖瓣返流变化筛选条件
+        const mitralRegurgitationDropdown = document.getElementById('mitral-regurgitation-change');
+        if (mitralRegurgitationDropdown) {
+            const selectedItem = mitralRegurgitationDropdown.querySelector('.dropdown-item.selected');
+            if (selectedItem) {
+                filters.mitral_regurgitation_change = selectedItem.textContent.trim();
+            }
+        }
+        
+        console.log('收集到的筛选条件:', filters);
+        
+        // 发送筛选请求
+        const response = await fetch('/api/filter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(filters)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('筛选结果:', data);
+        
+        // 更新数据
+        filteredData = data;
+        
+        // 更新UI
+        if (typeof updateStatistics === 'function') {
+            updateStatistics();
         } else {
-            return a.id.toString().localeCompare(b.id.toString());
+            console.warn('updateStatistics 函数未定义');
         }
-    });
-    
-    // 重置到第一页
-    currentPage = 1;
-    
-    console.log(`筛选后数据: ${filteredData.length} 条`);
-    
-    // 更新显示
-    updateStatistics();
-    updateCharts();
-    updateTable();
+        
+        if (typeof updateCharts === 'function') {
+            updateCharts();
+        } else {
+            console.warn('updateCharts 函数未定义');
+        }
+        
+        if (typeof updateTable === 'function') {
+            updateTable();
+        } else {
+            console.warn('updateTable 函数未定义');
+        }
+        
+    } catch (error) {
+        console.error('筛选失败:', error);
+        showErrorMessage('筛选失败，请稍后重试');
+    }
 }
 
 // 处理单个数据项
@@ -604,6 +798,78 @@ function processDataItem(item) {
         }
     }
     
+    // 提取出院前评价其他字段
+    let stroke = null;
+    let majorBleeding = null;
+    let aki = null;
+    let majorVascularComplication = null;
+    let miAmi = null;
+    let acsIhd = null;
+    let heartFailure = null;
+    let allCauseCvDeath = null;
+    let pacemakerImplantation = null;
+    let pvlSeverity = null;
+    let maxPg = null;
+    let flowVelocity = null;
+    let meanPg = null;
+    let eoai = null;
+    let mitralRegurgitationChange = null;
+
+    if (item.TAVI_R_Evaluation_PostProcedure_Before_Discharge) {
+        const eval = item.TAVI_R_Evaluation_PostProcedure_Before_Discharge;
+        
+        // 处理布尔值字段
+        const booleanFields = {
+            'stroke': 'Stroke_Before_Discharge',
+            'majorBleeding': 'Life_Threatening_Bleeding_Before_Discharge',
+            'aki': 'Acute_Kidney_Injury_AKI_Before_Discharge',
+            'majorVascularComplication': 'Major_Vascular_Complication_Before_Discharge',
+            'miAmi': 'Myocardial_infarction_or_Acute_myocardial_infarction_Before_Discharge',
+            'acsIhd': 'Acute_coronary_syndrome_or_Ischemic_heart_disease_Before_Discharge',
+            'heartFailure': 'Heart_failure_Before_Discharge',
+            'allCauseCvDeath': 'All_cause_death_and_cardiovascular_death_Before_Discharge',
+            'pacemakerImplantation': 'New_Permanent_Pacemaker_Implantation_PPMI_Before_Discharge'
+        };
+
+        for (const [field, key] of Object.entries(booleanFields)) {
+            if (eval[key] !== null && eval[key] !== undefined) {
+                const value = eval[key];
+                if (typeof value === 'boolean') {
+                    eval[field] = value;
+                } else if (typeof value === 'string') {
+                    const strValue = value.toLowerCase();
+                    eval[field] = strValue === 'true' || strValue === 'yes' || strValue === '是';
+                }
+            }
+        }
+
+        // 处理瓣周漏程度
+        if (eval.PVL_Severity_Before_Discharge) {
+            pvlSeverity = eval.PVL_Severity_Before_Discharge.toString();
+        }
+
+        // 处理数值字段
+        const numericFields = {
+            'maxPg': 'Aortic_Valve_Max_PG_Before_Discharge',
+            'flowVelocity': 'Aortic_Valve_Flow_Velocity_Before_Discharge',
+            'meanPg': 'Aortic_Valve_Mean_PG_Before_Discharge',
+            'eoai': 'Aortic_Valve_EOAI_Before_Discharge'
+        };
+
+        for (const [field, key] of Object.entries(numericFields)) {
+            if (eval[key] !== null && eval[key] !== undefined) {
+                const value = eval[key];
+                eval[field] = typeof value === 'string' ? parseFloat(value) : value;
+                if (isNaN(eval[field])) eval[field] = null;
+            }
+        }
+
+        // 处理二尖瓣返流变化
+        if (eval.Mitral_Regurgitation_Change) {
+            mitralRegurgitationChange = eval.Mitral_Regurgitation_Change.toString();
+        }
+    }
+    
     return {
         id: item.id || Math.random().toString(36).substr(2, 9),
         age: age,
@@ -617,6 +883,21 @@ function processDataItem(item) {
         effectiveArea: effectiveArea,
         pvl: pvl,
         death: death,
+        stroke: stroke,
+        majorBleeding: majorBleeding,
+        aki: aki,
+        majorVascularComplication: majorVascularComplication,
+        miAmi: miAmi,
+        acsIhd: acsIhd,
+        heartFailure: heartFailure,
+        allCauseCvDeath: allCauseCvDeath,
+        pacemakerImplantation: pacemakerImplantation,
+        pvlSeverity: pvlSeverity,
+        maxPg: maxPg,
+        flowVelocity: flowVelocity,
+        meanPg: meanPg,
+        eoai: eoai,
+        mitralRegurgitationChange: mitralRegurgitationChange,
         originalData: item
     };
 }
