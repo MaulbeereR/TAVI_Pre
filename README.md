@@ -68,9 +68,9 @@ TAVI智能分析系统是一个基于Web的医疗数据分析平台，用于TAVI
 
 ```python
 DB_CONFIG = {
-    'host': '192.168.23.247',      # 数据库主机
+    'host': '192.168.xx.xx',      # 数据库主机
     'user': 'root',                # 数据库用户名
-    'password': 'sB4L4XfTNarkuAyD', # 数据库密码
+    'password': 'xxxxx', # 数据库密码
     'database': 'tavi_data',       # 数据库名称
     'charset': 'utf8mb4'
 }
