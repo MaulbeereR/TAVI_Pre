@@ -1635,21 +1635,196 @@ function updateFilterVisualFeedback() {
 } 
 document.head.appendChild(style); 
 
-// === RAGFlow 智能问答悬浮窗控制逻辑 ===
+
+
+
+
+
+
+
+
+
+
+// === RAGFlow 智能问答悬浮窗控制逻辑 - 最终功能版 (联动移动优化) ===
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. 找到我们在 HTML 里添加的按钮和聊天窗口
+    // 1. 获取所有需要的元素
     const toggleBtn = document.getElementById('ragflow-chat-toggle-btn');
     const chatContainer = document.getElementById('ragflow-chat-container');
-
-    // 2. 确保这两个元素都存在，防止出错
-    if (toggleBtn && chatContainer) {
+    const chatWidget = document.getElementById('ragflow-chat-widget');
+    const chatHeader = document.getElementById('ragflow-chat-header');
+    const closeBtn = document.getElementById('ragflow-chat-close-btn');
     
-        // 3. 给按钮添加一个点击事件
-        toggleBtn.addEventListener('click', function() {
-            // 每次点击时，切换聊天窗口的 'show' 类
-            // 如果有 'show' 类，就移除它；如果没有，就添加它。
-            // 这会触发我们在 CSS 里定义的显示/隐藏动画
-            chatContainer.classList.toggle('show');
-        });
+    // 2. 确保所有关键元素都存在
+    if (!toggleBtn || !chatContainer || !chatWidget || !chatHeader || !closeBtn) {
+        console.error("RAGFlow Widget: One or more essential elements are missing from the DOM.");
+        return;
     }
+    const iframe = chatContainer.querySelector('iframe');
+    if (!iframe) {
+        console.error("RAGFlow Widget: Iframe element is missing.");
+        return;
+    }
+
+    // =================================================================
+    // 模块一：入口悬浮球拖拽、贴边、记忆位置
+    // =================================================================
+    let isDraggingWidget = false;
+    let hasDragged = false;
+    let widgetOffsetX, widgetOffsetY;
+
+    const saveWidgetPosition = (x, y) => localStorage.setItem('ragflow_widget_pos', JSON.stringify({ x, y }));
+
+    const loadWidgetPosition = () => {
+        const pos = JSON.parse(localStorage.getItem('ragflow_widget_pos'));
+        if (pos && chatWidget.offsetWidth > 0) {
+            const winWidth = window.innerWidth, winHeight = window.innerHeight;
+            let newX = Math.max(0, Math.min(pos.x, winWidth - chatWidget.offsetWidth));
+            let newY = Math.max(0, Math.min(pos.y, winHeight - chatWidget.offsetHeight));
+            chatWidget.style.left = newX + 'px';
+            chatWidget.style.top = newY + 'px';
+            chatWidget.style.right = 'auto';
+            chatWidget.style.bottom = 'auto';
+        }
+    };
+    setTimeout(loadWidgetPosition, 100);
+
+    toggleBtn.addEventListener('mousedown', (e) => {
+        isDraggingWidget = true;
+        hasDragged = false;
+        widgetOffsetX = e.clientX - chatWidget.offsetLeft;
+        widgetOffsetY = e.clientY - chatWidget.offsetTop;
+        document.body.style.userSelect = 'none';
+    });
+
+    // =================================================================
+    // 模块二：聊天窗口显示/隐藏与关闭按钮
+    // =================================================================
+    toggleBtn.addEventListener('click', (e) => {
+        if (hasDragged) {
+            e.preventDefault();
+            return;
+        }
+        chatContainer.classList.toggle('show');
+    });
+
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        chatContainer.classList.remove('show');
+    });
+
+    // =================================================================
+    // 模块三：聊天窗口全方位调整大小
+    // =================================================================
+    let isResizing = false;
+    let currentResizeDirection = '';
+    let originalWidth, originalHeight, originalMouseX, originalMouseY, originalLeft, originalTop;
+
+    const directions = ['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'];
+    directions.forEach(dir => {
+        const handle = document.createElement('div');
+        handle.className = `ragflow-resizer-handle handle-${dir}`;
+        handle.dataset.direction = dir;
+        chatContainer.appendChild(handle);
+        handle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            isResizing = true;
+            currentResizeDirection = dir;
+            originalWidth = chatContainer.offsetWidth;
+            originalHeight = chatContainer.offsetHeight;
+            originalMouseX = e.pageX;
+            originalMouseY = e.pageY;
+            originalLeft = chatContainer.offsetLeft;
+            originalTop = chatContainer.offsetTop;
+            iframe.style.pointerEvents = 'none';
+            document.body.style.userSelect = 'none';
+        });
+    });
+
+    // =================================================================
+    // 模块四：聊天窗口拖拽移动 (联动版)
+    // =================================================================
+    let isDraggingContainer = false;
+    let containerDragOffsetX, containerDragOffsetY;
+
+    chatHeader.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.chat-header-btn')) return;
+        e.preventDefault();
+        isDraggingContainer = true;
+        // 计算鼠标相对于整个 widget 的偏移
+        containerDragOffsetX = e.clientX - chatWidget.offsetLeft;
+        containerDragOffsetY = e.clientY - chatWidget.offsetTop;
+        iframe.style.pointerEvents = 'none';
+        document.body.style.userSelect = 'none';
+    });
+
+    // =================================================================
+    // 统一的全局事件监听器
+    // =================================================================
+    function handleMouseMove(e) {
+        if (isDraggingWidget) {
+            // 拖动悬浮球的逻辑 (移动整个widget)
+            let newX = e.clientX - widgetOffsetX;
+            let newY = e.clientY - widgetOffsetY;
+            const winWidth = window.innerWidth, winHeight = window.innerHeight;
+            newX = Math.max(0, Math.min(newX, winWidth - chatWidget.offsetWidth));
+            newY = Math.max(0, Math.min(newY, winHeight - chatWidget.offsetHeight));
+            chatWidget.style.left = newX + 'px';
+            chatWidget.style.top = newY + 'px';
+        } else if (isResizing) {
+            // 调整窗口大小的逻辑
+            const dx = e.pageX - originalMouseX, dy = e.pageY - originalMouseY;
+            let newWidth = originalWidth, newHeight = originalHeight, newLeft = originalLeft, newTop = originalTop;
+            const minWidth = parseInt(getComputedStyle(chatContainer).minWidth), minHeight = parseInt(getComputedStyle(chatContainer).minHeight);
+            if (currentResizeDirection.includes('e')) newWidth = originalWidth + dx;
+            if (currentResizeDirection.includes('w')) { newWidth = originalWidth - dx; newLeft = originalLeft + dx; }
+            if (currentResizeDirection.includes('s')) newHeight = originalHeight + dy;
+            if (currentResizeDirection.includes('n')) { newHeight = originalHeight - dy; newTop = originalTop + dy; }
+            if (newWidth < minWidth) { if (currentResizeDirection.includes('w')) newLeft -= (minWidth - newWidth); newWidth = minWidth; }
+            if (newHeight < minHeight) { if (currentResizeDirection.includes('n')) newTop -= (minHeight - newHeight); newHeight = minHeight; }
+            chatContainer.style.width = newWidth + 'px';
+            chatContainer.style.height = newHeight + 'px';
+            chatContainer.style.left = newLeft + 'px';
+            chatContainer.style.top = newTop + 'px';
+        } else if (isDraggingContainer) {
+            // 拖动窗口标题栏的逻辑 (也是移动整个widget)
+            let newX = e.clientX - containerDragOffsetX;
+            let newY = e.clientY - containerDragOffsetY;
+            const winWidth = window.innerWidth, winHeight = window.innerHeight;
+            newX = Math.max(0, Math.min(newX, winWidth - chatWidget.offsetWidth));
+            newY = Math.max(0, Math.min(newY, winHeight - chatWidget.offsetHeight));
+            chatWidget.style.left = newX + 'px';
+            chatWidget.style.top = newY + 'px';
+        }
+    }
+
+    function handleMouseUp() {
+        if (isDraggingWidget) {
+            if (hasDragged) {
+                const winWidth = window.innerWidth, widgetWidth = chatWidget.offsetWidth;
+                let finalX = chatWidget.offsetLeft;
+                if (finalX + widgetWidth / 2 < winWidth / 2) finalX = 0;
+                else finalX = winWidth - widgetWidth;
+                chatWidget.style.transition = 'left 0.3s ease-in-out';
+                chatWidget.style.left = finalX + 'px';
+                saveWidgetPosition(finalX, chatWidget.offsetTop);
+                setTimeout(() => { chatWidget.style.transition = ''; }, 300);
+            }
+        }
+        
+        // 当拖拽窗口结束后，也保存位置 (不贴边，因为用户可能想把窗口放在任意位置)
+        if (isDraggingContainer) {
+            saveWidgetPosition(chatWidget.offsetLeft, chatWidget.offsetTop);
+        }
+        
+        if (isResizing || isDraggingContainer) {
+            iframe.style.pointerEvents = 'auto';
+        }
+        
+        isDraggingWidget = isResizing = isDraggingContainer = false;
+        document.body.style.userSelect = 'auto';
+    }
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
 });

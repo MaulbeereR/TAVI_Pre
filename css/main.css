@@ -657,6 +657,13 @@ body {
     margin-bottom: 0.5rem;
 } 
 
+
+
+
+
+
+
+
 /* RAGFlow 智能问答悬浮窗样式 */
 #ragflow-chat-widget {
     position: fixed;
@@ -685,29 +692,135 @@ body {
     transform: scale(1.1);
     background-color: #0b5ed7; /* 鼠标悬浮时颜色加深一点 */
 }
+/* RAGFlow 智能问答悬浮窗样式 - 最终功能版 */
+#ragflow-chat-widget {
+    position: fixed;
+    bottom: 25px; 
+    right: 25px;  
+    z-index: 1050; 
+}
+
+.chat-toggle-btn {
+    width: 60px;
+    height: 60px;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 50%;
+    border: none;
+    font-size: 28px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.chat-toggle-btn:hover {
+    transform: scale(1.1);
+    background-color: #0b5ed7;
+}
 
 #ragflow-chat-container {
     position: absolute;
-    bottom: 75px; /* 从按钮向上75px的位置开始 */
+    bottom: 75px; 
     right: 0;
-    width: 370px;
+    width: 400px;
     height: 600px;
+    min-width: 300px; 
+    min-height: 400px; 
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    overflow: hidden; /* 这句很重要，让iframe的圆角生效 */
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
     
-    /* 下面是动画效果的关键 */
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
     transform: translateY(20px);
     opacity: 0;
-    visibility: hidden; /* 彻底隐藏 */
+    visibility: hidden; 
 }
 
-/* 当聊天窗口需要显示时，我们给它加上 .show 这个类 */
 #ragflow-chat-container.show {
     transform: translateY(0);
     opacity: 1;
-    visibility: visible; /* 让它可见 */
+    visibility: visible; 
 }
+
+#ragflow-chat-header {
+    height: 30px;
+    background-color: #f7f7f7;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: move;
+    border-bottom: 1px solid #ddd;
+    flex-shrink: 0;
+    position: relative; /* 为关闭按钮定位提供参照 */
+}
+
+/* 【新增】窗口头部按钮的通用样式 */
+.chat-header-btn {
+    background: transparent;
+    border: none;
+    color: #6c757d;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0 8px;
+    line-height: 1;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.chat-header-btn:hover {
+    background-color: #e9ecef;
+    color: #000;
+}
+
+/* 【新增】关闭按钮的精确定位 */
+#ragflow-chat-close-btn {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%); /* 垂直居中 */
+}
+
+
+/* 【新增】聊天窗口全方位缩放手柄的样式 */
+.ragflow-resizer-handle {
+    position: absolute;
+    z-index: 10;
+    background: transparent; 
+}
+
+/* 四个角的手柄 */
+.handle-nw, .handle-ne, .handle-sw, .handle-se {
+    width: 12px;
+    height: 12px;
+}
+.handle-nw { top: -2px; left: -2px; cursor: nwse-resize; }
+.handle-ne { top: -2px; right: -2px; cursor: nesw-resize; }
+.handle-sw { bottom: -2px; left: -2px; cursor: nesw-resize; }
+.handle-se { bottom: -2px; right: -2px; cursor: nwse-resize; }
+
+/* 四条边的手柄 */
+.handle-n, .handle-s {
+    left: 10px;
+    right: 10px;
+    height: 6px;
+    cursor: ns-resize;
+}
+.handle-e, .handle-w {
+    top: 10px;
+    bottom: 10px;
+    width: 6px;
+    cursor: ew-resize;
+}
+.handle-n { top: -2px; }
+.handle-s { bottom: -2px; }
+.handle-w { left: -2px; }
+.handle-e { right: -2px; }
