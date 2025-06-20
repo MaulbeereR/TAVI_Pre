@@ -663,111 +663,117 @@ body {
 
 
 
+/* RAGFlow 智能问答悬浮窗样式 - 最终整合版 */
 
-/* RAGFlow 智能问答悬浮窗样式 */
+/* 定义动画 */
+@keyframes ragflow-breathing-glow {
+    0% { box-shadow: 0 0 8px rgba(102, 126, 234, 0.4), 0 0 12px rgba(102, 126, 234, 0.3); }
+    50% { box-shadow: 0 0 16px rgba(102, 126, 234, 0.6), 0 0 24px rgba(102, 126, 234, 0.5); }
+    100% { box-shadow: 0 0 8px rgba(102, 126, 234, 0.4), 0 0 12px rgba(102, 126, 234, 0.3); }
+}
+
+@keyframes ragflow-icon-rotate {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(360deg) scale(1.1); }
+}
+
+@keyframes ragflow-bubble-pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 #ragflow-chat-widget {
     position: fixed;
-    bottom: 25px; /* 距离底部25px */
-    right: 25px;  /* 距离右侧25px */
-    z-index: 1050; /* 确保在最上层, 比Bootstrap模态框低一点即可 */
+    /* 初始位置 */
+    bottom: 30px;
+    right: 50px; /* 您可以微调这个值，比如 50px */
+    z-index: 1050;
+    /* 容器本身不响应鼠标事件，让内部元素决定 */
+    pointer-events: none; 
+}
+
+/* 只有内部元素可点击 */
+#ragflow-chat-widget > * {
+    pointer-events: auto;
 }
 
 .chat-toggle-btn {
-    width: 60px;
-    height: 60px;
-    background-color: #0d6efd; /* 使用和您系统一致的蓝色主色调 */
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border-radius: 50%;
     border: none;
-    font-size: 28px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-size: 36px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    z-index: 2;
+    animation: ragflow-breathing-glow 3s infinite ease-in-out;
+    /* 让悬浮球在widget容器内绝对定位，以便拖拽计算 */
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .chat-toggle-btn:hover {
     transform: scale(1.1);
-    background-color: #0b5ed7; /* 鼠标悬浮时颜色加深一点 */
-}
-/* RAGFlow 智能问答悬浮窗样式 - 最终功能版 */
-#ragflow-chat-widget {
-    position: fixed;
-    bottom: 25px; 
-    right: 25px;  
-    z-index: 1050; 
 }
 
-.chat-toggle-btn {
-    width: 60px;
-    height: 60px;
-    background-color: #0d6efd;
-    color: white;
-    border-radius: 50%;
-    border: none;
-    font-size: 28px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.2s ease-in-out;
-}
-
-.chat-toggle-btn:hover {
-    transform: scale(1.1);
-    background-color: #0b5ed7;
+.chat-toggle-btn:hover .bi-robot {
+    animation: ragflow-icon-rotate 1s ease-in-out;
 }
 
 #ragflow-chat-container {
     position: absolute;
-    bottom: 75px; 
+    bottom: 90px; /* 悬浮球高度(70) + 间距(20) */
     right: 0;
-    width: 400px;
-    height: 600px;
-    min-width: 300px; 
-    min-height: 400px; 
+    width: 380px;
+    height: 480px;
+    min-width: 300px;
+    min-height: 400px;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    overflow: hidden; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out;
+    transform-origin: bottom right;
+    transform: scale(0.95) translateY(10px);
     opacity: 0;
-    visibility: hidden; 
+    visibility: hidden;
 }
 
 #ragflow-chat-container.show {
-    transform: translateY(0);
+    transform: scale(1) translateY(0);
     opacity: 1;
-    visibility: visible; 
+    visibility: visible;
 }
 
 #ragflow-chat-header {
-    height: 30px;
-    background-color: #f7f7f7;
-    color: #333;
+    height: 40px;
+    background: linear-gradient(135deg, #7183e6, #7d5bb3);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
+    font-weight: 500;
     cursor: move;
     border-bottom: 1px solid #ddd;
     flex-shrink: 0;
-    position: relative; /* 为关闭按钮定位提供参照 */
+    position: relative;
 }
 
-/* 【新增】窗口头部按钮的通用样式 */
 .chat-header-btn {
     background: transparent;
     border: none;
-    color: #6c757d;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 1rem;
     cursor: pointer;
     padding: 0 8px;
@@ -777,50 +783,77 @@ body {
 }
 
 .chat-header-btn:hover {
-    background-color: #e9ecef;
-    color: #000;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
 }
 
-/* 【新增】关闭按钮的精确定位 */
 #ragflow-chat-close-btn {
     position: absolute;
     top: 50%;
     right: 8px;
-    transform: translateY(-50%); /* 垂直居中 */
+    transform: translateY(-50%);
 }
 
-
-/* 【新增】聊天窗口全方位缩放手柄的样式 */
 .ragflow-resizer-handle {
     position: absolute;
     z-index: 10;
-    background: transparent; 
+    background: transparent;
 }
-
-/* 四个角的手柄 */
-.handle-nw, .handle-ne, .handle-sw, .handle-se {
-    width: 12px;
-    height: 12px;
-}
+.handle-nw, .handle-ne, .handle-sw, .handle-se { width: 12px; height: 12px; }
 .handle-nw { top: -2px; left: -2px; cursor: nwse-resize; }
 .handle-ne { top: -2px; right: -2px; cursor: nesw-resize; }
 .handle-sw { bottom: -2px; left: -2px; cursor: nesw-resize; }
 .handle-se { bottom: -2px; right: -2px; cursor: nwse-resize; }
-
-/* 四条边的手柄 */
-.handle-n, .handle-s {
-    left: 10px;
-    right: 10px;
-    height: 6px;
-    cursor: ns-resize;
-}
-.handle-e, .handle-w {
-    top: 10px;
-    bottom: 10px;
-    width: 6px;
-    cursor: ew-resize;
-}
+.handle-n, .handle-s { left: 10px; right: 10px; height: 6px; cursor: ns-resize; }
+.handle-e, .handle-w { top: 10px; bottom: 10px; width: 6px; cursor: ew-resize; }
 .handle-n { top: -2px; }
 .handle-s { bottom: -2px; }
 .handle-w { left: -2px; }
 .handle-e { right: -2px; }
+
+#ragflow-guidance-bubble {
+    position: absolute;
+    /* 垂直位置和字体/padding可以按需微调 */
+    bottom: 18px; 
+    right: 88px;  
+    background: linear-gradient(135deg, #8963c6, #7b8af6);
+    padding: 14px 20px;
+    border-radius: 22px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+    z-index: 1;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    transform-origin: right center;
+    animation: ragflow-bubble-pop 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) 0.5s 1 forwards;
+    opacity: 0;
+    visibility: hidden; /* 初始隐藏，由JS移除hidden后，动画才播放 */
+}
+
+#ragflow-guidance-bubble:not(.hidden) {
+    visibility: visible;
+}
+
+/* 气泡小三角 */
+#ragflow-guidance-bubble::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    margin-top: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent #7b8af6; 
+}
+
+/* 气泡隐藏状态 */
+#ragflow-guidance-bubble.hidden {
+    transform: scale(0.5);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    animation: none;
+}
