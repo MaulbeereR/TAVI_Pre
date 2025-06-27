@@ -2836,3 +2836,154 @@
 2025-06-20 15:35:56 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
 2025-06-20 15:35:56 - INFO - 查询参数: []
 2025-06-20 15:35:56 - INFO - 查询成功，返回 20 条记录
+2025-06-27 10:54:19 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-27 10:54:25 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-27 11:12:52 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-27 11:21:00 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-27 17:30:38 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-27 17:30:43 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-27 17:31:01 - INFO - 数据库连接成功
+2025-06-27 17:31:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:31:01 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:31:01 - INFO - 查询参数: []
+2025-06-27 17:31:01 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-27 17:31:01 - INFO - 页码: 1, 每页大小: 20
+2025-06-27 17:31:01 - INFO - 数据库连接成功
+2025-06-27 17:31:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:31:01 - INFO - 数据库连接成功
+2025-06-27 17:31:01 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:31:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:31:01 - INFO - 查询参数: []
+2025-06-27 17:31:01 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:31:01 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-27 17:31:01 - INFO - 查询参数: []
+2025-06-27 17:31:01 - INFO - 查询参数: []
+2025-06-27 17:31:01 - INFO - 查询成功，返回 20 条记录
+2025-06-27 17:31:09 - INFO - 数据库连接成功
+2025-06-27 17:31:09 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:31:09 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:31:09 - INFO - 查询参数: []
+2025-06-27 17:31:09 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-27 17:31:09 - INFO - 页码: 1, 每页大小: 20
+2025-06-27 17:31:09 - INFO - 数据库连接成功
+2025-06-27 17:31:09 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:31:09 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:31:09 - INFO - 查询参数: []
+2025-06-27 17:31:09 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-27 17:31:09 - INFO - 查询参数: []
+2025-06-27 17:31:09 - INFO - 数据库连接成功
+2025-06-27 17:31:09 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:31:09 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:31:09 - INFO - 查询参数: []
+2025-06-27 17:31:09 - INFO - 查询成功，返回 20 条记录
+2025-06-27 17:31:20 - INFO - 数据库连接成功
+2025-06-27 17:31:20 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80}
+2025-06-27 17:31:20 - INFO - 添加年龄最小值筛选: 80
+2025-06-27 17:31:20 - INFO - 最终WHERE子句: age >= %s
+2025-06-27 17:31:20 - INFO - 查询参数: [80]
+2025-06-27 17:31:20 - INFO - 收到数据请求 - 筛选条件: {'age_min': 80}
+2025-06-27 17:31:20 - INFO - 页码: 1, 每页大小: 20
+2025-06-27 17:31:20 - INFO - 数据库连接成功
+2025-06-27 17:31:20 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80}
+2025-06-27 17:31:20 - INFO - 添加年龄最小值筛选: 80
+2025-06-27 17:31:20 - INFO - 最终WHERE子句: age >= %s
+2025-06-27 17:31:20 - INFO - 查询参数: [80]
+2025-06-27 17:31:20 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s
+2025-06-27 17:31:20 - INFO - 查询参数: [80]
+2025-06-27 17:31:20 - INFO - 数据库连接成功
+2025-06-27 17:31:20 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80}
+2025-06-27 17:31:20 - INFO - 添加年龄最小值筛选: 80
+2025-06-27 17:31:20 - INFO - 最终WHERE子句: age >= %s
+2025-06-27 17:31:20 - INFO - 查询参数: [80]
+2025-06-27 17:31:20 - INFO - 查询成功，返回 20 条记录
+2025-06-27 17:31:21 - INFO - 数据库连接成功
+2025-06-27 17:31:21 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80}
+2025-06-27 17:31:21 - INFO - 添加年龄最小值筛选: 80
+2025-06-27 17:31:21 - INFO - 最终WHERE子句: age >= %s
+2025-06-27 17:31:21 - INFO - 查询参数: [80]
+2025-06-27 17:31:21 - INFO - 收到数据请求 - 筛选条件: {'age_min': 80}
+2025-06-27 17:31:21 - INFO - 页码: 1, 每页大小: 20
+2025-06-27 17:31:21 - INFO - 数据库连接成功
+2025-06-27 17:31:21 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80}
+2025-06-27 17:31:21 - INFO - 添加年龄最小值筛选: 80
+2025-06-27 17:31:21 - INFO - 数据库连接成功
+2025-06-27 17:31:21 - INFO - 最终WHERE子句: age >= %s
+2025-06-27 17:31:21 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80}
+2025-06-27 17:31:21 - INFO - 查询参数: [80]
+2025-06-27 17:31:21 - INFO - 添加年龄最小值筛选: 80
+2025-06-27 17:31:21 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s
+2025-06-27 17:31:21 - INFO - 最终WHERE子句: age >= %s
+2025-06-27 17:31:21 - INFO - 查询参数: [80]
+2025-06-27 17:31:21 - INFO - 查询参数: [80]
+2025-06-27 17:31:21 - INFO - 查询成功，返回 20 条记录
+2025-06-27 17:31:51 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者
+2025-06-27 17:31:55 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85
+2025-06-27 17:31:55 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:31:55 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 中解析出任何筛选条件。
+2025-06-27 17:32:02 - INFO - 数据库连接成功
+2025-06-27 17:32:02 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:32:02 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:32:02 - INFO - 查询参数: []
+2025-06-27 17:32:02 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-27 17:32:02 - INFO - 页码: 1, 每页大小: 20
+2025-06-27 17:32:02 - INFO - 数据库连接成功
+2025-06-27 17:32:02 - INFO - 数据库连接成功
+2025-06-27 17:32:02 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:32:02 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-27 17:32:02 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:32:02 - INFO - 最终WHERE子句: 1=1
+2025-06-27 17:32:02 - INFO - 查询参数: []
+2025-06-27 17:32:02 - INFO - 查询参数: []
+2025-06-27 17:32:02 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-27 17:32:02 - INFO - 查询参数: []
+2025-06-27 17:32:02 - INFO - 查询成功，返回 20 条记录
+2025-06-27 17:32:06 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者
+2025-06-27 17:32:11 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85
+2025-06-27 17:32:11 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:32:11 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 中解析出任何筛选条件。
+2025-06-27 17:32:21 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者
+2025-06-27 17:32:28 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85
+2025-06-27 17:32:28 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:32:28 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 中解析出任何筛选条件。
+2025-06-27 17:32:42 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者
+2025-06-27 17:32:46 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85
+2025-06-27 17:32:46 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:32:46 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 中解析出任何筛选条件。
+2025-06-27 17:33:07 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者且患有高血压的患者
+2025-06-27 17:33:13 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1
+2025-06-27 17:33:13 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:33:13 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 中解析出任何筛选条件。
+2025-06-27 17:33:27 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者且患有高血压的患者
+2025-06-27 17:33:31 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1
+2025-06-27 17:33:31 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:33:31 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 中解析出任何筛选条件。

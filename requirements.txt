@@ -2,3 +2,8 @@ Flask>=2.0.0
 Flask-CORS>=3.0.0
 PyMySQL>=1.0.0
 cryptography>=3.0.0 
+
+
+python-dotenv
+openai[azure]
+sql-metadata

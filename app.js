@@ -166,6 +166,11 @@ function bindEventListeners() {
     // 筛选按钮
     const applyBtn = document.getElementById('apply-important-filters');
     const resetBtn = document.getElementById('reset-important-filters');
+    // 已修改
+    const applyNLBtn = document.getElementById('apply-natural-language-filter');
+    if (applyNLBtn) {
+        applyNLBtn.addEventListener('click', handleNaturalLanguageFilter);
+    }
     
     if (applyBtn) {
         applyBtn.addEventListener('click', applyFilters);
@@ -277,270 +282,252 @@ async function applyFilters() {
     }
 }
 
-// 收集筛选条件
+
+
+
+
+
+//已修改
+
 function collectFilterValues() {
     const filters = {};
     
-    console.log('开始收集筛选条件...'); // 调试日志
-    
+    // 基线资料布尔值筛选条件
+    const baselineBooleanFilters = {
+        'atrial-fibrillation': 'atrial_fibrillation', 'myocardial-infarction': 'myocardial_infarction',
+        'pci-history': 'pci_history', 'cabg-history': 'cabg_history', 'diabetes': 'diabetes_mellitus',
+        'hypertension': 'hypertension', 'hyperlipidemia': 'hyperlipidemia', 'coronary-artery-disease': 'coronary_artery_disease',
+        'copd': 'copd', 'dialysis': 'dialysis', 'acei-arb': 'acei_arb', 'beta-blocker': 'beta_blocker',
+        'calcium-blocker': 'calcium_blocker', 'diuretic': 'diuretic', 'aspirin': 'aspirin'
+    };
+    // 术前影像学评估数值范围筛选条件
+    const imagingNumericFilters = {
+        'lvef': 'lvef', 'max-gradient': 'aortic_valve_peak_pg', 'eoa': 'aortic_valve_eoa', 'annular-area': 'annular_area',
+        'annular-mean-diameter': 'annular_mean_diameter', 'annular-max-diameter': 'annular_max_diameter',
+        'annular-perimeter': 'annular_perimeter', 'valve-velocity': 'aortic_valve_flow_velocity', 'stj-height': 'stj_height',
+        'stj-diameter': 'stj_diameter', 'sinus-diameter': 'sinus_diameter', 'ascending-aorta-diameter': 'ascending_aorta_diameter',
+        'lvot-diameter': 'lvot_diameter', 'lvot-calcification': 'lvot_calcification', 'lca-height': 'left_coronary_height',
+        'rca-height': 'right_coronary_height', 'eoai': 'aortic_valve_eoai', 'lvedv': 'lvedv', 'lvesv': 'lvesv',
+        'annular-min-diameter': 'annular_min_diameter', 'annular-calcification': 'annular_calcification', 'supraannular-calcification': 'supraannular_calcification'
+    };
+    // 术前影像学评估布尔值筛选条件
+    const imagingBooleanFilters = { 'moderate-severe-ar': 'moderate_severe_ar', 'moderate-severe-mr': 'moderate_severe_mr' };
+    // 手术信息布尔值筛选条件
+    const surgeryBooleanFilters = {
+        'transfemoral-access': 'transfemoral_access', 'transapical-access': 'transapical_access',
+        'mean-pg-gte-20': 'mean_pg_gte_20', 'prosthesis-malposition': 'prosthesis_malposition',
+        'annular-rupture': 'annular_rupture', 'immediate-pvl': 'immediate_pvl_occurred',
+        'valve-displacement': 'thv_displacement', 'conversion-to-savr': 'conversion_to_savr',
+        'cpb-required': 'cpb_required', 'valve-in-valve': 'valve_in_valve', 'periprocedural-death': 'periprocedural_death',
+        'pre-dilatation': 'pre_dilation', 'post-dilatation': 'post_dilation', 'excessive-oversizing': 'excessive_oversizing',
+        'oversizing-gte-15': 'oversizing_gte_15'
+    };
+    // 手术信息数值范围筛选条件
+    const surgeryNumericFilters = {
+        'valve-size': 'thv_size', 'post-mean-pg': 'immediate_mean_pg', 'total-procedure-time': 'total_procedure_time',
+        'fluoroscopy-time': 'fluoroscopy_time', 'contrast-volume': 'contrast_volume', 'immediate-lvef': 'immediate_lvef'
+    };
+    // 出院前评价布尔值筛选条件
+    const dischargeBooleanFilters = {
+        'death-before-discharge': 'death_before_discharge', 'stroke-before-discharge': 'stroke_before_discharge',
+        'major-bleeding': 'major_bleeding', 'acute-kidney-injury': 'aki', 'major-vascular-complications': 'major_vascular_complication',
+        'mi-ami': 'mi_ami', 'heart-failure': 'heart_failure', 'all-cause-cv-death': 'all_cause_cv_death',
+        'pacemaker-implantation': 'pacemaker_implantation', 'pvl-detected': 'pvl_detected', 'acs-ihd': 'acs_ihd'
+    };
+    // 出院前评价数值范围筛选条件
+    const dischargeNumericFilters = { 'flow-velocity': 'flow_velocity', 'mean-pg': 'mean_pg', 'max-pg': 'max_pg', 'eoai': 'eoai' };
+    // 随访信息布尔值筛选条件
+    const followupBooleanFilters = {
+        'death-30-days': 'mortality_30d', 'mi-30-days': 'mi_30d', 'stroke-30-days': 'stroke_30d',
+        'hf-readmission-30-days': 'hf_readmission_30d', 'death-1-year': 'mortality_1y', 'mi-1-year': 'mi_1y',
+        'stroke-1-year': 'stroke_1y', 'hf-readmission-1-year': 'hf_readmission_1y', 'subsequent-intervention': 'subsequent_intervention'
+    };
+    // 基线资料数值范围筛选条件
+    const baselineNumericFilters = { 'sts-score': 'sts_score', 'nt-probnp': 'nt_probnp', 'surface-area': 'surface_area' };
+    // 分类值筛选条件
+    const categoryFilters = {
+        'other-access': 'other_access', 'immediate-pvl-severity': 'immediate_pvl_severity',
+        'discharge-pvl-severity': 'pvl_severity', 'followup-pvl-severity': 'pvl_severity_last_followup',
+        'mitral-regurgitation-change': 'mitral_regurgitation_change'
+    };
+
+    // --- 核心修改：将映射表暴露为函数属性 ---
+    collectFilterValues.booleanIdMap = { ...baselineBooleanFilters, ...imagingBooleanFilters, ...surgeryBooleanFilters, ...dischargeBooleanFilters, ...followupBooleanFilters };
+    collectFilterValues.numericIdMap = { ...baselineNumericFilters, ...imagingNumericFilters, ...surgeryNumericFilters, ...dischargeNumericFilters, 'mean-gradient': 'aortic_valve_mean_pg' };
+    collectFilterValues.categoryIdMap = categoryFilters;
+    // --- 核心修改结束 ---
+
     // 收集年龄范围
     const ageMin = document.getElementById('age-min')?.value;
     const ageMax = document.getElementById('age-max')?.value;
     if (ageMin) filters.age_min = parseInt(ageMin);
     if (ageMax) filters.age_max = parseInt(ageMax);
-    
+
     // 收集性别
     const gender = [];
     if (document.getElementById('gender-male')?.checked) gender.push('Male');
     if (document.getElementById('gender-female')?.checked) gender.push('Female');
     if (gender.length > 0) filters.gender = gender;
-    
+
     // 收集BMI范围
     const bmiMin = document.getElementById('bmi-min')?.value;
     const bmiMax = document.getElementById('bmi-max')?.value;
     if (bmiMin) filters.bmi_min = parseFloat(bmiMin);
     if (bmiMax) filters.bmi_max = parseFloat(bmiMax);
-    
+
     // 收集瓣膜类型
     const valveType = document.getElementById('valve-type')?.value;
     if (valveType) {
-        // 瓣膜类型中英文映射
-        const valveTypeMapping = {
-            '球囊扩张式': 'Balloon-expandable',
-            '自膨胀式': 'Self-expandable'
-        };
+        const valveTypeMapping = { '球囊扩张式': 'Balloon-expandable', '自膨胀式': 'Self-expandable' };
         filters.thv_type = valveTypeMapping[valveType] || valveType;
     }
-    
+
     // 收集瓣膜品牌
     const valveBrand = document.getElementById('valve-brand')?.value;
-    if (valveBrand && valveBrand.trim() !== '') {
-        const brandValue = valveBrand.trim();
-        console.log('选择的瓣膜品牌:', brandValue);
-        filters.thv_brand = brandValue;
-    }
-    
+    if (valveBrand && valveBrand.trim() !== '') filters.thv_brand = valveBrand.trim();
+
     // 收集瓣膜尺寸
     const valveSizeMin = document.getElementById('valve-size-min')?.value;
     const valveSizeMax = document.getElementById('valve-size-max')?.value;
     if (valveSizeMin) filters.thv_size_min = parseFloat(valveSizeMin);
     if (valveSizeMax) filters.thv_size_max = parseFloat(valveSizeMax);
-    
+
     // 收集NYHA分级
     const nyhaGrades = [];
-    document.querySelectorAll('input[id^="nyha-"]:checked').forEach(checkbox => {
-        nyhaGrades.push(checkbox.value);
-    });
-    if (nyhaGrades.length > 0) {
-        filters.nyha_classification = nyhaGrades;
-    }
+    document.querySelectorAll('input[id^="nyha-"]:checked').forEach(checkbox => { nyhaGrades.push(checkbox.value); });
+    if (nyhaGrades.length > 0) filters.nyha_classification = nyhaGrades;
     
     // 收集平均跨瓣压差范围
     const meanGradientMin = document.getElementById('mean-gradient-min')?.value;
     const meanGradientMax = document.getElementById('mean-gradient-max')?.value;
     if (meanGradientMin) filters.aortic_valve_mean_pg_min = parseFloat(meanGradientMin);
     if (meanGradientMax) filters.aortic_valve_mean_pg_max = parseFloat(meanGradientMax);
-    
-    // 收集基线资料布尔值筛选条件
-    const baselineBooleanFilters = {
-        'atrial-fibrillation': 'atrial_fibrillation',
-        'myocardial-infarction': 'myocardial_infarction',
-        'pci-history': 'pci_history',
-        'cabg-history': 'cabg_history',
-        'diabetes': 'diabetes_mellitus',
-        'hypertension': 'hypertension',
-        'hyperlipidemia': 'hyperlipidemia',
-        'coronary-artery-disease': 'coronary_artery_disease',
-        'copd': 'copd',
-        'dialysis': 'dialysis',
-        'acei-arb': 'acei_arb',
-        'beta-blocker': 'beta_blocker',
-        'calcium-blocker': 'calcium_blocker',
-        'diuretic': 'diuretic',
-        'aspirin': 'aspirin'
-    };
-    
-    // 收集术前影像学评估数值范围筛选条件
-    const imagingNumericFilters = {
-        'lvef': 'lvef',
-        'max-gradient': 'aortic_valve_peak_pg',
-        'eoa': 'aortic_valve_eoa',
-        'annular-area': 'annular_area',
-        'annular-mean-diameter': 'annular_mean_diameter',
-        'annular-max-diameter': 'annular_max_diameter',
-        'annular-perimeter': 'annular_perimeter',
-        'valve-velocity': 'aortic_valve_flow_velocity',
-        'stj-height': 'stj_height',
-        'stj-diameter': 'stj_diameter',
-        'sinus-diameter': 'sinus_diameter',
-        'ascending-aorta-diameter': 'ascending_aorta_diameter',
-        'lvot-diameter': 'lvot_diameter',
-        'lvot-calcification': 'lvot_calcification',
-        'lca-height': 'left_coronary_height',
-        'rca-height': 'right_coronary_height',
-        'eoai': 'aortic_valve_eoai',
-        'lvedv': 'lvedv',
-        'lvesv': 'lvesv',
-        'annular-min-diameter': 'annular_min_diameter',
-        'annular-calcification': 'annular_calcification',
-        'supraannular-calcification': 'supraannular_calcification'
-    };
-    
-    // 收集术前影像学评估布尔值筛选条件
-    const imagingBooleanFilters = {
-        'moderate-severe-ar': 'moderate_severe_ar',
-        'moderate-severe-mr': 'moderate_severe_mr'
-    };
-    
-    // 收集手术信息布尔值筛选条件
-    const surgeryBooleanFilters = {
-        'transfemoral-access': 'transfemoral_access',
-        'transapical-access': 'transapical_access',
-        'mean-pg-gte-20': 'mean_pg_gte_20',
-        'prosthesis-malposition': 'prosthesis_malposition',
-        'annular-rupture': 'annular_rupture',
-        'immediate-pvl': 'immediate_pvl_occurred',
-        'valve-displacement': 'thv_displacement',
-        'conversion-to-savr': 'conversion_to_savr',
-        'cpb-required': 'cpb_required',
-        'valve-in-valve': 'valve_in_valve',
-        'periprocedural-death': 'periprocedural_death',
-        'pre-dilatation': 'pre_dilation',
-        'post-dilatation': 'post_dilation',
-        'excessive-oversizing': 'excessive_oversizing',
-        'oversizing-gte-15': 'oversizing_gte_15'
-    };
-    
-    // 收集手术信息数值范围筛选条件
-    const surgeryNumericFilters = {
-        'valve-size': 'thv_size',
-        'post-mean-pg': 'immediate_mean_pg',
-        'total-procedure-time': 'total_procedure_time',
-        'fluoroscopy-time': 'fluoroscopy_time',
-        'contrast-volume': 'contrast_volume',
-        'immediate-lvef': 'immediate_lvef'
-    };
-    
-    // 收集出院前评价布尔值筛选条件
-    const dischargeBooleanFilters = {
-        'death-before-discharge': 'death_before_discharge',
-        'stroke-before-discharge': 'stroke_before_discharge',
-        'major-bleeding': 'major_bleeding',
-        'acute-kidney-injury': 'aki',
-        'major-vascular-complications': 'major_vascular_complication',
-        'mi-ami': 'mi_ami',
-        'heart-failure': 'heart_failure',
-        'all-cause-cv-death': 'all_cause_cv_death',
-        'pacemaker-implantation': 'pacemaker_implantation',
-        'pvl-detected': 'pvl_detected',
-        'acs-ihd': 'acs_ihd'
-    };
-    
-    // 收集出院前评价数值范围筛选条件
-    const dischargeNumericFilters = {
-        'flow-velocity': 'flow_velocity',
-        'mean-pg': 'mean_pg',
-        'max-pg': 'max_pg',
-        'eoai': 'eoai'
-    };
-    
-    // 收集随访信息布尔值筛选条件
-    const followupBooleanFilters = {
-        'death-30-days': 'mortality_30d',
-        'mi-30-days': 'mi_30d',
-        'stroke-30-days': 'stroke_30d',
-        'hf-readmission-30-days': 'hf_readmission_30d',
-        'death-1-year': 'mortality_1y',
-        'mi-1-year': 'mi_1y',
-        'stroke-1-year': 'stroke_1y',
-        'hf-readmission-1-year': 'hf_readmission_1y',
-        'subsequent-intervention': 'subsequent_intervention'
-    };
-    
-    // 收集基线资料数值范围筛选条件
-    const baselineNumericFilters = {
-        'sts-score': 'sts_score',
-        'nt-probnp': 'nt_probnp',
-        'surface-area': 'surface_area'
-    };
-    
-    console.log('开始处理布尔值筛选条件'); // 调试日志
-    
+
     // 处理所有布尔值筛选条件
-    const allBooleanFilters = {
-        ...baselineBooleanFilters,
-        ...imagingBooleanFilters,
-        ...surgeryBooleanFilters,
-        ...dischargeBooleanFilters,
-        ...followupBooleanFilters
-    };
-    
-    for (const [filterId, fieldName] of Object.entries(allBooleanFilters)) {
+    for (const [filterId, fieldName] of Object.entries(collectFilterValues.booleanIdMap)) {
         const select = document.getElementById(filterId);
-        console.log(`检查筛选字段 ${filterId}:`, select);
         if (select && select.value) {
-            console.log(`${filterId} 的值:`, select.value);
-            if (select.value === 'true') {
-                filters[fieldName] = true;
-                console.log(`设置 ${fieldName} = true`);
-            } else if (select.value === 'false') {
-                filters[fieldName] = false;
-                console.log(`设置 ${fieldName} = false`);
-            }
+            if (select.value === 'true') filters[fieldName] = true;
+            else if (select.value === 'false') filters[fieldName] = false;
         }
     }
-    
+
     // 处理所有数值范围筛选条件
-    const allNumericFilters = {
-        ...baselineNumericFilters,
-        ...imagingNumericFilters,
-        ...surgeryNumericFilters,
-        ...dischargeNumericFilters
-    };
-    
-    for (const [prefix, fieldName] of Object.entries(allNumericFilters)) {
+    for (const [prefix, fieldName] of Object.entries(collectFilterValues.numericIdMap)) {
         const minInput = document.getElementById(`${prefix}-min`);
         const maxInput = document.getElementById(`${prefix}-max`);
-        
-        console.log(`检查数值范围字段 ${prefix}:`, { minInput, maxInput, minValue: minInput?.value, maxValue: maxInput?.value });
-        
-        if (minInput && minInput.value) {
-            filters[`${fieldName}_min`] = parseFloat(minInput.value);
-            console.log(`设置 ${fieldName}_min = ${parseFloat(minInput.value)}`);
-        }
-        if (maxInput && maxInput.value) {
-            filters[`${fieldName}_max`] = parseFloat(maxInput.value);
-            console.log(`设置 ${fieldName}_max = ${parseFloat(maxInput.value)}`);
-        }
+        if (minInput && minInput.value) filters[`${fieldName}_min`] = parseFloat(minInput.value);
+        if (maxInput && maxInput.value) filters[`${fieldName}_max`] = parseFloat(maxInput.value);
     }
-    
+
     // 收集分类值筛选条件
-    const categoryFilters = {
-        'other-access': 'other_access',
-        'immediate-pvl-severity': 'immediate_pvl_severity',
-        'discharge-pvl-severity': 'pvl_severity',
-        'followup-pvl-severity': 'pvl_severity_last_followup',
-        'mitral-regurgitation-change': 'mitral_regurgitation_change'
-    };
-    
-    for (const [filterId, fieldName] of Object.entries(categoryFilters)) {
+    for (const [filterId, fieldName] of Object.entries(collectFilterValues.categoryIdMap)) {
         const select = document.getElementById(filterId);
-        if (select && select.value) {
-            filters[fieldName] = select.value;
-        }
+        if (select && select.value) filters[fieldName] = select.value;
     }
     
-    // 收集瓣周漏和死亡结果（保持原有的复选框逻辑作为备用）
-    if (document.getElementById('paravalvular-leak')?.checked) {
-        filters.immediate_pvl_occurred = true;
-    }
-    if (document.getElementById('death')?.checked) {
-        filters.death_before_discharge = true;
-    }
-    
-    console.log('最终收集到的筛选条件:', filters); // 调试日志
+    console.log('最终收集到的筛选条件:', filters);
     return filters;
 }
+
+
+// 这个函数是核心，负责将filter对象的值填充到UI控件中
+function populateFilters(filters) {
+    // 1. 先重置所有筛选器，确保一个干净的状态
+    document.querySelectorAll('.filter-sidebar input[type="text"], .filter-sidebar input[type="number"]').forEach(i => i.value = '');
+    document.querySelectorAll('.filter-sidebar input[type="checkbox"], .filter-sidebar input[type="radio"]').forEach(i => i.checked = false);
+    document.querySelectorAll('.filter-sidebar select').forEach(s => s.value = '');
+    
+    // 2. 遍历filters对象并填充UI
+    for (const key in filters) {
+        const value = filters[key];
+        const findKey = (map, val) => Object.keys(map).find(k => map[k] === val);
+
+        if (key.endsWith('_min')) {
+            const prefix = key.replace('_min', '');
+            const elementId = findKey(collectFilterValues.numericIdMap, prefix);
+            const input = elementId ? document.getElementById(`${elementId}-min`) : null;
+            if (input) input.value = value;
+        } else if (key.endsWith('_max')) {
+            const prefix = key.replace('_max', '');
+            const elementId = findKey(collectFilterValues.numericIdMap, prefix);
+            const input = elementId ? document.getElementById(`${elementId}-max`) : null;
+            if (input) input.value = value;
+        } else if (typeof value === 'boolean') {
+            const elementId = findKey(collectFilterValues.booleanIdMap, key);
+            const select = elementId ? document.getElementById(elementId) : null;
+            if (select) select.value = value.toString(); // 'true' or 'false'
+        } else if (key === 'gender' && Array.isArray(value)) {
+            if(value.map(v => v.toLowerCase()).includes('male')) document.getElementById('gender-male').checked = true;
+            if(value.map(v => v.toLowerCase()).includes('female')) document.getElementById('gender-female').checked = true;
+        } else if (key === 'nyha_classification' && Array.isArray(value)) {
+            value.forEach(grade => {
+                const cb = document.getElementById(`nyha-${grade}`);
+                if (cb) cb.checked = true;
+            });
+        } else if (key === 'thv_type') {
+            const reverseMap = { 'Balloon-expandable': '球囊扩张式', 'Self-expandable': '自膨胀式' };
+            const input = document.getElementById('valve-type');
+            if (input) input.value = reverseMap[value] || '';
+        } else {
+            let elementId = findKey(collectFilterValues.categoryIdMap, key);
+            if (!elementId) { // 检查是否是直接命名的输入框，如valve-brand
+                const directId = key.replace(/_/g, '-');
+                if(document.getElementById(directId)) elementId = directId;
+            }
+            const input = elementId ? document.getElementById(elementId) : null;
+            if (input) input.value = value;
+        }
+    }
+    updateFilterVisualFeedback();
+}
+
+// 这个函数是事件处理器，负责调用API并填充UI
+async function handleNaturalLanguageFilter() {
+    const input = document.getElementById('natural-language-input');
+    const query = input.value.trim();
+    if (!query) {
+        showError('请输入您的筛选指令。');
+        return;
+    }
+    
+    showLoading(true);
+    try {
+        const response = await fetch(`${API_BASE_URL}/text-to-sql-to-filter`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+        });
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.error || 'AI服务解析失败');
+        }
+
+        const filtersObject = await response.json();
+        console.log('从后端收到的Filter对象:', filtersObject);
+
+        populateFilters(filtersObject);
+
+        // **重要：不自动触发筛选，而是给用户提示**
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification success'; // 使用新的 'success' class
+        toast.textContent = '筛选条件已填充，请检查后点击“应用筛选”按钮。';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 100);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => document.body.removeChild(toast), 300);
+        }, 5000);
+
+    } catch (error) {
+        console.error('智能筛选失败:', error);
+        showError(error.message);
+    } finally {
+        showLoading(false);
+    }
+}
+
 
 // 显示加载状态
 function showLoading(show) {

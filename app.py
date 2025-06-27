@@ -15,6 +15,11 @@ from decimal import Decimal
 import os
 from logging.handlers import RotatingFileHandler
 
+
+from dotenv import load_dotenv
+from openai import OpenAI
+from sql_metadata.parser import Parser
+
 # 创建日志目录
 log_dir = 'logs'
 if not os.path.exists(log_dir):
@@ -63,6 +68,14 @@ logger = setup_logger()
 
 app = Flask(__name__)
 CORS(app)  # 允许跨域请求
+
+load_dotenv()  # 从 .env 文件加载环境变量
+
+# 初始化DeepSeek客户端
+deepseek_client = OpenAI(
+    api_key=os.getenv("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com/v1"
+)
 
 # 数据库配置
 DB_CONFIG = {
@@ -1063,6 +1076,281 @@ def index():
             '/api/health - 健康检查'
         ]
     })
+
+
+
+
+
+# 这部分代码应添加到 app.py 的路由定义区域
+
+# 数据库列名到 `filters` 对象键名的映射
+COLUMN_TO_FILTER_KEY_MAP = {
+    # 'sql_column_name': 'filter_key_or_prefix'
+    'age': 'age',
+    'sex': 'gender',
+    'bmi': 'bmi',
+    'surface_area': 'surface_area',
+    'diabetes_mellitus': 'diabetes_mellitus',
+    'hypertension': 'hypertension',
+    'hyperlipidemia': 'hyperlipidemia',
+    'coronary_artery_disease': 'coronary_artery_disease',
+    'copd': 'copd',
+    'dialysis': 'dialysis',
+    'atrial_fibrillation': 'atrial_fibrillation',
+    'nyha_classification': 'nyha_classification',
+    'acei_arb': 'acei_arb',
+    'beta_blocker': 'beta_blocker',
+    'calcium_blocker': 'calcium_blocker',
+    'diuretic': 'diuretic',
+    'aspirin': 'aspirin',
+    'lvef': 'lvef',
+    'aortic_valve_peak_pg': 'aortic_valve_peak_pg',
+    'aortic_valve_mean_pg': 'aortic_valve_mean_pg',
+    'aortic_valve_eoa': 'aortic_valve_eoa',
+    'annular_area': 'annular_area',
+    'annular_mean_diameter': 'annular_mean_diameter',
+    'annular_max_diameter': 'annular_max_diameter',
+    'annular_perimeter': 'annular_perimeter',
+    'aortic_valve_flow_velocity': 'aortic_valve_flow_velocity',
+    'stj_height': 'stj_height',
+    'stj_diameter': 'stj_diameter',
+    'sinus_diameter': 'sinus_diameter',
+    'ascending_aorta_diameter': 'ascending_aorta_diameter',
+    'supraannular_calcification': 'supraannular_calcification',
+    'annular_calcification': 'annular_calcification',
+    'lvot_diameter': 'lvot_diameter',
+    'lvot_calcification': 'lvot_calcification',
+    'left_coronary_height': 'left_coronary_height',
+    'right_coronary_height': 'right_coronary_height',
+    'annulus_to_mitral_distance': 'annulus_to_mitral_distance',
+    'transfemoral_access': 'transfemoral_access',
+    'transapical_access': 'transapical_access',
+    'other_access': 'other_access',
+    'thv_size': 'thv_size',
+    'thv_type': 'thv_type',
+    'thv_brand': 'thv_brand',
+    'pre_dilation': 'pre_dilation',
+    'post_dilation': 'post_dilation',
+    'total_procedure_time': 'total_procedure_time',
+    'fluoroscopy_time': 'fluoroscopy_time',
+    'contrast_volume': 'contrast_volume',
+    'immediate_lvef': 'immediate_lvef',
+    'immediate_mean_pg': 'immediate_mean_pg',
+    'mean_pg_gte_20': 'mean_pg_gte_20',
+    'prosthesis_malposition': 'prosthesis_malposition',
+    'annular_rupture': 'annular_rupture',
+    'excessive_oversizing': 'excessive_oversizing',
+    'oversizing_gte_15': 'oversizing_gte_15',
+    'immediate_pvl_occurred': 'immediate_pvl_occurred',
+    'immediate_pvl_severity': 'immediate_pvl_severity',
+    'pvl_severity': 'pvl_severity',
+    'pvl_severity_last_followup': 'pvl_severity_last_followup',
+    'thv_displacement': 'thv_displacement',
+    'conversion_to_savr': 'conversion_to_savr',
+    'cpb_required': 'cpb_required',
+    'valve_in_valve': 'valve_in_valve',
+    'periprocedural_death': 'periprocedural_death',
+    'mitral_regurgitation_change_proc': 'mitral_regurgitation_change_proc',
+    'death_before_discharge': 'death_before_discharge',
+    'stroke_before_discharge': 'stroke_before_discharge',
+    'major_bleeding': 'major_bleeding',
+    'aki': 'aki',
+    'major_vascular_complication': 'major_vascular_complication',
+    'mi_ami': 'mi_ami',
+    'acs_ihd': 'acs_ihd',
+    'heart_failure': 'heart_failure',
+    'all_cause_cv_death': 'all_cause_cv_death',
+    'pacemaker_implantation': 'pacemaker_implantation',
+    'pvl_detected': 'pvl_detected',
+    'max_pg': 'max_pg',
+    'flow_velocity': 'flow_velocity',
+    'mean_pg': 'mean_pg',
+    'eoai': 'eoai',
+    'mitral_regurgitation_change': 'mitral_regurgitation_change',
+    'mortality_30d': 'mortality_30d',
+    'mi_30d': 'mi_30d',
+    'stroke_30d': 'stroke_30d',
+    'hf_readmission_30d': 'hf_readmission_30d',
+    'mortality_1y': 'mortality_1y',
+    'mi_1y': 'mi_1y',
+    'stroke_1y': 'stroke_1y',
+    'hf_readmission_1y': 'hf_readmission_1y',
+    'subsequent_intervention': 'subsequent_intervention',
+    'mitral_regurgitation_change_followup': 'mitral_regurgitation_change_followup',
+    'patient_id': 'patient_id'
+}
+
+# 数据库表结构信息，用于构建Prompt
+TABLE_SCHEMA_PROMPT = """
+你是一个自然语言到SQL的转换专家。
+你的任务是根据用户的自然语言查询，为名为 `tavi_patients` 的数据库表生成一个标准的SQL查询语句。
+你必须遵循以下规则：
+1.  只生成 `SELECT * FROM tavi_patients WHERE ...` 格式的SQL语句。
+2.  不要使用任何表别名。
+3.  对于布尔类型的字段，使用 `1` 代表 `true` (是)，使用 `0` 代表 `false` (否)。
+4.  对于文本比较，必须使用单引号，例如 `sex = 'Male'`。
+5.  下面是 `tavi_patients` 表中一些重要列的定义：
+    - `age` (integer): 患者年龄。
+    - `sex` (string): 患者性别, 可选值为 'Male' (男性), 'Female' (女性)。
+    - `bmi` (float): 体重指数。
+    - `diabetes_mellitus` (boolean): 是否患有糖尿病。
+    - `hypertension` (boolean): 是否患有高血压。
+    - `lvef` (float): 左心室射血分数，这是一个百分比，但数据库中存储的是数值，例如50代表50%。
+    - `thv_type` (string): 瓣膜类型, 可选值为 'Self-expandable' (自膨胀式), 'Balloon-expandable' (球囊扩张式)。
+    - `thv_size` (float): 瓣膜尺寸，数值型。
+    - `nyha_classification` (string): NYHA心功能分级, 可选值为 'I', 'II', 'III', 'IV'。
+    - `immediate_pvl_occurred` (boolean): 是否发生术后即刻瓣周漏。
+    - `death_before_discharge` (boolean): 是否出院前死亡。
+6. 根据以上信息，将用户的自然语言查询转换为SQL。
+"""
+
+def convert_text_to_sql(user_query):
+    """调用LLM将自然语言转换为SQL"""
+    try:
+        response = deepseek_client.chat.completions.create(
+            model="deepseek-chat",
+            messages=[
+                {"role": "system", "content": TABLE_SCHEMA_PROMPT},
+                {"role": "user", "content": user_query}
+            ],
+            temperature=0, # 为了确保输出的稳定性
+        )
+        sql_query = response.choices[0].message.content
+        # 简单清洗，去除markdown代码块标识
+        if sql_query.startswith("```sql"):
+            sql_query = sql_query[6:]
+        if sql_query.endswith("```"):
+            sql_query = sql_query[:-3]
+        
+        sql_query = sql_query.strip()
+        logger.info(f"[AI] 生成的SQL: {sql_query}")
+        return sql_query
+    except Exception as e:
+        logger.error(f"[AI] Text-to-SQL转换失败: {e}")
+        return None
+
+def parse_sql_to_filters(sql):
+    """解析SQL的WHERE子句，并将其转换为filters对象"""
+    if not sql or "WHERE" not in sql.upper():
+        logger.warning(f"SQL语句 '{sql}' 中没有WHERE子句，无法解析。")
+        return {}
+
+    try:
+        parser = Parser(sql)
+        # `parser.conditions` 会给出WHERE子句的字符串形式，需要进一步解析
+        # `parser.where_conditions` 是更结构化的，但可能需要付费版或更复杂的处理
+        # 我们这里直接解析字符串
+        where_clause_str = parser.conditions
+        
+        # 将 " AND " 或 " OR " (暂不处理OR) 替换为特定分隔符进行分割
+        conditions = where_clause_str.upper().split(" AND ")
+        
+        filters = {}
+        
+        for cond in conditions:
+            cond = cond.strip()
+            # 尝试匹配 >=, <=, >, <, =, IN, LIKE
+            operator = None
+            if ">=" in cond:
+                operator = ">="
+            elif "<=" in cond:
+                operator = "<="
+            elif ">" in cond:
+                operator = ">"
+            elif "<" in cond:
+                operator = "<"
+            elif " IN " in cond:
+                operator = "IN"
+            elif " LIKE " in cond:
+                operator = "LIKE"
+            elif "=" in cond:
+                operator = "="
+            else:
+                continue
+
+            parts = [p.strip() for p in cond.split(operator)]
+            if len(parts) != 2:
+                continue
+
+            col_name = parts[0].lower()
+            val_str = parts[1].strip()
+
+            filter_key = COLUMN_TO_FILTER_KEY_MAP.get(col_name)
+            if not filter_key:
+                logger.warning(f"无法映射SQL列 '{col_name}' 到filter key。")
+                continue
+
+            # 去除值的引号
+            if val_str.startswith("'") and val_str.endswith("'"):
+                val_str = val_str[1:-1]
+            if val_str.startswith('"') and val_str.endswith('"'):
+                val_str = val_str[1:-1]
+            
+            # 根据操作符和filter_key填充filters对象
+            if operator in ('>', '>='):
+                filters[f"{filter_key}_min"] = float(val_str)
+            elif operator in ('<', '<='):
+                filters[f"{filter_key}_max"] = float(val_str)
+            elif operator == '=':
+                # 处理布尔值
+                if val_str in ('1', '0'):
+                    filters[filter_key] = bool(int(val_str))
+                # 处理性别
+                elif filter_key == 'gender':
+                    filters[filter_key] = [val_str.capitalize()] # 'Male' or 'Female'
+                # 处理NYHA分级
+                elif filter_key == 'nyha_classification':
+                    if 'nyha_classification' not in filters:
+                        filters['nyha_classification'] = []
+                    filters['nyha_classification'].append(val_str)
+                else: # 其他字符串完全匹配
+                    filters[filter_key] = val_str
+            elif operator == 'IN':
+                # 解析 IN ('val1', 'val2')
+                vals = [v.strip().strip("'\"") for v in val_str.strip("()").split(',')]
+                filters[filter_key] = vals
+            # 暂不处理 LIKE
+
+        logger.info(f"从SQL解析出的filters对象: {filters}")
+        return filters
+
+    except Exception as e:
+        logger.error(f"解析SQL '{sql}' 失败: {e}", exc_info=True)
+        return {}
+
+@app.route('/api/text-to-sql-to-filter', methods=['POST'])
+def text_to_sql_to_filter():
+    """
+    接收自然语言，转换为SQL，再解析为filter对象返回。
+    """
+    try:
+        data = request.get_json()
+        if not data or 'query' not in data:
+            return jsonify({'error': '请求体中缺少查询(query)'}), 400
+        
+        user_query = data['query']
+        logger.info(f"[API] 收到Text-to-SQL-to-Filter请求: {user_query}")
+
+        # 1. Text to SQL
+        sql_query = convert_text_to_sql(user_query)
+        if not sql_query:
+            return jsonify({'error': 'AI服务无法生成有效的SQL查询'}), 500
+
+        # 2. SQL to Filter Object
+        filter_object = parse_sql_to_filters(sql_query)
+        if not filter_object:
+            # 即使解析不出，也返回空对象，让前端清空筛选条件
+            logger.warning(f"未能从SQL '{sql_query}' 中解析出任何筛选条件。")
+
+        return jsonify(filter_object), 200
+
+    except Exception as e:
+        logger.error(f"[API] /api/text-to-sql-to-filter 接口处理失败: {e}", exc_info=True)
+        return jsonify({'error': '服务处理请求时发生内部错误'}), 500
+
+
+
+
 
 if __name__ == '__main__':
     try:
