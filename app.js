@@ -240,11 +240,7 @@ function bindEventListeners() {
 
 
 
-
-
-
-
-// ==================== START: applyFilters 函数 ====================
+// ==================== START: 用此代码块替换旧的 applyFilters 函数 ====================
 async function applyFilters() {
     try {
         console.log('开始应用筛选...');
@@ -276,10 +272,6 @@ async function applyFilters() {
     }
 }
 // ==================== END: 替换结束 ====================
-
-
-
-
 
 
 function collectFilterValues() {
@@ -424,61 +416,7 @@ function collectFilterValues() {
 }
 
 
-// // 这个函数是核心，负责将filter对象的值填充到UI控件中, 将数据自动填入至筛选框中
-// function populateFilters(filters) {
-//     // 1. 先重置所有筛选器，确保一个干净的状态
-//     document.querySelectorAll('.filter-sidebar input[type="text"], .filter-sidebar input[type="number"]').forEach(i => i.value = '');
-//     document.querySelectorAll('.filter-sidebar input[type="checkbox"], .filter-sidebar input[type="radio"]').forEach(i => i.checked = false);
-//     document.querySelectorAll('.filter-sidebar select').forEach(s => s.value = '');
-    
-//     // 2. 遍历filters对象并填充UI
-//     for (const key in filters) {
-//         const value = filters[key];
-//         const findKey = (map, val) => Object.keys(map).find(k => map[k] === val);
-
-//         if (key.endsWith('_min')) {
-//             const prefix = key.replace('_min', '');
-//             const elementId = findKey(collectFilterValues.numericIdMap, prefix);
-//             const input = elementId ? document.getElementById(`${elementId}-min`) : null;
-//             if (input) input.value = value;
-//         } else if (key.endsWith('_max')) {
-//             const prefix = key.replace('_max', '');
-//             const elementId = findKey(collectFilterValues.numericIdMap, prefix);
-//             const input = elementId ? document.getElementById(`${elementId}-max`) : null;
-//             if (input) input.value = value;
-//         } else if (typeof value === 'boolean') {
-//             const elementId = findKey(collectFilterValues.booleanIdMap, key);
-//             const select = elementId ? document.getElementById(elementId) : null;
-//             if (select) select.value = value.toString(); // 'true' or 'false'
-//         } else if (key === 'gender' && Array.isArray(value)) {
-//             if(value.map(v => v.toLowerCase()).includes('male')) document.getElementById('gender-male').checked = true;
-//             if(value.map(v => v.toLowerCase()).includes('female')) document.getElementById('gender-female').checked = true;
-//         } else if (key === 'nyha_classification' && Array.isArray(value)) {
-//             value.forEach(grade => {
-//                 const cb = document.getElementById(`nyha-${grade}`);
-//                 if (cb) cb.checked = true;
-//             });
-//         } else if (key === 'thv_type') {
-//             const reverseMap = { 'Balloon-expandable': '球囊扩张式', 'Self-expandable': '自膨胀式' };
-//             const input = document.getElementById('valve-type');
-//             if (input) input.value = reverseMap[value] || '';
-//         } else {
-//             let elementId = findKey(collectFilterValues.categoryIdMap, key);
-//             if (!elementId) { // 检查是否是直接命名的输入框，如valve-brand
-//                 const directId = key.replace(/_/g, '-');
-//                 if(document.getElementById(directId)) elementId = directId;
-//             }
-//             const input = elementId ? document.getElementById(elementId) : null;
-//             if (input) input.value = value;
-//         }
-//     }
-//     updateFilterVisualFeedback();
-// }
-
-
-
-
-// ==================== START: 用此代码块完整替换旧的 handleNaturalLanguageFilter 函数 ====================
+// ==================== START: handleNaturalLanguageFilter 函数 ====================
 async function handleNaturalLanguageFilter() {
     const input = document.getElementById('natural-language-input');
     const query = input.value.trim();

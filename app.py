@@ -23,6 +23,10 @@ from sql_metadata.parser import Parser
 import re
 import logging # 确保 logging 库被导入
 
+# 在 app.py 顶部添加 (如果不存在的话)
+import re
+import logging # 确保 logging 库被导入
+
 # 创建日志目录
 log_dir = 'logs'
 if not os.path.exists(log_dir):
@@ -1235,7 +1239,7 @@ def convert_text_to_sql(user_query):
 
 
 def parse_sql_to_filters(sql):
-    """(v3 - 重写版) 解析SQL的WHERE子句，并将其转换为filters对象"""
+    """解析SQL的WHERE子句，并将其转换为filters对象"""
     filters = {}
     if not sql:
         return filters
@@ -1250,6 +1254,7 @@ def parse_sql_to_filters(sql):
             where_index = [token.upper() for token in all_tokens].index('WHERE')
         except ValueError:
             # 如果没有WHERE, 直接返回空字典
+            logger.info(f"SQL语句中未找到WHERE子句，返回空筛选条件。")
             return filters
         
         # 3. 提取 WHERE 子句之后的所有词法单元
@@ -1272,7 +1277,7 @@ def parse_sql_to_filters(sql):
         for cond_parts in conditions:
             if not cond_parts: continue
 
-            # 标准化 'IN' 子句: ['nyha_classification', 'IN', '(', "'II'", ',', "'III'", ')'] -> ['nyha_classification', 'IN', "('II','III')"]
+            # 标准化 'IN' 子句
             if 'IN' in [p.upper() for p in cond_parts]:
                 in_index = [p.upper() for p in cond_parts].index('IN')
                 col_name = cond_parts[in_index - 1]
@@ -1280,7 +1285,7 @@ def parse_sql_to_filters(sql):
                 cond_parts = [col_name, 'IN', values_in_parentheses]
 
             if len(cond_parts) != 3:
-                print(f"警告: 条件 '{' '.join(cond_parts)}' 格式不标准 (预期3部分)，已跳过。")
+                logger.warning(f"条件 '{' '.join(cond_parts)}' 格式不标准 (预期3部分)，已跳过。")
                 continue
 
             col_name, operator, val_str = [part.strip() for part in cond_parts]
@@ -1307,19 +1312,16 @@ def parse_sql_to_filters(sql):
                 elif filter_key == 'gender': filters[filter_key] = [val_str.capitalize()]
                 else: filters[filter_key] = val_str
             elif operator.upper() == 'IN':
-                # 清理括号和空格，然后按逗号分割
                 vals = [v.strip().strip("'\"") for v in val_str.strip("() \t\n\r").split(',')]
                 filters[filter_key] = vals
 
     except Exception as e:
-        print(f"致命错误: 解析SQL '{sql}' 时发生意外: {e}")
-        # 在调试时，打印更详细的堆栈跟踪信息
-        import traceback
-        traceback.print_exc()
+        logger.error(f"解析SQL '{sql}' 时发生致命错误: {e}", exc_info=True)
         return {}
     
+    logger.info(f"从SQL成功解析出filters对象: {filters}")
     return filters
-
+# ==================== 替换结束 ====================
 
 @app.route('/api/text-to-sql-to-filter', methods=['POST'])
 def text_to_sql_to_filter():
