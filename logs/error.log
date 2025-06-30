@@ -34,3 +34,64 @@ Traceback (most recent call last):
     where_clause_str = parser.conditions
                        ^^^^^^^^^^^^^^^^^
 AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:41:55 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:43:35 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:48:50 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE pci_history = 1' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:49:05 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE pci_history = 1' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-29 20:10:39 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-29 20:10:39 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-29 20:10:39 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:11 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:11 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:11 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:43 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:43 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:43 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:48 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:49 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:33:49 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:34:27 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:34:27 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:34:27 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:34:49 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:34:49 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:34:49 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:36:38 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:36:38 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:36:38 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:37:14 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:37:14 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:37:14 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:38:56 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:38:56 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:38:56 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:39:24 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:39:24 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:39:24 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:45:44 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:45:44 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:45:44 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:47:48 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:48:07 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:48:07 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")
+2025-06-30 11:48:07 - ERROR - 数据库连接失败: (2003, "Can't connect to MySQL server on '192.168.23.247' (timed out)")

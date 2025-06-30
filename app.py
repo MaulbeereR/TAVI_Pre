@@ -19,6 +19,9 @@ from logging.handlers import RotatingFileHandler
 from dotenv import load_dotenv
 from openai import OpenAI
 from sql_metadata.parser import Parser
+# 在 app.py 顶部添加 (如果不存在的话)
+import re
+import logging # 确保 logging 库被导入
 
 # 创建日志目录
 log_dir = 'logs'
@@ -1228,95 +1231,95 @@ def convert_text_to_sql(user_query):
     except Exception as e:
         logger.error(f"[AI] Text-to-SQL转换失败: {e}")
         return None
+    
+
 
 def parse_sql_to_filters(sql):
-    """解析SQL的WHERE子句，并将其转换为filters对象"""
-    if not sql or "WHERE" not in sql.upper():
-        logger.warning(f"SQL语句 '{sql}' 中没有WHERE子句，无法解析。")
-        return {}
+    """(v3 - 重写版) 解析SQL的WHERE子句，并将其转换为filters对象"""
+    filters = {}
+    if not sql:
+        return filters
 
     try:
+        # 1. 获取最底层的、完整的词法单元列表
         parser = Parser(sql)
-        # `parser.conditions` 会给出WHERE子句的字符串形式，需要进一步解析
-        # `parser.where_conditions` 是更结构化的，但可能需要付费版或更复杂的处理
-        # 我们这里直接解析字符串
-        where_clause_str = parser.conditions
+        all_tokens = [str(token) for token in parser.tokens]
+
+        # 2. 手动定位 WHERE 关键字的位置
+        try:
+            where_index = [token.upper() for token in all_tokens].index('WHERE')
+        except ValueError:
+            # 如果没有WHERE, 直接返回空字典
+            return filters
         
-        # 将 " AND " 或 " OR " (暂不处理OR) 替换为特定分隔符进行分割
-        conditions = where_clause_str.upper().split(" AND ")
+        # 3. 提取 WHERE 子句之后的所有词法单元
+        where_clause_tokens = all_tokens[where_index + 1:]
         
-        filters = {}
-        
-        for cond in conditions:
-            cond = cond.strip()
-            # 尝试匹配 >=, <=, >, <, =, IN, LIKE
-            operator = None
-            if ">=" in cond:
-                operator = ">="
-            elif "<=" in cond:
-                operator = "<="
-            elif ">" in cond:
-                operator = ">"
-            elif "<" in cond:
-                operator = "<"
-            elif " IN " in cond:
-                operator = "IN"
-            elif " LIKE " in cond:
-                operator = "LIKE"
-            elif "=" in cond:
-                operator = "="
+        # 4. 按 'AND' 分割条件
+        conditions = []
+        current_condition = []
+        for token in where_clause_tokens:
+            if token.upper() == 'AND':
+                if current_condition:
+                    conditions.append(current_condition)
+                    current_condition = []
             else:
+                current_condition.append(token)
+        if current_condition:
+            conditions.append(current_condition)
+
+        # 5. 逐一处理每个解析出的条件
+        for cond_parts in conditions:
+            if not cond_parts: continue
+
+            # 标准化 'IN' 子句: ['nyha_classification', 'IN', '(', "'II'", ',', "'III'", ')'] -> ['nyha_classification', 'IN', "('II','III')"]
+            if 'IN' in [p.upper() for p in cond_parts]:
+                in_index = [p.upper() for p in cond_parts].index('IN')
+                col_name = cond_parts[in_index - 1]
+                values_in_parentheses = "".join(cond_parts[in_index + 1:])
+                cond_parts = [col_name, 'IN', values_in_parentheses]
+
+            if len(cond_parts) != 3:
+                print(f"警告: 条件 '{' '.join(cond_parts)}' 格式不标准 (预期3部分)，已跳过。")
                 continue
 
-            parts = [p.strip() for p in cond.split(operator)]
-            if len(parts) != 2:
-                continue
-
-            col_name = parts[0].lower()
-            val_str = parts[1].strip()
+            col_name, operator, val_str = [part.strip() for part in cond_parts]
+            col_name = col_name.lower()
 
             filter_key = COLUMN_TO_FILTER_KEY_MAP.get(col_name)
             if not filter_key:
-                logger.warning(f"无法映射SQL列 '{col_name}' 到filter key。")
+                print(f"警告: 无法映射SQL列 '{col_name}' 到filter key。")
                 continue
-
-            # 去除值的引号
-            if val_str.startswith("'") and val_str.endswith("'"):
-                val_str = val_str[1:-1]
-            if val_str.startswith('"') and val_str.endswith('"'):
-                val_str = val_str[1:-1]
             
-            # 根据操作符和filter_key填充filters对象
+            # 去除值的引号
+            if (val_str.startswith("'") and val_str.endswith("'")) or \
+               (val_str.startswith('"') and val_str.endswith('"')):
+                val_str = val_str[1:-1]
+
+            # 填充filters对象
             if operator in ('>', '>='):
                 filters[f"{filter_key}_min"] = float(val_str)
             elif operator in ('<', '<='):
                 filters[f"{filter_key}_max"] = float(val_str)
             elif operator == '=':
-                # 处理布尔值
-                if val_str in ('1', '0'):
-                    filters[filter_key] = bool(int(val_str))
-                # 处理性别
-                elif filter_key == 'gender':
-                    filters[filter_key] = [val_str.capitalize()] # 'Male' or 'Female'
-                # 处理NYHA分级
-                elif filter_key == 'nyha_classification':
-                    if 'nyha_classification' not in filters:
-                        filters['nyha_classification'] = []
-                    filters['nyha_classification'].append(val_str)
-                else: # 其他字符串完全匹配
-                    filters[filter_key] = val_str
-            elif operator == 'IN':
-                # 解析 IN ('val1', 'val2')
-                vals = [v.strip().strip("'\"") for v in val_str.strip("()").split(',')]
+                if val_str.lower() in ('1', 'true'): filters[filter_key] = True
+                elif val_str.lower() in ('0', 'false'): filters[filter_key] = False
+                elif filter_key == 'gender': filters[filter_key] = [val_str.capitalize()]
+                else: filters[filter_key] = val_str
+            elif operator.upper() == 'IN':
+                # 清理括号和空格，然后按逗号分割
+                vals = [v.strip().strip("'\"") for v in val_str.strip("() \t\n\r").split(',')]
                 filters[filter_key] = vals
-            # 暂不处理 LIKE
-
-        logger.info(f"从SQL解析出的filters对象: {filters}")
-        return filters
 
     except Exception as e:
-        logger.error(f"解析SQL '{sql}' 失败: {e}", exc_info=True)
+        print(f"致命错误: 解析SQL '{sql}' 时发生意外: {e}")
+        # 在调试时，打印更详细的堆栈跟踪信息
+        import traceback
+        traceback.print_exc()
         return {}
+    
+    return filters
+
 
 @app.route('/api/text-to-sql-to-filter', methods=['POST'])
 def text_to_sql_to_filter():
