@@ -192,6 +192,21 @@
                 </div>
             </div>
         </div>
+        
+                <!-- START: 新增的自然-语言输入模块 -->
+        <div class="card shadow-sm mb-4" id="intelligent-filter-module">
+            <div class="card-body">
+                <h5 class="card-title">智能筛选助手</h5>
+                <p class="card-subtitle mb-2 text-muted">请用自然语言描述您想筛选的病例特征，系统将为您自动设置下方筛选条件。</p>
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" id="natural-language-input" placeholder="例如：查找年龄大于75岁且有高血压的女性患者">
+                    <button class="btn btn-primary btn-lg" type="button" id="apply-natural-language-filter">
+                        <i class="bi bi-magic"></i> 解析并填充
+                    </button>
+                </div>
+            </div>
+        </div>
+    <!-- END: 新增的自然语言输入模块 -->
 
         <!-- 数据筛选区域 - 占据整个版面宽度 -->
         <div class="filter-section-wrapper">
@@ -1657,20 +1672,7 @@
     </div>
     <!-- RAGFlow 智能问答悬浮窗 - 结束 -->
 
-    <!-- START: 新增的自然-语言输入模块 -->
-    <div class="card shadow-sm mb-4" id="intelligent-filter-module">
-        <div class="card-body">
-            <h5 class="card-title">智能筛选助手</h5>
-            <p class="card-subtitle mb-2 text-muted">请用自然语言描述您想筛选的病例特征，系统将为您自动设置下方筛选条件。</p>
-            <div class="input-group">
-                <input type="text" class="form-control form-control-lg" id="natural-language-input" placeholder="例如：查找年龄大于75岁且有高血压的女性患者">
-                <button class="btn btn-primary btn-lg" type="button" id="apply-natural-language-filter">
-                    <i class="bi bi-magic"></i> 解析并填充
-                </button>
-            </div>
-        </div>
-    </div>
-<!-- END: 新增的自然语言输入模块 -->
+
 
 
 
