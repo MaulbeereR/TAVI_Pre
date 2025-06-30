@@ -238,50 +238,40 @@ function bindEventListeners() {
     setTimeout(updateFilterVisualFeedback, 100);
 }
 
-// 应用筛选
+
+
+// ==================== START: 用此代码块替换旧的 applyFilters 函数 ====================
 async function applyFilters() {
     try {
-        console.log('开始应用筛选...'); // 调试日志
+        console.log('开始应用筛选...');
         showLoading(true);
         
-        // 收集筛选条件
-        const filters = collectFilterValues();
-        console.log('收集到的筛选条件:', filters); // 调试日志
-        currentFilters = filters;
+        // 1. 【核心改变】从UI收集筛选条件，并将其设置为当前全局筛选条件
+        currentFilters = collectFilterValues();
+        console.log('收集到的UI筛选条件:', currentFilters);
         
-        // 重置到第一页
+        // 2. 重置到第一页
         currentPage = 1;
         
-        // 并行加载所有数据
-        console.log('开始加载数据...'); // 调试日志
-        const [statsData, chartData, tableData] = await Promise.all([
-            loadStatistics(filters),
-            loadChartData(filters),
-            loadTableData(filters, currentPage, casesPerPage)
+        // 3. 并行加载所有数据
+        console.log('开始加载数据...');
+        await Promise.all([
+            loadStatistics(currentFilters),
+            loadChartData(currentFilters),
+            loadTableData(currentFilters, currentPage, casesPerPage)
         ]);
-        
-        console.log('数据加载完成:', { statsData, chartData, tableData }); // 调试日志
-        
-        // 更新显示
-        updateStatisticsDisplay(statsData);
-        updateChartsWithData(chartData);
-        updateTableDisplay(tableData);
         
         showLoading(false);
         showFilterResult();
-        
-        // 更新视觉反馈
         updateFilterVisualFeedback();
         
     } catch (error) {
         console.error('筛选失败:', error);
-        console.error('错误详情:', error.message); // 调试日志
-        console.error('错误堆栈:', error.stack); // 调试日志
         showLoading(false);
         showError('筛选失败，请重试');
     }
 }
-
+// ==================== END: 替换结束 ====================
 
 
 
@@ -431,68 +421,24 @@ function collectFilterValues() {
 }
 
 
-// 这个函数是核心，负责将filter对象的值填充到UI控件中
-function populateFilters(filters) {
-    // 1. 先重置所有筛选器，确保一个干净的状态
-    document.querySelectorAll('.filter-sidebar input[type="text"], .filter-sidebar input[type="number"]').forEach(i => i.value = '');
-    document.querySelectorAll('.filter-sidebar input[type="checkbox"], .filter-sidebar input[type="radio"]').forEach(i => i.checked = false);
-    document.querySelectorAll('.filter-sidebar select').forEach(s => s.value = '');
-    
-    // 2. 遍历filters对象并填充UI
-    for (const key in filters) {
-        const value = filters[key];
-        const findKey = (map, val) => Object.keys(map).find(k => map[k] === val);
 
-        if (key.endsWith('_min')) {
-            const prefix = key.replace('_min', '');
-            const elementId = findKey(collectFilterValues.numericIdMap, prefix);
-            const input = elementId ? document.getElementById(`${elementId}-min`) : null;
-            if (input) input.value = value;
-        } else if (key.endsWith('_max')) {
-            const prefix = key.replace('_max', '');
-            const elementId = findKey(collectFilterValues.numericIdMap, prefix);
-            const input = elementId ? document.getElementById(`${elementId}-max`) : null;
-            if (input) input.value = value;
-        } else if (typeof value === 'boolean') {
-            const elementId = findKey(collectFilterValues.booleanIdMap, key);
-            const select = elementId ? document.getElementById(elementId) : null;
-            if (select) select.value = value.toString(); // 'true' or 'false'
-        } else if (key === 'gender' && Array.isArray(value)) {
-            if(value.map(v => v.toLowerCase()).includes('male')) document.getElementById('gender-male').checked = true;
-            if(value.map(v => v.toLowerCase()).includes('female')) document.getElementById('gender-female').checked = true;
-        } else if (key === 'nyha_classification' && Array.isArray(value)) {
-            value.forEach(grade => {
-                const cb = document.getElementById(`nyha-${grade}`);
-                if (cb) cb.checked = true;
-            });
-        } else if (key === 'thv_type') {
-            const reverseMap = { 'Balloon-expandable': '球囊扩张式', 'Self-expandable': '自膨胀式' };
-            const input = document.getElementById('valve-type');
-            if (input) input.value = reverseMap[value] || '';
-        } else {
-            let elementId = findKey(collectFilterValues.categoryIdMap, key);
-            if (!elementId) { // 检查是否是直接命名的输入框，如valve-brand
-                const directId = key.replace(/_/g, '-');
-                if(document.getElementById(directId)) elementId = directId;
-            }
-            const input = elementId ? document.getElementById(elementId) : null;
-            if (input) input.value = value;
-        }
-    }
-    updateFilterVisualFeedback();
-}
 
-// 这个函数是事件处理器，负责调用API并填充UI
+
+// ==================== START: handleNaturalLanguageFilter 函数 ====================
 async function handleNaturalLanguageFilter() {
     const input = document.getElementById('natural-language-input');
     const query = input.value.trim();
+
     if (!query) {
         showError('请输入您的筛选指令。');
         return;
     }
-    
+
+    console.log("智能筛选启动，查询语句:", query);
     showLoading(true);
+
     try {
+        // 1. 调用API，获取由自然语言转换而来的filters对象
         const response = await fetch(`${API_BASE_URL}/text-to-sql-to-filter`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -504,21 +450,33 @@ async function handleNaturalLanguageFilter() {
             throw new Error(errData.error || 'AI服务解析失败');
         }
 
-        const filtersObject = await response.json();
-        console.log('从后端收到的Filter对象:', filtersObject);
+        const filtersFromAI = await response.json();
+        console.log('从后端收到的AI生成的Filter对象:', filtersFromAI);
+        
+        // 2. 将AI生成的filters对象设置为当前的全局筛选条件
+        currentFilters = filtersFromAI;
+        
+        // 3. 重置分页到第一页
+        currentPage = 1;
 
-        populateFilters(filtersObject);
+        // 4. 【核心】直接使用这个filters对象并行加载所有数据
+        console.log('开始使用AI生成的filters加载数据...');
+        await Promise.all([
+            loadStatistics(currentFilters),
+            loadChartData(currentFilters),
+            loadTableData(currentFilters, currentPage, casesPerPage)
+        ]);
+        
+        console.log('智能筛选数据加载完成。');
+        showFilterResult(); // 显示“筛选完成”的成功提示
 
-        // **重要：不自动触发筛选，而是给用户提示**
-        const toast = document.createElement('div');
-        toast.className = 'toast-notification success'; // 使用新的 'success' class
-        toast.textContent = '筛选条件已填充，请检查后点击“应用筛选”按钮。';
-        document.body.appendChild(toast);
-        setTimeout(() => toast.classList.add('show'), 100);
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => document.body.removeChild(toast), 300);
-        }, 5000);
+        // 5. (可选但推荐) 清空UI上的所有筛选条件
+        // 这样做是为了明确告诉用户，当前数据结果与UI控件上的值无关
+        document.querySelectorAll('.filter-sidebar input[type="text"], .filter-sidebar input[type="number"]').forEach(i => i.value = '');
+        document.querySelectorAll('.filter-sidebar input[type="checkbox"], .filter-sidebar input[type="radio"]').forEach(i => i.checked = false);
+        document.querySelectorAll('.filter-sidebar select').forEach(s => s.value = '');
+        updateFilterVisualFeedback();
+
 
     } catch (error) {
         console.error('智能筛选失败:', error);
@@ -527,6 +485,7 @@ async function handleNaturalLanguageFilter() {
         showLoading(false);
     }
 }
+// ==================== END: 替换结束 ====================
 
 
 // 显示加载状态

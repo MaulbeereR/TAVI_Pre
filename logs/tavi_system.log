@@ -2987,3 +2987,641 @@ Traceback (most recent call last):
                        ^^^^^^^^^^^^^^^^^
 AttributeError: 'Parser' object has no attribute 'conditions'
 2025-06-27 17:33:31 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 中解析出任何筛选条件。
+2025-06-30 11:51:55 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 11:52:00 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 11:52:12 - INFO - 数据库连接成功
+2025-06-30 11:52:12 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:52:12 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:52:12 - INFO - 查询参数: []
+2025-06-30 11:52:12 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 11:52:12 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 11:52:12 - INFO - 数据库连接成功
+2025-06-30 11:52:12 - INFO - 数据库连接成功
+2025-06-30 11:52:12 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:52:12 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:52:12 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:52:12 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:52:12 - INFO - 查询参数: []
+2025-06-30 11:52:12 - INFO - 查询参数: []
+2025-06-30 11:52:12 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 11:52:12 - INFO - 查询参数: []
+2025-06-30 11:52:12 - INFO - 查询成功，返回 20 条记录
+2025-06-30 11:52:18 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者
+2025-06-30 11:52:22 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85
+2025-06-30 11:52:22 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 11:52:22 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 中解析出任何筛选条件。
+2025-06-30 11:52:25 - INFO - 数据库连接成功
+2025-06-30 11:52:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:52:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:52:25 - INFO - 查询参数: []
+2025-06-30 11:52:25 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 11:52:25 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 11:52:25 - INFO - 数据库连接成功
+2025-06-30 11:52:25 - INFO - 数据库连接成功
+2025-06-30 11:52:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:52:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:52:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:52:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:52:25 - INFO - 查询参数: []
+2025-06-30 11:52:25 - INFO - 查询参数: []
+2025-06-30 11:52:25 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 11:52:25 - INFO - 查询参数: []
+2025-06-30 11:52:25 - INFO - 查询成功，返回 20 条记录
+2025-06-30 11:52:31 - INFO - 数据库连接成功
+2025-06-30 11:52:31 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 11:52:31 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 11:52:31 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 11:52:31 - INFO - 查询参数: [70]
+2025-06-30 11:52:31 - INFO - 收到数据请求 - 筛选条件: {'age_min': 70}
+2025-06-30 11:52:31 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 11:52:31 - INFO - 数据库连接成功
+2025-06-30 11:52:31 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 11:52:31 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 11:52:31 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 11:52:31 - INFO - 查询参数: [70]
+2025-06-30 11:52:31 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s
+2025-06-30 11:52:31 - INFO - 查询参数: [70]
+2025-06-30 11:52:31 - INFO - 数据库连接成功
+2025-06-30 11:52:31 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 11:52:31 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 11:52:31 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 11:52:31 - INFO - 查询参数: [70]
+2025-06-30 11:52:31 - INFO - 查询成功，返回 20 条记录
+2025-06-30 11:56:03 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 11:56:08 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 11:56:28 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 11:56:28 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 11:56:28 - INFO - 数据库连接成功
+2025-06-30 11:56:28 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:28 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:28 - INFO - 查询参数: []
+2025-06-30 11:56:28 - INFO - 数据库连接成功
+2025-06-30 11:56:28 - INFO - 数据库连接成功
+2025-06-30 11:56:28 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:28 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:28 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:28 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:28 - INFO - 查询参数: []
+2025-06-30 11:56:28 - INFO - 查询参数: []
+2025-06-30 11:56:28 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 11:56:28 - INFO - 查询参数: []
+2025-06-30 11:56:28 - INFO - 查询成功，返回 20 条记录
+2025-06-30 11:56:32 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者
+2025-06-30 11:56:37 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85
+2025-06-30 11:56:37 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 11:56:37 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 中解析出任何筛选条件。
+2025-06-30 11:56:37 - INFO - 数据库连接成功
+2025-06-30 11:56:37 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:37 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:37 - INFO - 查询参数: []
+2025-06-30 11:56:37 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 11:56:37 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 11:56:37 - INFO - 数据库连接成功
+2025-06-30 11:56:37 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:37 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:37 - INFO - 查询参数: []
+2025-06-30 11:56:37 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 11:56:37 - INFO - 查询参数: []
+2025-06-30 11:56:37 - INFO - 数据库连接成功
+2025-06-30 11:56:37 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:37 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:37 - INFO - 查询参数: []
+2025-06-30 11:56:37 - INFO - 查询成功，返回 20 条记录
+2025-06-30 11:56:48 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄70到85岁的患者
+2025-06-30 11:56:51 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85
+2025-06-30 11:56:51 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 11:56:51 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 中解析出任何筛选条件。
+2025-06-30 11:56:52 - INFO - 数据库连接成功
+2025-06-30 11:56:52 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:52 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:52 - INFO - 查询参数: []
+2025-06-30 11:56:52 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 11:56:52 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 11:56:52 - INFO - 数据库连接成功
+2025-06-30 11:56:52 - INFO - 数据库连接成功
+2025-06-30 11:56:52 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:52 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:56:52 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:52 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:56:52 - INFO - 查询参数: []
+2025-06-30 11:56:52 - INFO - 查询参数: []
+2025-06-30 11:56:52 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 11:56:52 - INFO - 查询参数: []
+2025-06-30 11:56:52 - INFO - 查询成功，返回 20 条记录
+2025-06-30 11:57:09 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄大于50岁的患者
+2025-06-30 11:57:14 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age > 50
+2025-06-30 11:57:14 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age > 50' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 11:57:14 - WARNING - 未能从SQL 'SELECT * FROM tavi_patients WHERE age > 50' 中解析出任何筛选条件。
+2025-06-30 11:57:14 - INFO - 数据库连接成功
+2025-06-30 11:57:14 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:57:14 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:57:14 - INFO - 查询参数: []
+2025-06-30 11:57:15 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 11:57:15 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 11:57:15 - INFO - 数据库连接成功
+2025-06-30 11:57:15 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:57:15 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:57:15 - INFO - 查询参数: []
+2025-06-30 11:57:15 - INFO - 数据库连接成功
+2025-06-30 11:57:15 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 11:57:15 - INFO - 最终WHERE子句: 1=1
+2025-06-30 11:57:15 - INFO - 查询参数: []
+2025-06-30 11:57:15 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 11:57:15 - INFO - 查询参数: []
+2025-06-30 11:57:15 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:04:35 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 12:04:40 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 12:05:01 - INFO - 数据库连接成功
+2025-06-30 12:05:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:01 - INFO - 查询参数: []
+2025-06-30 12:05:01 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:05:01 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:05:01 - INFO - 数据库连接成功
+2025-06-30 12:05:01 - INFO - 数据库连接成功
+2025-06-30 12:05:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:01 - INFO - 查询参数: []
+2025-06-30 12:05:01 - INFO - 查询参数: []
+2025-06-30 12:05:01 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:05:01 - INFO - 查询参数: []
+2025-06-30 12:05:01 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:05:08 - INFO - 数据库连接成功
+2025-06-30 12:05:08 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:05:08 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:05:08 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:05:08 - INFO - 查询参数: [70]
+2025-06-30 12:05:08 - INFO - 收到数据请求 - 筛选条件: {'age_min': 70}
+2025-06-30 12:05:08 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:05:08 - INFO - 数据库连接成功
+2025-06-30 12:05:08 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:05:08 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:05:08 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:05:08 - INFO - 查询参数: [70]
+2025-06-30 12:05:08 - INFO - 数据库连接成功
+2025-06-30 12:05:08 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:05:08 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:05:08 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:05:08 - INFO - 查询参数: [70]
+2025-06-30 12:05:08 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s
+2025-06-30 12:05:08 - INFO - 查询参数: [70]
+2025-06-30 12:05:08 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:05:11 - INFO - 数据库连接成功
+2025-06-30 12:05:11 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:11 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:11 - INFO - 查询参数: []
+2025-06-30 12:05:11 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:05:11 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:05:11 - INFO - 数据库连接成功
+2025-06-30 12:05:11 - INFO - 数据库连接成功
+2025-06-30 12:05:11 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:11 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:11 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:11 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:11 - INFO - 查询参数: []
+2025-06-30 12:05:11 - INFO - 查询参数: []
+2025-06-30 12:05:11 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:05:11 - INFO - 查询参数: []
+2025-06-30 12:05:11 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:05:20 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 70岁以上的患者
+2025-06-30 12:05:23 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age > 70
+2025-06-30 12:05:23 - INFO - 从SQL成功解析出filters对象: {'age_min': 70.0}
+2025-06-30 12:05:24 - INFO - 数据库连接成功
+2025-06-30 12:05:24 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:05:24 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:05:24 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:05:24 - INFO - 查询参数: [70]
+2025-06-30 12:05:24 - INFO - 收到数据请求 - 筛选条件: {'age_min': 70}
+2025-06-30 12:05:24 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:05:24 - INFO - 数据库连接成功
+2025-06-30 12:05:24 - INFO - 数据库连接成功
+2025-06-30 12:05:24 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:05:24 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:05:24 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:05:24 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:05:24 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:05:24 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:05:24 - INFO - 查询参数: [70]
+2025-06-30 12:05:24 - INFO - 查询参数: [70]
+2025-06-30 12:05:24 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s
+2025-06-30 12:05:24 - INFO - 查询参数: [70]
+2025-06-30 12:05:24 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:05:35 - INFO - 数据库连接成功
+2025-06-30 12:05:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:35 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:35 - INFO - 查询参数: []
+2025-06-30 12:05:35 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:05:35 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:05:35 - INFO - 数据库连接成功
+2025-06-30 12:05:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:35 - INFO - 数据库连接成功
+2025-06-30 12:05:35 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:05:35 - INFO - 查询参数: []
+2025-06-30 12:05:35 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:05:35 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:05:35 - INFO - 查询参数: []
+2025-06-30 12:05:35 - INFO - 查询参数: []
+2025-06-30 12:05:35 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:05:51 - INFO - 数据库连接成功
+2025-06-30 12:05:51 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 50, 'age_max': 70, 'myocardial_infarction': True, 'pci_history': True}
+2025-06-30 12:05:51 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 12:05:51 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 12:05:51 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 12:05:51 - INFO - 查询参数: [50, 70]
+2025-06-30 12:05:52 - INFO - 收到数据请求 - 筛选条件: {'age_min': 50, 'age_max': 70, 'myocardial_infarction': True, 'pci_history': True}
+2025-06-30 12:05:52 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:05:52 - INFO - 数据库连接成功
+2025-06-30 12:05:52 - INFO - 数据库连接成功
+2025-06-30 12:05:52 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 50, 'age_max': 70, 'myocardial_infarction': True, 'pci_history': True}
+2025-06-30 12:05:52 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 50, 'age_max': 70, 'myocardial_infarction': True, 'pci_history': True}
+2025-06-30 12:05:52 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 12:05:52 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 12:05:52 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 12:05:52 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 12:05:52 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 12:05:52 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 12:05:52 - INFO - 查询参数: [50, 70]
+2025-06-30 12:05:52 - INFO - 查询参数: [50, 70]
+2025-06-30 12:05:52 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND age <= %s
+2025-06-30 12:05:52 - INFO - 查询参数: [50, 70]
+2025-06-30 12:05:52 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:06:16 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 50岁到70岁的患者并且有心梗和PCI史
+2025-06-30 12:06:25 - INFO - [AI] 生成的SQL: 根据您的查询，我将生成一个SQL语句来查找50岁到70岁之间且有心肌梗死和PCI病史的患者。假设"心梗"对应的是`myocardial_infarction`字段，"PCI史"对应的是`pci_history`字段（虽然这些字段在您提供的列定义中没有明确列出，但根据医学常识，这些是常见的心血管病史记录）。
+
+SQL查询语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70 AND myocardial_infarction = 1 AND pci_history = 1
+```
+
+注意：如果`tavi_patients`表中实际没有`myocardial_infarction`和`pci_history`这两个字段，您需要提供正确的字段名称，我可以相应地调整SQL查询。
+2025-06-30 12:06:25 - ERROR - 解析SQL '根据您的查询，我将生成一个SQL语句来查找50岁到70岁之间且有心肌梗死和PCI病史的患者。假设"心梗"对应的是`myocardial_infarction`字段，"PCI史"对应的是`pci_history`字段（虽然这些字段在您提供的列定义中没有明确列出，但根据医学常识，这些是常见的心血管病史记录）。
+
+SQL查询语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70 AND myocardial_infarction = 1 AND pci_history = 1
+```
+
+注意：如果`tavi_patients`表中实际没有`myocardial_infarction`和`pci_history`这两个字段，您需要提供正确的字段名称，我可以相应地调整SQL查询。' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 12:06:25 - WARNING - 未能从SQL '根据您的查询，我将生成一个SQL语句来查找50岁到70岁之间且有心肌梗死和PCI病史的患者。假设"心梗"对应的是`myocardial_infarction`字段，"PCI史"对应的是`pci_history`字段（虽然这些字段在您提供的列定义中没有明确列出，但根据医学常识，这些是常见的心血管病史记录）。
+
+SQL查询语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70 AND myocardial_infarction = 1 AND pci_history = 1
+```
+
+注意：如果`tavi_patients`表中实际没有`myocardial_infarction`和`pci_history`这两个字段，您需要提供正确的字段名称，我可以相应地调整SQL查询。' 中解析出任何筛选条件。
+2025-06-30 12:06:25 - INFO - 数据库连接成功
+2025-06-30 12:06:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:25 - INFO - 查询参数: []
+2025-06-30 12:06:25 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:06:25 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:06:25 - INFO - 数据库连接成功
+2025-06-30 12:06:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:25 - INFO - 查询参数: []
+2025-06-30 12:06:25 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:06:25 - INFO - 查询参数: []
+2025-06-30 12:06:25 - INFO - 数据库连接成功
+2025-06-30 12:06:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:25 - INFO - 查询参数: []
+2025-06-30 12:06:25 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:06:30 - INFO - 数据库连接成功
+2025-06-30 12:06:30 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:30 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:30 - INFO - 查询参数: []
+2025-06-30 12:06:30 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:06:30 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:06:30 - INFO - 数据库连接成功
+2025-06-30 12:06:30 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:30 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:30 - INFO - 查询参数: []
+2025-06-30 12:06:30 - INFO - 数据库连接成功
+2025-06-30 12:06:30 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:30 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:30 - INFO - 查询参数: []
+2025-06-30 12:06:30 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:06:30 - INFO - 查询参数: []
+2025-06-30 12:06:30 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:06:34 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 50岁到70岁的患者并且有心梗和PCI史
+2025-06-30 12:06:43 - INFO - [AI] 生成的SQL: 根据您的查询，我将生成一个SQL语句来查找50岁到70岁之间且有心肌梗死和PCI病史的患者。假设这些信息存储在布尔类型的字段中（例如`myocardial_infarction`和`pci_history`），SQL语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70 AND myocardial_infarction = 1 AND pci_history = 1
+```
+
+注意：
+1. 由于您提供的列定义中没有明确提到心肌梗死和PCI病史的字段名，我使用了假设的字段名`myocardial_infarction`和`pci_history`
+2. 如果实际数据库中的字段名不同，您需要将上述字段名替换为实际的字段名
+3. 如果这些信息不是以布尔值存储，而是以其他形式存储，查询条件也需要相应调整
+2025-06-30 12:06:43 - ERROR - 解析SQL '根据您的查询，我将生成一个SQL语句来查找50岁到70岁之间且有心肌梗死和PCI病史的患者。假设这些信息存储在布尔类型的字段中（例如`myocardial_infarction`和`pci_history`），SQL语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70 AND myocardial_infarction = 1 AND pci_history = 1
+```
+
+注意：
+1. 由于您提供的列定义中没有明确提到心肌梗死和PCI病史的字段名，我使用了假设的字段名`myocardial_infarction`和`pci_history`
+2. 如果实际数据库中的字段名不同，您需要将上述字段名替换为实际的字段名
+3. 如果这些信息不是以布尔值存储，而是以其他形式存储，查询条件也需要相应调整' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 12:06:43 - WARNING - 未能从SQL '根据您的查询，我将生成一个SQL语句来查找50岁到70岁之间且有心肌梗死和PCI病史的患者。假设这些信息存储在布尔类型的字段中（例如`myocardial_infarction`和`pci_history`），SQL语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70 AND myocardial_infarction = 1 AND pci_history = 1
+```
+
+注意：
+1. 由于您提供的列定义中没有明确提到心肌梗死和PCI病史的字段名，我使用了假设的字段名`myocardial_infarction`和`pci_history`
+2. 如果实际数据库中的字段名不同，您需要将上述字段名替换为实际的字段名
+3. 如果这些信息不是以布尔值存储，而是以其他形式存储，查询条件也需要相应调整' 中解析出任何筛选条件。
+2025-06-30 12:06:44 - INFO - 数据库连接成功
+2025-06-30 12:06:44 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:44 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:44 - INFO - 查询参数: []
+2025-06-30 12:06:44 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:06:44 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:06:44 - INFO - 数据库连接成功
+2025-06-30 12:06:44 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:44 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:44 - INFO - 查询参数: []
+2025-06-30 12:06:44 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:06:44 - INFO - 查询参数: []
+2025-06-30 12:06:44 - INFO - 数据库连接成功
+2025-06-30 12:06:44 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:06:44 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:06:44 - INFO - 查询参数: []
+2025-06-30 12:06:44 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:06:50 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 50岁到70岁的患者
+2025-06-30 12:06:55 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70
+2025-06-30 12:06:55 - INFO - 从SQL成功解析出filters对象: {'age_min': 50.0, 'age_max': 70.0}
+2025-06-30 12:06:55 - INFO - 数据库连接成功
+2025-06-30 12:06:55 - INFO - 开始构建WHERE子句，筛选条件: {'age_max': 70, 'age_min': 50}
+2025-06-30 12:06:55 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 12:06:55 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 12:06:55 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 12:06:55 - INFO - 查询参数: [50, 70]
+2025-06-30 12:06:55 - INFO - 收到数据请求 - 筛选条件: {'age_max': 70, 'age_min': 50}
+2025-06-30 12:06:55 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:06:55 - INFO - 数据库连接成功
+2025-06-30 12:06:55 - INFO - 开始构建WHERE子句，筛选条件: {'age_max': 70, 'age_min': 50}
+2025-06-30 12:06:55 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 12:06:55 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 12:06:55 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 12:06:55 - INFO - 查询参数: [50, 70]
+2025-06-30 12:06:55 - INFO - 数据库连接成功
+2025-06-30 12:06:55 - INFO - 开始构建WHERE子句，筛选条件: {'age_max': 70, 'age_min': 50}
+2025-06-30 12:06:55 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 12:06:55 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:06:55 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 12:06:55 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 12:06:55 - INFO - 查询参数: [50, 70]
+2025-06-30 12:06:55 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND age <= %s
+2025-06-30 12:06:55 - INFO - 查询参数: [50, 70]
+2025-06-30 12:07:01 - INFO - 数据库连接成功
+2025-06-30 12:07:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:01 - INFO - 查询参数: []
+2025-06-30 12:07:01 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:07:01 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:07:01 - INFO - 数据库连接成功
+2025-06-30 12:07:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:01 - INFO - 查询参数: []
+2025-06-30 12:07:01 - INFO - 数据库连接成功
+2025-06-30 12:07:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:01 - INFO - 查询参数: []
+2025-06-30 12:07:01 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:07:01 - INFO - 查询参数: []
+2025-06-30 12:07:01 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:07:06 - INFO - 数据库连接成功
+2025-06-30 12:07:06 - INFO - 开始构建WHERE子句，筛选条件: {'stroke_30d': True}
+2025-06-30 12:07:06 - INFO - 添加30天卒中筛选: True
+2025-06-30 12:07:06 - INFO - 最终WHERE子句: stroke_30d = %s
+2025-06-30 12:07:06 - INFO - 查询参数: [True]
+2025-06-30 12:07:06 - INFO - 收到数据请求 - 筛选条件: {'stroke_30d': True}
+2025-06-30 12:07:06 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:07:06 - INFO - 数据库连接成功
+2025-06-30 12:07:06 - INFO - 开始构建WHERE子句，筛选条件: {'stroke_30d': True}
+2025-06-30 12:07:06 - INFO - 添加30天卒中筛选: True
+2025-06-30 12:07:06 - INFO - 最终WHERE子句: stroke_30d = %s
+2025-06-30 12:07:06 - INFO - 查询参数: [True]
+2025-06-30 12:07:06 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE stroke_30d = %s
+2025-06-30 12:07:06 - INFO - 查询参数: [True]
+2025-06-30 12:07:06 - INFO - 数据库连接成功
+2025-06-30 12:07:06 - INFO - 开始构建WHERE子句，筛选条件: {'stroke_30d': True}
+2025-06-30 12:07:06 - INFO - 添加30天卒中筛选: True
+2025-06-30 12:07:06 - INFO - 最终WHERE子句: stroke_30d = %s
+2025-06-30 12:07:06 - INFO - 查询参数: [True]
+2025-06-30 12:07:06 - INFO - 查询成功，返回 1 条记录
+2025-06-30 12:07:15 - INFO - 数据库连接成功
+2025-06-30 12:07:15 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:15 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:15 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:15 - INFO - 查询参数: [True]
+2025-06-30 12:07:15 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:15 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:07:15 - INFO - 数据库连接成功
+2025-06-30 12:07:15 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:15 - INFO - 数据库连接成功
+2025-06-30 12:07:15 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:15 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:15 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:15 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:15 - INFO - 查询参数: [True]
+2025-06-30 12:07:15 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:15 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = %s
+2025-06-30 12:07:15 - INFO - 查询参数: [True]
+2025-06-30 12:07:15 - INFO - 查询参数: [True]
+2025-06-30 12:07:15 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:07:25 - INFO - 数据库连接成功
+2025-06-30 12:07:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:25 - INFO - 查询参数: []
+2025-06-30 12:07:25 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:07:25 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:07:25 - INFO - 数据库连接成功
+2025-06-30 12:07:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:25 - INFO - 查询参数: []
+2025-06-30 12:07:25 - INFO - 数据库连接成功
+2025-06-30 12:07:25 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:25 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:25 - INFO - 查询参数: []
+2025-06-30 12:07:25 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:07:25 - INFO - 查询参数: []
+2025-06-30 12:07:25 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:07:28 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前死亡的患者
+2025-06-30 12:07:31 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = 1
+2025-06-30 12:07:31 - INFO - 从SQL成功解析出filters对象: {'death_before_discharge': True}
+2025-06-30 12:07:31 - INFO - 数据库连接成功
+2025-06-30 12:07:31 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:31 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:31 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:31 - INFO - 查询参数: [True]
+2025-06-30 12:07:31 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:31 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:07:31 - INFO - 数据库连接成功
+2025-06-30 12:07:31 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:31 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:31 - INFO - 数据库连接成功
+2025-06-30 12:07:31 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:31 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:31 - INFO - 查询参数: [True]
+2025-06-30 12:07:31 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:31 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:31 - INFO - 查询参数: [True]
+2025-06-30 12:07:31 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = %s
+2025-06-30 12:07:31 - INFO - 查询参数: [True]
+2025-06-30 12:07:31 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:07:34 - INFO - 数据库连接成功
+2025-06-30 12:07:34 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:34 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:34 - INFO - 查询参数: []
+2025-06-30 12:07:34 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:07:34 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:07:34 - INFO - 数据库连接成功
+2025-06-30 12:07:34 - INFO - 数据库连接成功
+2025-06-30 12:07:34 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:34 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:07:34 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:34 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:07:34 - INFO - 查询参数: []
+2025-06-30 12:07:34 - INFO - 查询参数: []
+2025-06-30 12:07:34 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:07:34 - INFO - 查询参数: []
+2025-06-30 12:07:34 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:07:38 - INFO - 数据库连接成功
+2025-06-30 12:07:38 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:38 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:38 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:38 - INFO - 查询参数: [True]
+2025-06-30 12:07:38 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:38 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:07:38 - INFO - 数据库连接成功
+2025-06-30 12:07:38 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:38 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:38 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:38 - INFO - 查询参数: [True]
+2025-06-30 12:07:38 - INFO - 数据库连接成功
+2025-06-30 12:07:38 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 12:07:38 - INFO - 添加出院前死亡筛选: True
+2025-06-30 12:07:38 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 12:07:38 - INFO - 查询参数: [True]
+2025-06-30 12:07:38 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = %s
+2025-06-30 12:07:38 - INFO - 查询参数: [True]
+2025-06-30 12:07:38 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:07:56 - INFO - 数据库连接成功
+2025-06-30 12:07:56 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 79, 'death_before_discharge': False, 'other_access': 'transaortic approach'}
+2025-06-30 12:07:56 - INFO - 添加年龄最小值筛选: 79
+2025-06-30 12:07:56 - INFO - 添加其它入路筛选
+2025-06-30 12:07:56 - INFO - 添加出院前死亡筛选: False
+2025-06-30 12:07:56 - INFO - 最终WHERE子句: age >= %s AND other_access IS NOT NULL AND death_before_discharge = %s
+2025-06-30 12:07:56 - INFO - 查询参数: [79, False]
+2025-06-30 12:07:56 - INFO - 收到数据请求 - 筛选条件: {'age_min': 79, 'death_before_discharge': False, 'other_access': 'transaortic approach'}
+2025-06-30 12:07:56 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:07:56 - INFO - 数据库连接成功
+2025-06-30 12:07:56 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 79, 'death_before_discharge': False, 'other_access': 'transaortic approach'}
+2025-06-30 12:07:56 - INFO - 添加年龄最小值筛选: 79
+2025-06-30 12:07:56 - INFO - 添加其它入路筛选
+2025-06-30 12:07:56 - INFO - 添加出院前死亡筛选: False
+2025-06-30 12:07:56 - INFO - 最终WHERE子句: age >= %s AND other_access IS NOT NULL AND death_before_discharge = %s
+2025-06-30 12:07:56 - INFO - 查询参数: [79, False]
+2025-06-30 12:07:56 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND other_access IS NOT NULL AND death_before_discharge = %s
+2025-06-30 12:07:56 - INFO - 查询参数: [79, False]
+2025-06-30 12:07:56 - INFO - 数据库连接成功
+2025-06-30 12:07:56 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 79, 'death_before_discharge': False, 'other_access': 'transaortic approach'}
+2025-06-30 12:07:56 - INFO - 添加年龄最小值筛选: 79
+2025-06-30 12:07:56 - INFO - 添加其它入路筛选
+2025-06-30 12:07:56 - INFO - 添加出院前死亡筛选: False
+2025-06-30 12:07:56 - INFO - 最终WHERE子句: age >= %s AND other_access IS NOT NULL AND death_before_discharge = %s
+2025-06-30 12:07:56 - INFO - 查询参数: [79, False]
+2025-06-30 12:07:56 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:08:11 - INFO - 数据库连接成功
+2025-06-30 12:08:11 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:08:11 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:08:11 - INFO - 查询参数: []
+2025-06-30 12:08:11 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 12:08:11 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:08:11 - INFO - 数据库连接成功
+2025-06-30 12:08:11 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:08:11 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:08:11 - INFO - 查询参数: []
+2025-06-30 12:08:11 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 12:08:11 - INFO - 查询参数: []
+2025-06-30 12:08:11 - INFO - 数据库连接成功
+2025-06-30 12:08:11 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 12:08:11 - INFO - 最终WHERE子句: 1=1
+2025-06-30 12:08:11 - INFO - 查询参数: []
+2025-06-30 12:08:11 - INFO - 查询成功，返回 20 条记录
+2025-06-30 12:08:14 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 经主动脉入路且70岁以上的患者
+2025-06-30 12:08:17 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE access_route = 'Transaortic' AND age > 70
+2025-06-30 12:08:17 - WARNING - 无法映射SQL列 'access_route' 到filter key。
+2025-06-30 12:08:17 - INFO - 从SQL成功解析出filters对象: {'age_min': 70.0}
+2025-06-30 12:08:17 - INFO - 数据库连接成功
+2025-06-30 12:08:17 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:08:17 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:08:17 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:08:17 - INFO - 查询参数: [70]
+2025-06-30 12:08:17 - INFO - 收到数据请求 - 筛选条件: {'age_min': 70}
+2025-06-30 12:08:17 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 12:08:17 - INFO - 数据库连接成功
+2025-06-30 12:08:17 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:08:17 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:08:17 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:08:17 - INFO - 查询参数: [70]
+2025-06-30 12:08:17 - INFO - 数据库连接成功
+2025-06-30 12:08:17 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s
+2025-06-30 12:08:17 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 70}
+2025-06-30 12:08:17 - INFO - 查询参数: [70]
+2025-06-30 12:08:17 - INFO - 添加年龄最小值筛选: 70
+2025-06-30 12:08:17 - INFO - 最终WHERE子句: age >= %s
+2025-06-30 12:08:17 - INFO - 查询参数: [70]
+2025-06-30 12:08:17 - INFO - 查询成功，返回 20 条记录
