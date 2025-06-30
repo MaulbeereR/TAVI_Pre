@@ -135,3 +135,20 @@ Traceback (most recent call last):
   File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
     raise ValueError("Not supported query type!")
 ValueError: Not supported query type!
+2025-06-30 14:07:31 - ERROR - 解析SQL '根据您的查询"有效瓣口面积20以下"，我需要查询 `tavi_patients` 表中有效瓣口面积小于20的患者记录。假设有效瓣口面积对应的列名为 `effective_orifice_area`，SQL查询如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE effective_orifice_area < 20
+```
+
+请注意，如果有效瓣口面积的列名不是 `effective_orifice_area`，而是其他名称(如 `eoa` 或 `valve_area`)，则需要相应地调整列名。' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!

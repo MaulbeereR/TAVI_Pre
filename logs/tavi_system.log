@@ -3971,3 +3971,209 @@ SELECT * FROM tavi_patients WHERE effective_orifice_area < 20
 2025-06-30 13:58:53 - INFO - 查询参数: [True]
 2025-06-30 13:58:53 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE pacemaker_implantation = %s
 2025-06-30 13:58:53 - INFO - 查询参数: [True]
+2025-06-30 14:01:54 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 14:02:00 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 14:02:00 - INFO - 数据库连接成功
+2025-06-30 14:02:00 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:02:00 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:02:00 - INFO - 查询参数: []
+2025-06-30 14:02:01 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 14:02:01 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 14:02:01 - INFO - 数据库连接成功
+2025-06-30 14:02:01 - INFO - 数据库连接成功
+2025-06-30 14:02:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:02:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:02:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:02:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:02:01 - INFO - 查询参数: []
+2025-06-30 14:02:01 - INFO - 查询参数: []
+2025-06-30 14:02:01 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 14:02:01 - INFO - 查询参数: []
+2025-06-30 14:02:01 - INFO - 查询成功，返回 20 条记录
+2025-06-30 14:03:32 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 14:03:37 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 14:03:43 - INFO - 数据库连接成功
+2025-06-30 14:03:43 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:03:43 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:03:43 - INFO - 查询参数: []
+2025-06-30 14:03:43 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 14:03:43 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 14:03:43 - INFO - 数据库连接成功
+2025-06-30 14:03:43 - INFO - 数据库连接成功
+2025-06-30 14:03:43 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:03:43 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:03:43 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:03:43 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:03:43 - INFO - 查询参数: []
+2025-06-30 14:03:43 - INFO - 查询参数: []
+2025-06-30 14:03:43 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 14:03:43 - INFO - 查询参数: []
+2025-06-30 14:03:43 - INFO - 查询成功，返回 20 条记录
+2025-06-30 14:03:56 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 50岁到70岁的患者
+2025-06-30 14:04:00 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70
+2025-06-30 14:04:00 - INFO - 从SQL成功解析出filters对象: {'age_min': 50.0, 'age_max': 70.0}
+2025-06-30 14:04:00 - INFO - 数据库连接成功
+2025-06-30 14:04:00 - INFO - 开始构建WHERE子句，筛选条件: {'age_max': 70, 'age_min': 50}
+2025-06-30 14:04:00 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 14:04:00 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 14:04:00 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 14:04:00 - INFO - 查询参数: [50, 70]
+2025-06-30 14:04:00 - INFO - 收到数据请求 - 筛选条件: {'age_max': 70, 'age_min': 50}
+2025-06-30 14:04:00 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 14:04:00 - INFO - 数据库连接成功
+2025-06-30 14:04:00 - INFO - 数据库连接成功
+2025-06-30 14:04:00 - INFO - 开始构建WHERE子句，筛选条件: {'age_max': 70, 'age_min': 50}
+2025-06-30 14:04:00 - INFO - 开始构建WHERE子句，筛选条件: {'age_max': 70, 'age_min': 50}
+2025-06-30 14:04:00 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 14:04:00 - INFO - 添加年龄最小值筛选: 50
+2025-06-30 14:04:00 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 14:04:00 - INFO - 添加年龄最大值筛选: 70
+2025-06-30 14:04:00 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 14:04:00 - INFO - 最终WHERE子句: age >= %s AND age <= %s
+2025-06-30 14:04:00 - INFO - 查询参数: [50, 70]
+2025-06-30 14:04:00 - INFO - 查询参数: [50, 70]
+2025-06-30 14:04:00 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND age <= %s
+2025-06-30 14:04:00 - INFO - 查询参数: [50, 70]
+2025-06-30 14:04:01 - INFO - 查询成功，返回 20 条记录
+2025-06-30 14:05:40 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 纽约分级为I且术后死亡的病例
+2025-06-30 14:05:47 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE nyha_classification = 'I' AND death_before_discharge = 1
+2025-06-30 14:05:47 - INFO - 从SQL成功解析出filters对象: {'nyha_classification': 'I', 'death_before_discharge': True}
+2025-06-30 14:05:48 - INFO - 数据库连接成功
+2025-06-30 14:05:48 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'nyha_classification': 'I'}
+2025-06-30 14:05:48 - INFO - 添加NYHA分级筛选: I
+2025-06-30 14:05:48 - INFO - 添加出院前死亡筛选: True
+2025-06-30 14:05:48 - INFO - 最终WHERE子句: nyha_classification = %s AND death_before_discharge = %s
+2025-06-30 14:05:48 - INFO - 查询参数: ['I', True]
+2025-06-30 14:05:48 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True, 'nyha_classification': 'I'}
+2025-06-30 14:05:48 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 14:05:48 - INFO - 数据库连接成功
+2025-06-30 14:05:48 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'nyha_classification': 'I'}
+2025-06-30 14:05:48 - INFO - 添加NYHA分级筛选: I
+2025-06-30 14:05:48 - INFO - 添加出院前死亡筛选: True
+2025-06-30 14:05:48 - INFO - 最终WHERE子句: nyha_classification = %s AND death_before_discharge = %s
+2025-06-30 14:05:48 - INFO - 查询参数: ['I', True]
+2025-06-30 14:05:48 - INFO - 数据库连接成功
+2025-06-30 14:05:48 - INFO - 查询成功，返回 0 条记录
+2025-06-30 14:05:48 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'nyha_classification': 'I'}
+2025-06-30 14:05:48 - INFO - 添加NYHA分级筛选: I
+2025-06-30 14:05:48 - INFO - 添加出院前死亡筛选: True
+2025-06-30 14:05:48 - INFO - 最终WHERE子句: nyha_classification = %s AND death_before_discharge = %s
+2025-06-30 14:05:48 - INFO - 查询参数: ['I', True]
+2025-06-30 14:05:48 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE nyha_classification = %s AND death_before_discharge = %s
+2025-06-30 14:05:48 - INFO - 查询参数: ['I', True]
+2025-06-30 14:05:59 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 纽约分级为III且术后死亡的病例
+2025-06-30 14:06:03 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE nyha_classification = 'III' AND death_before_discharge = 1
+2025-06-30 14:06:03 - INFO - 从SQL成功解析出filters对象: {'nyha_classification': 'III', 'death_before_discharge': True}
+2025-06-30 14:06:04 - INFO - 数据库连接成功
+2025-06-30 14:06:04 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'nyha_classification': 'III'}
+2025-06-30 14:06:04 - INFO - 添加NYHA分级筛选: III
+2025-06-30 14:06:04 - INFO - 添加出院前死亡筛选: True
+2025-06-30 14:06:04 - INFO - 最终WHERE子句: nyha_classification = %s AND death_before_discharge = %s
+2025-06-30 14:06:04 - INFO - 查询参数: ['III', True]
+2025-06-30 14:06:04 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True, 'nyha_classification': 'III'}
+2025-06-30 14:06:04 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 14:06:04 - INFO - 数据库连接成功
+2025-06-30 14:06:04 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'nyha_classification': 'III'}
+2025-06-30 14:06:04 - INFO - 添加NYHA分级筛选: III
+2025-06-30 14:06:04 - INFO - 添加出院前死亡筛选: True
+2025-06-30 14:06:04 - INFO - 最终WHERE子句: nyha_classification = %s AND death_before_discharge = %s
+2025-06-30 14:06:04 - INFO - 查询参数: ['III', True]
+2025-06-30 14:06:04 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE nyha_classification = %s AND death_before_discharge = %s
+2025-06-30 14:06:04 - INFO - 查询参数: ['III', True]
+2025-06-30 14:06:04 - INFO - 数据库连接成功
+2025-06-30 14:06:04 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'nyha_classification': 'III'}
+2025-06-30 14:06:04 - INFO - 添加NYHA分级筛选: III
+2025-06-30 14:06:04 - INFO - 添加出院前死亡筛选: True
+2025-06-30 14:06:04 - INFO - 最终WHERE子句: nyha_classification = %s AND death_before_discharge = %s
+2025-06-30 14:06:04 - INFO - 查询参数: ['III', True]
+2025-06-30 14:06:04 - INFO - 查询成功，返回 10 条记录
+2025-06-30 14:06:21 - INFO - 收到数据请求 - 筛选条件: {'patient_id': '10.3389_fcvm.2023.1291089'}
+2025-06-30 14:06:21 - INFO - 页码: 1, 每页大小: 1
+2025-06-30 14:06:22 - INFO - 数据库连接成功
+2025-06-30 14:06:22 - INFO - 开始构建WHERE子句，筛选条件: {'patient_id': '10.3389_fcvm.2023.1291089'}
+2025-06-30 14:06:22 - INFO - 添加DOI筛选: 10.3389_fcvm.2023.1291089
+2025-06-30 14:06:22 - INFO - 最终WHERE子句: patient_id = %s
+2025-06-30 14:06:22 - INFO - 查询参数: ['10.3389_fcvm.2023.1291089']
+2025-06-30 14:06:22 - INFO - 查询成功，返回 1 条记录
+2025-06-30 14:06:29 - INFO - 收到数据请求 - 筛选条件: {'patient_id': '10.3389_fcvm.2023.1291089'}
+2025-06-30 14:06:29 - INFO - 页码: 1, 每页大小: 1
+2025-06-30 14:06:29 - INFO - 数据库连接成功
+2025-06-30 14:06:29 - INFO - 开始构建WHERE子句，筛选条件: {'patient_id': '10.3389_fcvm.2023.1291089'}
+2025-06-30 14:06:29 - INFO - 添加DOI筛选: 10.3389_fcvm.2023.1291089
+2025-06-30 14:06:29 - INFO - 最终WHERE子句: patient_id = %s
+2025-06-30 14:06:29 - INFO - 查询参数: ['10.3389_fcvm.2023.1291089']
+2025-06-30 14:06:29 - INFO - 查询成功，返回 1 条记录
+2025-06-30 14:06:34 - INFO - 收到数据请求 - 筛选条件: {'patient_id': '10.1136_bcr-2020-238337.BMJ'}
+2025-06-30 14:06:34 - INFO - 页码: 1, 每页大小: 1
+2025-06-30 14:06:34 - INFO - 数据库连接成功
+2025-06-30 14:06:34 - INFO - 开始构建WHERE子句，筛选条件: {'patient_id': '10.1136_bcr-2020-238337.BMJ'}
+2025-06-30 14:06:34 - INFO - 添加DOI筛选: 10.1136_bcr-2020-238337.BMJ
+2025-06-30 14:06:34 - INFO - 最终WHERE子句: patient_id = %s
+2025-06-30 14:06:34 - INFO - 查询参数: ['10.1136_bcr-2020-238337.BMJ']
+2025-06-30 14:06:34 - INFO - 查询成功，返回 1 条记录
+2025-06-30 14:07:24 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 有效瓣口面积20以下
+2025-06-30 14:07:31 - INFO - [AI] 生成的SQL: 根据您的查询"有效瓣口面积20以下"，我需要查询 `tavi_patients` 表中有效瓣口面积小于20的患者记录。假设有效瓣口面积对应的列名为 `effective_orifice_area`，SQL查询如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE effective_orifice_area < 20
+```
+
+请注意，如果有效瓣口面积的列名不是 `effective_orifice_area`，而是其他名称(如 `eoa` 或 `valve_area`)，则需要相应地调整列名。
+2025-06-30 14:07:31 - ERROR - 解析SQL '根据您的查询"有效瓣口面积20以下"，我需要查询 `tavi_patients` 表中有效瓣口面积小于20的患者记录。假设有效瓣口面积对应的列名为 `effective_orifice_area`，SQL查询如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE effective_orifice_area < 20
+```
+
+请注意，如果有效瓣口面积的列名不是 `effective_orifice_area`，而是其他名称(如 `eoa` 或 `valve_area`)，则需要相应地调整列名。' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 14:07:31 - WARNING - 未能从SQL '根据您的查询"有效瓣口面积20以下"，我需要查询 `tavi_patients` 表中有效瓣口面积小于20的患者记录。假设有效瓣口面积对应的列名为 `effective_orifice_area`，SQL查询如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE effective_orifice_area < 20
+```
+
+请注意，如果有效瓣口面积的列名不是 `effective_orifice_area`，而是其他名称(如 `eoa` 或 `valve_area`)，则需要相应地调整列名。' 中解析出任何筛选条件。
+2025-06-30 14:07:32 - INFO - 数据库连接成功
+2025-06-30 14:07:32 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:07:32 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:07:32 - INFO - 查询参数: []
+2025-06-30 14:07:32 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 14:07:32 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 14:07:32 - INFO - 数据库连接成功
+2025-06-30 14:07:32 - INFO - 数据库连接成功
+2025-06-30 14:07:32 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:07:32 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 14:07:32 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:07:32 - INFO - 最终WHERE子句: 1=1
+2025-06-30 14:07:32 - INFO - 查询参数: []
+2025-06-30 14:07:32 - INFO - 查询参数: []
+2025-06-30 14:07:32 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 14:07:32 - INFO - 查询参数: []
+2025-06-30 14:07:32 - INFO - 查询成功，返回 20 条记录
+2025-06-30 14:07:44 - INFO - 数据库连接成功
+2025-06-30 14:07:44 - INFO - 开始构建WHERE子句，筛选条件: {'aortic_valve_eoa_max': 20}
+2025-06-30 14:07:44 - INFO - 最终WHERE子句: aortic_valve_eoa <= %s
+2025-06-30 14:07:44 - INFO - 查询参数: [20]
+2025-06-30 14:07:44 - INFO - 收到数据请求 - 筛选条件: {'aortic_valve_eoa_max': 20}
+2025-06-30 14:07:44 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 14:07:44 - INFO - 数据库连接成功
+2025-06-30 14:07:44 - INFO - 开始构建WHERE子句，筛选条件: {'aortic_valve_eoa_max': 20}
+2025-06-30 14:07:44 - INFO - 最终WHERE子句: aortic_valve_eoa <= %s
+2025-06-30 14:07:44 - INFO - 查询参数: [20]
+2025-06-30 14:07:44 - INFO - 数据库连接成功
+2025-06-30 14:07:44 - INFO - 查询成功，返回 20 条记录
+2025-06-30 14:07:44 - INFO - 开始构建WHERE子句，筛选条件: {'aortic_valve_eoa_max': 20}
+2025-06-30 14:07:44 - INFO - 最终WHERE子句: aortic_valve_eoa <= %s
+2025-06-30 14:07:44 - INFO - 查询参数: [20]
+2025-06-30 14:07:44 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE aortic_valve_eoa <= %s
+2025-06-30 14:07:44 - INFO - 查询参数: [20]
