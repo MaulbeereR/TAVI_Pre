@@ -274,11 +274,6 @@ async function applyFilters() {
 // ==================== END: 替换结束 ====================
 
 
-
-
-
-//已修改
-
 function collectFilterValues() {
     const filters = {};
     
@@ -419,9 +414,6 @@ function collectFilterValues() {
     console.log('最终收集到的筛选条件:', filters);
     return filters;
 }
-
-
-
 
 
 // ==================== START: handleNaturalLanguageFilter 函数 ====================
