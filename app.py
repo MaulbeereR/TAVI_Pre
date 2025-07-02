@@ -1174,6 +1174,14 @@ COLUMN_TO_FILTER_KEY_MAP = {
     'mean_pg': 'mean_pg',
     'eoai': 'eoai',
     'mitral_regurgitation_change': 'mitral_regurgitation_change',
+    # 新增缺失的字段映射
+    'moderate_severe_ar': 'moderate_severe_ar',  # 🔧 直接映射
+    'aortic_valve_regurgitation_grade': 'moderate_severe_ar',
+    'aortic_regurgitation': 'moderate_severe_ar',
+    'ar_grade': 'moderate_severe_ar',
+    'effective_orifice_area': 'aortic_valve_eoa',
+    'eoa': 'aortic_valve_eoa',
+    'valve_area': 'aortic_valve_eoa',
     'mortality_30d': 'mortality_30d',
     'mi_30d': 'mi_30d',
     'stroke_30d': 'stroke_30d',
@@ -1189,49 +1197,417 @@ COLUMN_TO_FILTER_KEY_MAP = {
 
 # 数据库表结构信息，用于构建Prompt
 TABLE_SCHEMA_PROMPT = """
-你是一个自然语言到SQL的转换专家。
-你的任务是根据用户的自然语言查询，为名为 `tavi_patients` 的数据库表生成一个标准的SQL查询语句。
-你必须遵循以下规则：
-1.  只生成 `SELECT * FROM tavi_patients WHERE ...` 格式的SQL语句。
-2.  不要使用任何表别名。
-3.  对于布尔类型的字段，使用 `1` 代表 `true` (是)，使用 `0` 代表 `false` (否)。
-4.  对于文本比较，必须使用单引号，例如 `sex = 'Male'`。
-5.  下面是 `tavi_patients` 表中一些重要列的定义：
-    - `age` (integer): 患者年龄。
-    - `sex` (string): 患者性别, 可选值为 'Male' (男性), 'Female' (女性)。
-    - `bmi` (float): 体重指数。
-    - `diabetes_mellitus` (boolean): 是否患有糖尿病。
-    - `hypertension` (boolean): 是否患有高血压。
-    - `lvef` (float): 左心室射血分数，这是一个百分比，但数据库中存储的是数值，例如50代表50%。
-    - `thv_type` (string): 瓣膜类型, 可选值为 'Self-expandable' (自膨胀式), 'Balloon-expandable' (球囊扩张式)。
-    - `thv_size` (float): 瓣膜尺寸，数值型。
-    - `nyha_classification` (string): NYHA心功能分级, 可选值为 'I', 'II', 'III', 'IV'。
-    - `immediate_pvl_occurred` (boolean): 是否发生术后即刻瓣周漏。
-    - `death_before_discharge` (boolean): 是否出院前死亡。
-6. 根据以上信息，将用户的自然语言查询转换为SQL。
+你是一个专业的医学数据库SQL转换专家。
+你的任务是将用户的自然语言查询转换为标准的SQL查询语句。
+
+🔥 CRITICAL 关键规则：
+1. 只生成用户明确提到的条件，绝对不要添加用户没有提到的任何条件！
+2. 只输出纯SQL语句，不要任何解释文字
+3. 严格使用以下核心医学术语映射：
+   - "心力衰竭" → heart_failure = 1 (与死亡无关!)
+   - "出院前死亡" → death_before_discharge = 1
+   - "中度以上主动脉瓣反流" → moderate_severe_ar = 1
+   - "主动脉瓣反流" → moderate_severe_ar = 1
+   - "术后即刻瓣周漏"/"瓣周漏" → immediate_pvl_occurred = 1
+   - "瓣架移位"/"瓣膜移位" → thv_displacement = 1
+   - "瓣环撕裂" → annular_rupture = 1
+   - "严重错位"/"瓣膜错位" → prosthesis_malposition = 1
+   - "起搏器植入" → pacemaker_implantation = 1
+
+    数据库字段：
+    "基线资料": {
+      "年龄": "age",
+      "性别": "sex",
+      "体重指数": "bmi",
+      "BMI": "bmi",
+      "体表面积": "surface_area",
+      "糖尿病": "diabetes_mellitus",
+      "高血压": "hypertension",
+      "高脂血症": "hyperlipidemia",
+      "冠心病": "coronary_artery_disease",
+      "慢阻肺": "copd",
+      "透析": "dialysis",
+      "房颤": "atrial_fibrillation",
+      "NYHA分级": "nyha_classification",
+      "纽约心脏病协会分级": "nyha_classification",
+      "心功能分级": "nyha_classification",
+      "ACEI": "acei_arb",
+      "ARB": "acei_arb",
+      "血管紧张素转换酶抑制剂": "acei_arb",
+      "血管紧张素受体拮抗剂": "acei_arb",
+      "Beta受体阻滞剂": "beta_blocker",
+      "β受体阻滞剂": "beta_blocker",
+      "钙离子阻滞剂": "calcium_blocker",
+      "利尿剂": "diuretic",
+      "阿司匹林": "aspirin",
+      "抗凝药": "anticoagulant",
+      "他汀类药物": "statins",
+      "他汀": "statins",
+      "心梗": "mi_history",
+      "心肌梗死": "mi_history",
+      "心梗史": "mi_history",
+      "PCI": "pci_history",
+      "PCI史": "pci_history",
+      "经皮冠状动脉介入": "pci_history",
+      "CABG": "cabg_history",
+      "CABG史": "cabg_history",
+      "冠状动脉旁路移植": "cabg_history",
+      "STS评分": "sts_score",
+      "胸外科医师学会评分": "sts_score",
+      "NT-proBNP": "nt_probnp",
+      "BNP": "nt_probnp",
+      "利钠肽": "nt_probnp",
+      "SGLT2抑制剂": "sglt2_inhibitors",
+      "钠葡萄糖共转运蛋白抑制剂": "sglt2_inhibitors"
+    },
+    "术前影像学评估": {
+      "LVEF": "lvef",
+      "左心室射血分数": "lvef",
+      "射血分数": "lvef",
+      "最大跨瓣压差": "aortic_valve_peak_pg",
+      "最大主动脉瓣跨瓣压差": "aortic_valve_peak_pg",
+      "峰值压差": "aortic_valve_peak_pg",
+      "平均跨瓣压差": "aortic_valve_mean_pg",
+      "平均主动脉瓣跨瓣压差": "aortic_valve_mean_pg",
+      "有效瓣口面积": "aortic_valve_eoa",
+      "EOA": "aortic_valve_eoa",
+      "主动脉瓣有效瓣口面积": "aortic_valve_eoa",
+      "有效瓣口面积指数": "aortic_valve_eoai",
+      "EOAI": "aortic_valve_eoai",
+      "主动脉瓣反流": "moderate_severe_ar",
+      "中度以上主动脉瓣反流": "moderate_severe_ar",
+      "重度主动脉瓣反流": "moderate_severe_ar",
+      "中重度主动脉瓣反流": "moderate_severe_ar",
+      "显著主动脉瓣反流": "moderate_severe_ar",
+      "中度主动脉瓣反流": "moderate_severe_ar",
+      "严重主动脉瓣反流": "moderate_severe_ar",
+      "AR": "moderate_severe_ar",
+      "中度AR": "moderate_severe_ar",
+      "重度AR": "moderate_severe_ar",
+      "二尖瓣反流": "moderate_severe_mr",
+      "中度以上二尖瓣反流": "moderate_severe_mr",
+      "重度二尖瓣反流": "moderate_severe_mr",
+      "中重度二尖瓣反流": "moderate_severe_mr",
+      "显著二尖瓣反流": "moderate_severe_mr",
+      "MR": "moderate_severe_mr",
+      "中度MR": "moderate_severe_mr",
+      "重度MR": "moderate_severe_mr",
+      "左心室舒张末期容积": "lvedv",
+      "LVEDV": "lvedv",
+      "左心室收缩末期容积": "lvesv",
+      "LVESV": "lvesv",
+      "瓣环面积": "annular_area",
+      "主动脉瓣环面积": "annular_area",
+      "瓣环平均直径": "annular_mean_diameter",
+      "瓣环最小直径": "annular_min_diameter",
+      "瓣环最大直径": "annular_max_diameter",
+      "瓣环周径": "annular_perimeter",
+      "瓣环偏心率": "annular_eccentricity",
+      "主动脉瓣口流速": "aortic_valve_flow_velocity",
+      "瓣口流速": "aortic_valve_flow_velocity",
+      "窦管交界高度": "stj_height",
+      "STJ高度": "stj_height",
+      "窦管交界直径": "stj_diameter",
+      "STJ直径": "stj_diameter",
+      "窦部直径": "sinus_diameter",
+      "主动脉根部窦部直径": "sinus_diameter",
+      "升主动脉直径": "ascending_aorta_diameter",
+      "瓣环上钙化": "supraannular_calcification",
+      "瓣环钙化": "annular_calcification",
+      "钙化": "annular_calcification",
+      "LVOT直径": "lvot_diameter",
+      "左心室流出道直径": "lvot_diameter",
+      "LVOT钙化": "lvot_calcification",
+      "左心室流出道钙化": "lvot_calcification",
+      "左冠脉高度": "left_coronary_height",
+      "左冠状动脉高度": "left_coronary_height",
+      "右冠脉高度": "right_coronary_height",
+      "右冠状动脉高度": "right_coronary_height"
+    },
+    "手术信息": {
+      "经股动脉入路": "transfemoral_access",
+      "股动脉入路": "transfemoral_access",
+      "TF入路": "transfemoral_access",
+      "经心尖入路": "transapical_access",
+      "心尖入路": "transapical_access",
+      "TA入路": "transapical_access",
+      "其他入路": "other_access",
+      "其它入路": "other_access",
+      "瓣膜尺寸": "thv_size",
+      "瓣膜大小": "thv_size",
+      "THV尺寸": "thv_size",
+      "瓣膜类型": "thv_type",
+      "THV类型": "thv_type",
+      "球囊扩张式": "thv_type",
+      "自膨胀式": "thv_type",
+      "瓣膜品牌": "thv_brand",
+      "THV品牌": "thv_brand",
+      "预扩张": "pre_dilation",
+      "球囊预扩张": "pre_dilation",
+      "后扩张": "post_dilation",
+      "球囊后扩张": "post_dilation",
+      "总术时": "total_procedure_time",
+      "手术时间": "total_procedure_time",
+      "造影时间": "fluoroscopy_time",
+      "透视时间": "fluoroscopy_time",
+      "造影量": "contrast_volume",
+      "对比剂用量": "contrast_volume",
+      "术后即刻LVEF": "immediate_lvef",
+      "术后即刻射血分数": "immediate_lvef",
+      "术后即刻跨瓣压差": "immediate_mean_pg",
+      "术后压差": "immediate_mean_pg",
+      "跨瓣压差≥20": "mean_pg_gte_20",
+      "压差≥20mmHg": "mean_pg_gte_20",
+      "严重错位": "prosthesis_malposition",
+      "瓣膜错位": "prosthesis_malposition",
+      "瓣环撕裂": "annular_rupture",
+      "过大尺寸": "excessive_oversizing",
+      "尺寸过大": "oversizing_gte_15",
+      "术后即刻瓣周漏": "immediate_pvl_occurred",
+      "即刻瓣周漏": "immediate_pvl_occurred",
+      "术后瓣周漏": "immediate_pvl_occurred",
+      "PVL": "immediate_pvl_occurred",
+      "瓣周漏": "immediate_pvl_occurred",
+      "瓣周反流": "immediate_pvl_occurred",
+      "瓣周泄漏": "immediate_pvl_occurred",
+      "paravalvular leak": "immediate_pvl_occurred",
+      "瓣周漏程度": "immediate_pvl_severity",
+      "PVL程度": "immediate_pvl_severity",
+      "瓣周反流程度": "immediate_pvl_severity",
+      "微量瓣周漏": "immediate_pvl_severity",
+      "轻度瓣周漏": "immediate_pvl_severity",
+      "中度瓣周漏": "immediate_pvl_severity",
+      "重度瓣周漏": "immediate_pvl_severity",
+      "瓣架移位": "thv_displacement",
+      "瓣膜移位": "thv_displacement",
+      "转外科开胸": "conversion_to_savr",
+      "转开胸手术": "conversion_to_savr",
+      "转心肺转流": "cpb_required",
+      "体外循环": "cpb_required",
+      "CPB": "cpb_required",
+      "瓣中瓣": "valve_in_valve",
+      "VIV": "valve_in_valve",
+      "围术期死亡": "periprocedural_death",
+      "术中死亡": "periprocedural_death"
+    },
+    "出院前评价": {
+      "出院前死亡": "death_before_discharge",
+      "院内死亡": "death_before_discharge",
+      "住院死亡": "death_before_discharge",
+      "出院前死亡率": "death_before_discharge",
+      "卒中": "stroke_before_discharge",
+      "脑卒中": "stroke_before_discharge",
+      "中风": "stroke_before_discharge",
+      "出院前卒中": "stroke_before_discharge",
+      "大出血": "major_bleeding",
+      "严重出血": "major_bleeding",
+      "出血并发症": "major_bleeding",
+      "威胁生命的出血": "major_bleeding",
+      "急性肾衰": "aki",
+      "AKI": "aki",
+      "肾功能衰竭": "aki",
+      "急性肾损伤": "aki",
+      "出院前AKI": "aki",
+      "严重血管并发症": "major_vascular_complication",
+      "血管并发症": "major_vascular_complication",
+      "主要血管并发症": "major_vascular_complication",
+      "心肌梗死": "mi_ami",
+      "急性心肌梗死": "mi_ami",
+      "AMI": "mi_ami",
+      "MI": "mi_ami",
+      "出院前心梗": "mi_ami",
+      "急性冠脉综合征": "acs_ihd",
+      "ACS": "acs_ihd",
+      "缺血性心脏病": "acs_ihd",
+      "冠心病急性发作": "acs_ihd",
+      "心力衰竭": "heart_failure",
+      "心衰": "heart_failure",
+      "HF": "heart_failure",
+      "充血性心力衰竭": "heart_failure",
+      "急性心力衰竭": "heart_failure",
+      "出院前心衰": "heart_failure",
+      "心血管死亡": "all_cause_cv_death",
+      "全因死亡": "all_cause_cv_death",
+      "心源性死亡": "all_cause_cv_death",
+      "起搏器植入": "pacemaker_implantation",
+      "永久起搏器": "pacemaker_implantation",
+      "PPM": "pacemaker_implantation",
+      "PPMI": "pacemaker_implantation",
+      "起搏器": "pacemaker_implantation",
+      "出院前瓣周漏": "pvl_detected",
+      "出院前PVL": "pvl_detected",
+      "瓣周反流": "pvl_detected",
+      "瓣周泄漏": "pvl_detected",
+      "最大跨瓣压差": "max_pg",
+      "出院前最大压差": "max_pg",
+      "峰值压差": "max_pg",
+      "最大压力阶差": "max_pg",
+      "主动脉瓣口流速": "flow_velocity",
+      "出院前流速": "flow_velocity",
+      "瓣口流速": "flow_velocity",
+      "跨瓣流速": "flow_velocity",
+      "平均跨瓣压差": "mean_pg",
+      "出院前平均压差": "mean_pg",
+      "平均压力阶差": "mean_pg",
+      "有效瓣口面积指数": "eoai",
+      "出院前EOAI": "eoai",
+      "瓣口面积指数": "eoai"
+    },
+    "随访信息": {
+      "30天死亡": "mortality_30d",
+      "30天全因死亡": "mortality_30d",
+      "30天心梗": "mi_30d",
+      "30天心肌梗死": "mi_30d",
+      "30天卒中": "stroke_30d",
+      "30天脑卒中": "stroke_30d",
+      "30天心衰再住院": "hf_readmission_30d",
+      "30天心力衰竭": "hf_readmission_30d",
+      "1年死亡": "mortality_1y",
+      "1年全因死亡": "mortality_1y",
+      "1年心梗": "mi_1y",
+      "1年心肌梗死": "mi_1y",
+      "1年卒中": "stroke_1y",
+      "1年脑卒中": "stroke_1y",
+      "1年心衰再住院": "hf_readmission_1y",
+      "1年心力衰竭": "hf_readmission_1y",
+      "随访LVEF": "lvef_last_followup",
+      "随访射血分数": "lvef_last_followup",
+      "随访NYHA": "nyha_last_followup",
+      "随访心功能": "nyha_last_followup",
+      "随访最大压差": "max_pg_last_followup",
+      "随访流速": "flow_velocity_last_followup",
+      "随访平均压差": "mean_pg_last_followup",
+      "随访EOA": "eoa_last_followup",
+      "随访EOAI": "eoai_last_followup",
+      "随访瓣周漏": "pvl_detected_last_followup",
+      "随访PVL": "pvl_detected_last_followup",
+      "后续干预": "subsequent_intervention",
+      "再次干预": "subsequent_intervention",
+      "术后封堵": "occlusion_procedure",
+      "封堵手术": "occlusion_procedure",
+      "二次手术": "reoperation",
+      "再次手术": "reoperation",
+      "术后中转开胸": "conversion_to_open",
+      "中转开胸": "conversion_to_open",
+      "术后起搏器": "pacemaker_post",
+      "术后瓣膜脱落": "valve_dislodgement",
+      "瓣膜脱落": "valve_dislodgement",
+      "术后主动脉夹层": "aortic_dissection",
+      "主动脉夹层": "aortic_dissection",
+      "术后血肿": "hematoma",
+      "血肿": "hematoma",
+      "术后心衰": "heart_failure_post"
+    }
+
+    ⚠️ 警告：
+    - 绝对不要推测或添加用户没有明确说明的条件
+    - "心力衰竭"不意味着"死亡"，它们是不同的医学概念
+    - "瓣架移位"、"瓣环撕裂"、"瓣周漏"是完全不同的并发症！
+    - 只转换用户实际要求的筛选条件
+
+    格式要求：只输出 SELECT * FROM tavi_patients WHERE [条件]
 """
+
+def extract_sql_from_response(response_text):
+    """从AI响应中提取SQL语句"""
+    import re
+    
+    # 方法1: 提取```sql代码块中的内容
+    sql_pattern = r'```sql\s*(.*?)\s*```'
+    matches = re.findall(sql_pattern, response_text, re.DOTALL | re.IGNORECASE)
+    if matches:
+        sql = matches[0].strip()
+        if sql.upper().startswith('SELECT'):
+            return sql
+    
+    # 方法2: 查找以SELECT开头的行
+    lines = response_text.split('\n')
+    for line in lines:
+        line = line.strip()
+        if line.upper().startswith('SELECT'):
+            # 可能SQL语句跨多行，尝试收集完整的SQL
+            sql_lines = [line]
+            idx = lines.index(line) + 1
+            while idx < len(lines):
+                next_line = lines[idx].strip()
+                if next_line and not next_line.startswith('注意') and not next_line.startswith('请注意'):
+                    sql_lines.append(next_line)
+                    idx += 1
+                else:
+                    break
+            sql = ' '.join(sql_lines)
+            return sql
+    
+    # 方法3: 查找包含FROM tavi_patients的语句
+    from_pattern = r'(SELECT.*?FROM\s+tavi_patients.*?)(?:\n|$|注意|请注意)'
+    matches = re.findall(from_pattern, response_text, re.DOTALL | re.IGNORECASE)
+    if matches:
+        return matches[0].strip()
+    
+    return None
 
 def convert_text_to_sql(user_query):
     """调用LLM将自然语言转换为SQL"""
     try:
+        # 加载知识库信息用于AI解析
+        knowledge_base_prompt = ""
+        try:
+            with open('./data/tavi_field_mapping.json', 'r', encoding='utf-8') as f:
+                import json
+                kb = json.load(f)
+                
+                # 构建字段映射提示
+                if 'field_mappings' in kb:
+                    mapping_info = []
+                    for category, mappings in kb['field_mappings'].items():
+                        for chinese_term, db_field in mappings.items():
+                            mapping_info.append(f"'{chinese_term}' -> {db_field}")
+                    
+                    knowledge_base_prompt = f"""
+重要的中英文字段映射信息：
+{chr(10).join(mapping_info[:50])}  # 限制提示长度
+
+这些映射帮助你理解中文医学术语对应的数据库字段名。
+"""
+        except:
+            # 如果知识库加载失败，继续使用基础prompt
+            pass
+        
+        # 增强的system prompt
+        enhanced_prompt = f"""{TABLE_SCHEMA_PROMPT}
+
+{knowledge_base_prompt}
+
+重要提示：
+1. 请直接生成SQL语句，不要包含任何解释性文字
+2. 只输出形如 "SELECT * FROM tavi_patients WHERE ..." 的纯SQL语句
+3. 不要使用markdown代码块标识符
+4. 不要添加任何注释或说明文字
+"""
+        
         response = deepseek_client.chat.completions.create(
             model="deepseek-chat",
             messages=[
-                {"role": "system", "content": TABLE_SCHEMA_PROMPT},
+                {"role": "system", "content": enhanced_prompt},
                 {"role": "user", "content": user_query}
             ],
             temperature=0, # 为了确保输出的稳定性
         )
-        sql_query = response.choices[0].message.content
-        # 简单清洗，去除markdown代码块标识
-        if sql_query.startswith("```sql"):
-            sql_query = sql_query[6:]
-        if sql_query.endswith("```"):
-            sql_query = sql_query[:-3]
+        
+        raw_response = response.choices[0].message.content
+        logger.info(f"[AI] 原始响应: {raw_response}")
+        
+        # 提取SQL语句
+        sql_query = extract_sql_from_response(raw_response)
+        
+        if not sql_query:
+            logger.error(f"无法从AI响应中提取有效的SQL语句: {raw_response}")
+            return None
         
         sql_query = sql_query.strip()
-        logger.info(f"[AI] 生成的SQL: {sql_query}")
+        logger.info(f"[AI] 提取的SQL: {sql_query}")
         return sql_query
+        
     except Exception as e:
         logger.error(f"[AI] Text-to-SQL转换失败: {e}")
         return None
@@ -1245,75 +1621,113 @@ def parse_sql_to_filters(sql):
         return filters
 
     try:
-        # 1. 获取最底层的、完整的词法单元列表
-        parser = Parser(sql)
-        all_tokens = [str(token) for token in parser.tokens]
-
-        # 2. 手动定位 WHERE 关键字的位置
-        try:
-            where_index = [token.upper() for token in all_tokens].index('WHERE')
-        except ValueError:
-            # 如果没有WHERE, 直接返回空字典
+        import re
+        
+        # 预处理SQL：规范化空格和括号
+        sql = re.sub(r'\s+', ' ', sql.strip())
+        
+        # 提取WHERE子句
+        where_match = re.search(r'WHERE\s+(.+)$', sql, re.IGNORECASE)
+        if not where_match:
             logger.info(f"SQL语句中未找到WHERE子句，返回空筛选条件。")
             return filters
         
-        # 3. 提取 WHERE 子句之后的所有词法单元
-        where_clause_tokens = all_tokens[where_index + 1:]
+        where_clause = where_match.group(1).strip()
+        logger.info(f"提取的WHERE子句: {where_clause}")
         
-        # 4. 按 'AND' 分割条件
-        conditions = []
-        current_condition = []
-        for token in where_clause_tokens:
-            if token.upper() == 'AND':
-                if current_condition:
-                    conditions.append(current_condition)
-                    current_condition = []
-            else:
-                current_condition.append(token)
-        if current_condition:
-            conditions.append(current_condition)
-
-        # 5. 逐一处理每个解析出的条件
-        for cond_parts in conditions:
-            if not cond_parts: continue
-
-            # 标准化 'IN' 子句
-            if 'IN' in [p.upper() for p in cond_parts]:
-                in_index = [p.upper() for p in cond_parts].index('IN')
-                col_name = cond_parts[in_index - 1]
-                values_in_parentheses = "".join(cond_parts[in_index + 1:])
-                cond_parts = [col_name, 'IN', values_in_parentheses]
-
-            if len(cond_parts) != 3:
-                logger.warning(f"条件 '{' '.join(cond_parts)}' 格式不标准 (预期3部分)，已跳过。")
+        # 处理复杂条件：先处理括号内的OR条件
+        # 例如: (nyha_classification = 'III' OR nyha_classification = 'IV')
+        or_pattern = r'\(\s*(\w+)\s*=\s*[\'\"](.*?)[\'\"](?:\s+OR\s+\1\s*=\s*[\'\"](.*?)[\'\"])+\s*\)'
+        
+        def handle_or_conditions(match):
+            field = match.group(1)
+            values = [match.group(2)]
+            # 提取所有OR条件的值
+            remaining = match.group(0)
+            or_values = re.findall(r'OR\s+\w+\s*=\s*[\'\"](.*?)[\'\"]', remaining)
+            values.extend(or_values)
+            
+            # 转换为filter格式
+            filter_key = COLUMN_TO_FILTER_KEY_MAP.get(field.lower())
+            if filter_key:
+                if filter_key == 'gender':
+                    filters[filter_key] = [v.capitalize() for v in values]
+                else:
+                    filters[filter_key] = values
+            
+            return ""  # 移除已处理的部分
+        
+        # 处理OR条件
+        where_clause = re.sub(or_pattern, handle_or_conditions, where_clause)
+        
+        # 处理BETWEEN条件
+        between_pattern = r'(\w+)\s+BETWEEN\s+(\d+(?:\.\d+)?)\s+AND\s+(\d+(?:\.\d+)?)'
+        
+        def handle_between_conditions(match):
+            field = match.group(1).lower()
+            min_val = float(match.group(2))
+            max_val = float(match.group(3))
+            
+            filter_key = COLUMN_TO_FILTER_KEY_MAP.get(field)
+            if filter_key:
+                filters[f"{filter_key}_min"] = min_val
+                filters[f"{filter_key}_max"] = max_val
+            
+            return ""  # 移除已处理的部分
+        
+        where_clause = re.sub(between_pattern, handle_between_conditions, where_clause)
+        
+        # 处理标准的简单条件
+        # 按AND分割剩余条件
+        and_conditions = [cond.strip() for cond in re.split(r'\s+AND\s+', where_clause, flags=re.IGNORECASE) if cond.strip()]
+        
+        for condition in and_conditions:
+            condition = condition.strip()
+            if not condition:
                 continue
-
-            col_name, operator, val_str = [part.strip() for part in cond_parts]
-            col_name = col_name.lower()
-
+                
+            # 解析单个条件：column operator value
+            match = re.match(r'(\w+)\s*(>=|<=|>|<|=|IN)\s*(.+)', condition, re.IGNORECASE)
+            if not match:
+                logger.warning(f"无法解析条件: {condition}")
+                continue
+            
+            col_name = match.group(1).lower()
+            operator = match.group(2).upper()
+            val_str = match.group(3).strip()
+            
             filter_key = COLUMN_TO_FILTER_KEY_MAP.get(col_name)
             if not filter_key:
-                print(f"警告: 无法映射SQL列 '{col_name}' 到filter key。")
+                logger.warning(f"无法映射SQL列 '{col_name}' 到filter key。")
                 continue
             
             # 去除值的引号
             if (val_str.startswith("'") and val_str.endswith("'")) or \
                (val_str.startswith('"') and val_str.endswith('"')):
                 val_str = val_str[1:-1]
-
+            
             # 填充filters对象
             if operator in ('>', '>='):
                 filters[f"{filter_key}_min"] = float(val_str)
             elif operator in ('<', '<='):
                 filters[f"{filter_key}_max"] = float(val_str)
             elif operator == '=':
-                if val_str.lower() in ('1', 'true'): filters[filter_key] = True
-                elif val_str.lower() in ('0', 'false'): filters[filter_key] = False
-                elif filter_key == 'gender': filters[filter_key] = [val_str.capitalize()]
-                else: filters[filter_key] = val_str
-            elif operator.upper() == 'IN':
-                vals = [v.strip().strip("'\"") for v in val_str.strip("() \t\n\r").split(',')]
-                filters[filter_key] = vals
+                if val_str.lower() in ('1', 'true'):
+                    filters[filter_key] = True
+                elif val_str.lower() in ('0', 'false'):
+                    filters[filter_key] = False
+                elif filter_key == 'gender':
+                    filters[filter_key] = [val_str.capitalize()]
+                else:
+                    filters[filter_key] = val_str
+            elif operator == 'IN':
+                # 处理IN条件
+                val_str = val_str.strip('()')
+                vals = [v.strip().strip("'\"") for v in val_str.split(',')]
+                if filter_key == 'gender':
+                    filters[filter_key] = [v.capitalize() for v in vals]
+                else:
+                    filters[filter_key] = vals
 
     except Exception as e:
         logger.error(f"解析SQL '{sql}' 时发生致命错误: {e}", exc_info=True)
@@ -1341,11 +1755,22 @@ def text_to_sql_to_filter():
         if not sql_query:
             return jsonify({'error': 'AI服务无法生成有效的SQL查询'}), 500
 
+        # 🔧 控制台调试输出
+        print(f"\n{'='*60}")
+        print(f"🔍 用户查询: {user_query}")
+        print(f"🤖 生成SQL: {sql_query}")
+        print(f"{'='*60}\n")
+
         # 2. SQL to Filter Object
         filter_object = parse_sql_to_filters(sql_query)
+        
+        # 🔧 控制台调试输出 - 筛选条件
+        print(f"📝 解析的筛选条件: {filter_object}")
         if not filter_object:
-            # 即使解析不出，也返回空对象，让前端清空筛选条件
+            print("⚠️  警告: 未解析出任何筛选条件!")
             logger.warning(f"未能从SQL '{sql_query}' 中解析出任何筛选条件。")
+        
+        print(f"✅ 返回给前端的筛选条件: {filter_object}\n")
 
         return jsonify(filter_object), 200
 

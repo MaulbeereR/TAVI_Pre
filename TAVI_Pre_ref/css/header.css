@@ -1,0 +1,84 @@
+/**
+ * TAVI预手术评估系统头部组件样式
+ */
+
+/* 标题样式 - 科技风格，采用渐变色和动态效果 */
+header.bg-primary {
+    background: linear-gradient(135deg, #0062E6, #33AEFF) !important; /* 覆盖Bootstrap默认样式 */
+    box-shadow: 0 4px 20px rgba(0, 98, 230, 0.3); /* 添加投影增强立体感 */
+    border-radius: 0 0 15px 15px; /* 圆角底部 */
+    margin-bottom: 25px !important;
+    position: relative;
+    overflow: hidden; /* 防止动画效果溢出 */
+}
+
+/* 头部装饰性背景动画效果 */
+header.bg-primary::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0.5;
+    animation: pulse 15s infinite linear; /* 应用旋转动画 */
+}
+
+/* 标题文本样式 */
+header.bg-primary h1 {
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 文字阴影增强可读性 */
+    padding: 15px 0;
+    position: relative;
+    z-index: 1; /* 确保文字在动画上层 */
+}
+
+/* 标题图标样式 - 呼吸效果 */
+.header-icon {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* 发光效果 */
+    animation: pulse-icon 1.5s infinite ease-in-out alternate; /* 交替呼吸动画 */
+}
+
+/* AI驱动徽章 - 显示系统技术特性 */
+.tech-badge {
+    background: rgba(0, 0, 0, 0.2);
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    vertical-align: middle;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* 半透明边框 */
+}
+
+/* 徽章内图标样式 */
+.tech-badge i {
+    margin-right: 3px;
+    font-size: 0.8rem;
+    vertical-align: text-top;
+}
+
+/* 图标呼吸动画定义 */
+@keyframes pulse-icon {
+    from {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    to {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* 头部背景旋转动画定义 */
+@keyframes pulse {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 

@@ -1,0 +1,154 @@
+2025-06-27 17:31:55 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:32:11 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:32:28 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:32:46 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:33:13 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-27 17:33:31 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age BETWEEN 70 AND 85 AND hypertension = 1' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 11:52:22 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 11:56:37 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 11:56:51 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age >= 70 AND age <= 85' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 11:57:14 - ERROR - 解析SQL 'SELECT * FROM tavi_patients WHERE age > 50' 失败: 'Parser' object has no attribute 'conditions'
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1243, in parse_sql_to_filters
+    where_clause_str = parser.conditions
+                       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Parser' object has no attribute 'conditions'
+2025-06-30 12:06:25 - ERROR - 解析SQL '根据您的查询，我将生成一个SQL语句来查找50岁到70岁之间且有心肌梗死和PCI病史的患者。假设"心梗"对应的是`myocardial_infarction`字段，"PCI史"对应的是`pci_history`字段（虽然这些字段在您提供的列定义中没有明确列出，但根据医学常识，这些是常见的心血管病史记录）。
+
+SQL查询语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70 AND myocardial_infarction = 1 AND pci_history = 1
+```
+
+注意：如果`tavi_patients`表中实际没有`myocardial_infarction`和`pci_history`这两个字段，您需要提供正确的字段名称，我可以相应地调整SQL查询。' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 12:06:43 - ERROR - 解析SQL '根据您的查询，我将生成一个SQL语句来查找50岁到70岁之间且有心肌梗死和PCI病史的患者。假设这些信息存储在布尔类型的字段中（例如`myocardial_infarction`和`pci_history`），SQL语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE age >= 50 AND age <= 70 AND myocardial_infarction = 1 AND pci_history = 1
+```
+
+注意：
+1. 由于您提供的列定义中没有明确提到心肌梗死和PCI病史的字段名，我使用了假设的字段名`myocardial_infarction`和`pci_history`
+2. 如果实际数据库中的字段名不同，您需要将上述字段名替换为实际的字段名
+3. 如果这些信息不是以布尔值存储，而是以其他形式存储，查询条件也需要相应调整' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 13:37:11 - ERROR - 解析SQL '根据您的查询要求，我将生成一个SQL查询语句来查找50岁到70岁之间并且有心梗和PCI史的患者。
+
+```sql
+SELECT * FROM tavi_patients WHERE age BETWEEN 50 AND 70 AND myocardial_infarction_history = 1 AND pci_history = 1
+```
+
+注意：
+1. 我假设表中有`myocardial_infarction_history`(心梗史)和`pci_history`(PCI史)这两个布尔字段
+2. 如果这些字段在您的实际表中名称不同，请提供正确的字段名称以便我调整查询' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 13:58:14 - ERROR - 解析SQL '根据您的查询要求，您想查找有效瓣口面积小于20的患者。假设表中有一个名为`effective_orifice_area`的列表示有效瓣口面积，SQL查询如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE effective_orifice_area < 20
+```
+
+请注意：
+1. 如果该列的实际名称不是`effective_orifice_area`，请提供正确的列名
+2. 如果有效瓣口面积在数据库中以其他单位存储(如cm²)，可能需要调整比较值' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 14:07:31 - ERROR - 解析SQL '根据您的查询"有效瓣口面积20以下"，我需要查询 `tavi_patients` 表中有效瓣口面积小于20的患者记录。假设有效瓣口面积对应的列名为 `effective_orifice_area`，SQL查询如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE effective_orifice_area < 20
+```
+
+请注意，如果有效瓣口面积的列名不是 `effective_orifice_area`，而是其他名称(如 `eoa` 或 `valve_area`)，则需要相应地调整列名。' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "E:\BufferingArea\WorkingArea\ML_Medical\TAVI_Pre\app.py", line 1247, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\27134\AppData\Roaming\Python\Python312\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!

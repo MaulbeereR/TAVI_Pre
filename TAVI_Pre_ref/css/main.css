@@ -1,0 +1,34 @@
+/**
+ * TAVI预手术评估系统主样式表
+ * 主要用于引入所有其他组件样式
+ */
+
+/* 引入全局样式 */
+@import './global.css';
+
+/* 引入头部组件样式 */
+@import './header.css';
+
+/* 引入数据统计卡片样式 */
+@import './stats-card.css';
+
+/* 引入表格和卡片通用样式 */
+@import './tables-cards.css';
+
+/* 引入图表样式 */
+@import './charts.css';
+
+/* 引入病例列表和筛选组件样式 */
+@import './case-list.css';
+
+/* 引入模态框样式 */
+@import './modal.css';
+
+/* 引入瓣膜选择器组件样式 */
+@import './valve-selector.css';
+
+/* 引入聊天组件样式 */
+@import './chat.css';
+
+/* 引入响应式布局调整 */
+@import './responsive.css'; 

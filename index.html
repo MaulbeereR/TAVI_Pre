@@ -118,6 +118,199 @@
             .detail-group { padding: 0.5rem; }
             .detail-group-title { font-size: 1rem; }
         }
+        
+        /* 智能筛选助手解析结果样式 */
+        .ai-filter-result {
+            margin-top: 15px;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .ai-filter-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border-radius: 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid #bbdefb;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-tag:hover {
+            background-color: #bbdefb;
+            transform: translateY(-1px);
+        }
+        
+        .filter-tag i {
+            margin-right: 4px;
+            font-size: 0.75rem;
+        }
+        
+        /* 不同类型筛选条件的颜色 */
+        .filter-tag.basic-info {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+            border-color: #a5d6a7;
+        }
+        
+        .filter-tag.imaging {
+            background-color: #fff3e0;
+            color: #ef6c00;
+            border-color: #ffcc02;
+        }
+        
+        .filter-tag.surgery {
+            background-color: #fce4ec;
+            color: #c2185b;
+            border-color: #f8bbd9;
+        }
+        
+        .filter-tag.discharge {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+            border-color: #ce93d8;
+        }
+        
+        .filter-tag.followup {
+            background-color: #e0f2f1;
+            color: #00695c;
+            border-color: #80cbc4;
+        }
+        
+        /* 通用筛选条件标签样式 */
+        
+        /* 论文详情模态框样式 */
+        .paper-info-section .alert-info {
+            border-left: 4px solid #0d6efd;
+        }
+        
+        .paper-images-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .image-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #e3e3e3;
+        }
+        
+        .image-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .case-image {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .case-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .image-caption {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .loading-message {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 20px;
+            color: #d32f2f;
+            background-color: #ffebee;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .paper-info-section .row .col-md-6 {
+                margin-bottom: 10px;
+            }
+            
+            .case-image {
+                max-height: 300px;
+            }
+        }
+        .filter-tag.general {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+            border-color: #ce93d8;
+        }
+        
+        /* 确保所有图标都能正确显示 */
+        .filter-tag i {
+            font-size: 0.75rem;
+            margin-right: 4px;
+            min-width: 12px;
+            text-align: center;
+        }
+        
+        /* 针对不同类型的特殊图标样式 */
+        .filter-tag.basic-info i {
+            color: #2e7d32;
+        }
+        
+        .filter-tag.imaging i {
+            color: #ef6c00;
+        }
+        
+        .filter-tag.surgery i {
+            color: #c2185b;
+        }
+        
+        .filter-tag.discharge i {
+            color: #7b1fa2;
+        }
+        
+        .filter-tag.followup i {
+            color: #00695c;
+        }
+        
+        .filter-tag.general i {
+            color: #7b1fa2;
+        }
     </style>
 </head>
 <body>
@@ -198,11 +391,23 @@
             <div class="card-body">
                 <h5 class="card-title">智能筛选助手</h5>
                 <p class="card-subtitle mb-2 text-muted">请用自然语言描述您想筛选的病例特征，系统将为您自动设置下方筛选条件。</p>
-                <div class="input-group">
+                <div class="input-group mb-3">
                     <input type="text" class="form-control form-control-lg" id="natural-language-input" placeholder="例如：查找年龄大于75岁且有高血压的女性患者">
                     <button class="btn btn-primary btn-lg" type="button" id="apply-natural-language-filter">
                         <i class="bi bi-magic"></i> 解析并筛选
                     </button>
+                </div>
+                
+                <!-- 新增：解析结果展示区域 -->
+                <div id="ai-filter-result" class="ai-filter-result" style="display: none;">
+                    <div class="alert alert-info">
+                        <h6 class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> AI解析结果</h6>
+                        <p class="mb-2">已识别以下筛选条件：</p>
+                        <div id="ai-filter-summary" class="ai-filter-summary"></div>
+                        <small class="text-muted mt-2 d-block">
+                            <i class="bi bi-info-circle"></i> 这些筛选条件已自动应用到下方的"数据筛选"区域中
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1634,6 +1839,77 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="view-paper-details">
+                        <i class="bi bi-file-earmark-pdf"></i> 查看论文详情
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 论文详情模态框 -->
+    <div class="modal fade" id="paper-detail-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">论文详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 论文基本信息 -->
+                    <div class="paper-info-section mb-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <strong>DOI:</strong> <span id="paper-doi"></span><br>
+                                            <strong>PMID:</strong> <span id="paper-pmid"></span><br>
+                                            <strong>发表年份:</strong> <span id="paper-year"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <strong>期刊来源:</strong> <span id="paper-source"></span><br>
+                                            <strong>作者:</strong> <span id="paper-author"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <strong>标题:</strong> <span id="paper-title"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 摘要 -->
+                    <div class="paper-abstract-section mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">摘要</h6>
+                            </div>
+                            <div class="card-body">
+                                <p id="paper-abstract" class="mb-0"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 论文配图 -->
+                    <div class="paper-images-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">论文配图</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="paper-images-container">
+                                    <!-- 图片将通过JavaScript动态加载 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -1682,6 +1958,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="./data/db_output.js"></script>
     <script src="color-palette.js"></script>
     <script src="app.js"></script>
 </body>

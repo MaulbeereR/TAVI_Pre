@@ -4177,3 +4177,1142 @@ SELECT * FROM tavi_patients WHERE effective_orifice_area < 20
 2025-06-30 14:07:44 - INFO - 查询参数: [20]
 2025-06-30 14:07:44 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE aortic_valve_eoa <= %s
 2025-06-30 14:07:44 - INFO - 查询参数: [20]
+2025-06-30 15:19:32 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 15:19:33 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 15:19:42 - INFO - 数据库连接成功
+2025-06-30 15:19:42 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 15:19:42 - INFO - 最终WHERE子句: 1=1
+2025-06-30 15:19:42 - INFO - 查询参数: []
+2025-06-30 15:19:42 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 15:19:42 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 15:19:42 - INFO - 数据库连接成功
+2025-06-30 15:19:42 - INFO - 数据库连接成功
+2025-06-30 15:19:42 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 15:19:42 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 15:19:42 - INFO - 最终WHERE子句: 1=1
+2025-06-30 15:19:42 - INFO - 最终WHERE子句: 1=1
+2025-06-30 15:19:42 - INFO - 查询参数: []
+2025-06-30 15:19:42 - INFO - 查询参数: []
+2025-06-30 15:19:42 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 15:19:42 - INFO - 查询参数: []
+2025-06-30 15:19:42 - INFO - 查询成功，返回 20 条记录
+2025-06-30 15:22:17 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄大于80岁且使用球囊扩张式的男性病人
+2025-06-30 15:22:23 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age > 80 AND thv_type = 'Balloon-expandable' AND sex = 'Male'
+2025-06-30 15:22:23 - INFO - 从SQL成功解析出filters对象: {'age_min': 80.0, 'thv_type': 'Balloon-expandable', 'gender': ['Male']}
+2025-06-30 15:22:23 - INFO - 数据库连接成功
+2025-06-30 15:22:23 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 15:22:23 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 15:22:23 - INFO - 添加性别筛选: ['Male']
+2025-06-30 15:22:23 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 15:22:23 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 15:22:23 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 15:22:23 - INFO - 收到数据请求 - 筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 15:22:23 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 15:22:23 - INFO - 数据库连接成功
+2025-06-30 15:22:23 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 15:22:23 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 15:22:23 - INFO - 添加性别筛选: ['Male']
+2025-06-30 15:22:23 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 15:22:23 - INFO - 数据库连接成功
+2025-06-30 15:22:23 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 15:22:23 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 15:22:23 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 15:22:23 - INFO - 添加性别筛选: ['Male']
+2025-06-30 15:22:23 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 15:22:23 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 15:22:23 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 15:22:23 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 15:22:23 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 15:22:23 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 15:22:23 - INFO - 查询成功，返回 20 条记录
+2025-06-30 16:36:27 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 16:36:28 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 16:36:35 - INFO - 数据库连接成功
+2025-06-30 16:36:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 16:36:35 - INFO - 最终WHERE子句: 1=1
+2025-06-30 16:36:35 - INFO - 查询参数: []
+2025-06-30 16:36:35 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 16:36:35 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 16:36:35 - INFO - 数据库连接成功
+2025-06-30 16:36:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 16:36:35 - INFO - 最终WHERE子句: 1=1
+2025-06-30 16:36:35 - INFO - 查询参数: []
+2025-06-30 16:36:35 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 16:36:35 - INFO - 查询参数: []
+2025-06-30 16:36:35 - INFO - 数据库连接成功
+2025-06-30 16:36:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 16:36:35 - INFO - 最终WHERE子句: 1=1
+2025-06-30 16:36:35 - INFO - 查询参数: []
+2025-06-30 16:36:35 - INFO - 查询成功，返回 20 条记录
+2025-06-30 16:37:12 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄介于75到90岁且纽约分级为III的男性患者
+2025-06-30 16:37:25 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age BETWEEN 75 AND 90 AND nyha_classification = 'III' AND sex = 'Male'
+2025-06-30 16:37:25 - WARNING - 条件 '90' 格式不标准 (预期3部分)，已跳过。
+2025-06-30 16:37:25 - INFO - 从SQL成功解析出filters对象: {'nyha_classification': 'III', 'gender': ['Male']}
+2025-06-30 16:37:25 - INFO - 数据库连接成功
+2025-06-30 16:37:25 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Male'], 'nyha_classification': 'III'}
+2025-06-30 16:37:25 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:37:25 - INFO - 添加NYHA分级筛选: III
+2025-06-30 16:37:25 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification = %s
+2025-06-30 16:37:25 - INFO - 查询参数: ['Male', 'III']
+2025-06-30 16:37:26 - INFO - 收到数据请求 - 筛选条件: {'gender': ['Male'], 'nyha_classification': 'III'}
+2025-06-30 16:37:26 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 16:37:26 - INFO - 数据库连接成功
+2025-06-30 16:37:26 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Male'], 'nyha_classification': 'III'}
+2025-06-30 16:37:26 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:37:26 - INFO - 添加NYHA分级筛选: III
+2025-06-30 16:37:26 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification = %s
+2025-06-30 16:37:26 - INFO - 查询参数: ['Male', 'III']
+2025-06-30 16:37:26 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE sex IN (%s) AND nyha_classification = %s
+2025-06-30 16:37:26 - INFO - 查询参数: ['Male', 'III']
+2025-06-30 16:37:26 - INFO - 数据库连接成功
+2025-06-30 16:37:26 - INFO - 开始构建WHERE子句，筛选条件: {'gender': ['Male'], 'nyha_classification': 'III'}
+2025-06-30 16:37:26 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:37:26 - INFO - 添加NYHA分级筛选: III
+2025-06-30 16:37:26 - INFO - 最终WHERE子句: sex IN (%s) AND nyha_classification = %s
+2025-06-30 16:37:26 - INFO - 查询参数: ['Male', 'III']
+2025-06-30 16:37:26 - INFO - 查询成功，返回 20 条记录
+2025-06-30 16:38:12 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄大于75岁且纽约分级为II的男性患者
+2025-06-30 16:38:16 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age > 75 AND nyha_classification = 'II' AND sex = 'Male'
+2025-06-30 16:38:16 - INFO - 从SQL成功解析出filters对象: {'age_min': 75.0, 'nyha_classification': 'II', 'gender': ['Male']}
+2025-06-30 16:38:17 - INFO - 数据库连接成功
+2025-06-30 16:38:17 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'nyha_classification': 'II'}
+2025-06-30 16:38:17 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:38:17 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:38:17 - INFO - 添加NYHA分级筛选: II
+2025-06-30 16:38:17 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND nyha_classification = %s
+2025-06-30 16:38:17 - INFO - 查询参数: [75, 'Male', 'II']
+2025-06-30 16:38:17 - INFO - 收到数据请求 - 筛选条件: {'age_min': 75, 'gender': ['Male'], 'nyha_classification': 'II'}
+2025-06-30 16:38:17 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 16:38:17 - INFO - 数据库连接成功
+2025-06-30 16:38:17 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'nyha_classification': 'II'}
+2025-06-30 16:38:17 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:38:17 - INFO - 数据库连接成功
+2025-06-30 16:38:17 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'nyha_classification': 'II'}
+2025-06-30 16:38:17 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:38:17 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:38:17 - INFO - 添加NYHA分级筛选: II
+2025-06-30 16:38:17 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:38:17 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND nyha_classification = %s
+2025-06-30 16:38:17 - INFO - 添加NYHA分级筛选: II
+2025-06-30 16:38:17 - INFO - 查询参数: [75, 'Male', 'II']
+2025-06-30 16:38:17 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND nyha_classification = %s
+2025-06-30 16:38:17 - INFO - 查询参数: [75, 'Male', 'II']
+2025-06-30 16:38:17 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND sex IN (%s) AND nyha_classification = %s
+2025-06-30 16:38:17 - INFO - 查询参数: [75, 'Male', 'II']
+2025-06-30 16:38:17 - INFO - 查询成功，返回 16 条记录
+2025-06-30 16:38:59 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄大于75岁的男性患者
+2025-06-30 16:39:06 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age > 75 AND sex = 'Male'
+2025-06-30 16:39:06 - INFO - 从SQL成功解析出filters对象: {'age_min': 75.0, 'gender': ['Male']}
+2025-06-30 16:39:06 - INFO - 数据库连接成功
+2025-06-30 16:39:06 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male']}
+2025-06-30 16:39:06 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:39:06 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:39:06 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s)
+2025-06-30 16:39:06 - INFO - 查询参数: [75, 'Male']
+2025-06-30 16:39:06 - INFO - 收到数据请求 - 筛选条件: {'age_min': 75, 'gender': ['Male']}
+2025-06-30 16:39:06 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 16:39:06 - INFO - 数据库连接成功
+2025-06-30 16:39:06 - INFO - 数据库连接成功
+2025-06-30 16:39:06 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male']}
+2025-06-30 16:39:06 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male']}
+2025-06-30 16:39:06 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:39:06 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:39:06 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:39:06 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:39:06 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s)
+2025-06-30 16:39:06 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s)
+2025-06-30 16:39:06 - INFO - 查询参数: [75, 'Male']
+2025-06-30 16:39:06 - INFO - 查询参数: [75, 'Male']
+2025-06-30 16:39:06 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND sex IN (%s)
+2025-06-30 16:39:06 - INFO - 查询参数: [75, 'Male']
+2025-06-30 16:39:06 - INFO - 查询成功，返回 20 条记录
+2025-06-30 16:39:53 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄大于75岁且有中度以上主动脉瓣反流的男性患者
+2025-06-30 16:39:58 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age > 75 AND sex = 'Male' AND nyha_classification IN ('III', 'IV')
+2025-06-30 16:39:58 - INFO - 从SQL成功解析出filters对象: {'age_min': 75.0, 'gender': ['Male'], 'nyha_classification': ['III', 'IV']}
+2025-06-30 16:39:59 - INFO - 数据库连接成功
+2025-06-30 16:39:59 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'nyha_classification': ['III', 'IV']}
+2025-06-30 16:39:59 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:39:59 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:39:59 - INFO - 添加NYHA分级筛选: ['III', 'IV']
+2025-06-30 16:39:59 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND nyha_classification IN (%s,%s)
+2025-06-30 16:39:59 - INFO - 查询参数: [75, 'Male', 'III', 'IV']
+2025-06-30 16:39:59 - INFO - 收到数据请求 - 筛选条件: {'age_min': 75, 'gender': ['Male'], 'nyha_classification': ['III', 'IV']}
+2025-06-30 16:39:59 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 16:39:59 - INFO - 数据库连接成功
+2025-06-30 16:39:59 - INFO - 数据库连接成功
+2025-06-30 16:39:59 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'nyha_classification': ['III', 'IV']}
+2025-06-30 16:39:59 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'nyha_classification': ['III', 'IV']}
+2025-06-30 16:39:59 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:39:59 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:39:59 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:39:59 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:39:59 - INFO - 添加NYHA分级筛选: ['III', 'IV']
+2025-06-30 16:39:59 - INFO - 添加NYHA分级筛选: ['III', 'IV']
+2025-06-30 16:39:59 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND nyha_classification IN (%s,%s)
+2025-06-30 16:39:59 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND nyha_classification IN (%s,%s)
+2025-06-30 16:39:59 - INFO - 查询参数: [75, 'Male', 'III', 'IV']
+2025-06-30 16:39:59 - INFO - 查询参数: [75, 'Male', 'III', 'IV']
+2025-06-30 16:39:59 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND sex IN (%s) AND nyha_classification IN (%s,%s)
+2025-06-30 16:39:59 - INFO - 查询参数: [75, 'Male', 'III', 'IV']
+2025-06-30 16:39:59 - INFO - 查询成功，返回 20 条记录
+2025-06-30 16:40:23 - INFO - 数据库连接成功
+2025-06-30 16:40:23 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'moderate_severe_ar': True}
+2025-06-30 16:40:23 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:40:23 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:40:23 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s)
+2025-06-30 16:40:23 - INFO - 查询参数: [75, 'Male']
+2025-06-30 16:40:24 - INFO - 收到数据请求 - 筛选条件: {'age_min': 75, 'gender': ['Male'], 'moderate_severe_ar': True}
+2025-06-30 16:40:24 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 16:40:24 - INFO - 数据库连接成功
+2025-06-30 16:40:24 - INFO - 数据库连接成功
+2025-06-30 16:40:24 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'moderate_severe_ar': True}
+2025-06-30 16:40:24 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 75, 'gender': ['Male'], 'moderate_severe_ar': True}
+2025-06-30 16:40:24 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:40:24 - INFO - 添加年龄最小值筛选: 75
+2025-06-30 16:40:24 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:40:24 - INFO - 添加性别筛选: ['Male']
+2025-06-30 16:40:24 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s)
+2025-06-30 16:40:24 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s)
+2025-06-30 16:40:24 - INFO - 查询参数: [75, 'Male']
+2025-06-30 16:40:24 - INFO - 查询参数: [75, 'Male']
+2025-06-30 16:40:24 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND sex IN (%s)
+2025-06-30 16:40:24 - INFO - 查询参数: [75, 'Male']
+2025-06-30 16:40:24 - INFO - 查询成功，返回 20 条记录
+2025-06-30 16:43:45 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前心力衰竭且有中度以上主动脉瓣反流的患者
+2025-06-30 16:43:55 - INFO - [AI] 生成的SQL: 根据您的查询，我需要查找出院前死亡（心力衰竭）且发生术后即刻瓣周漏（中度以上主动脉瓣反流）的患者。以下是相应的SQL查询：
+
+```sql
+SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有满足以下两个条件的患者记录：
+1. `death_before_discharge = 1` - 出院前死亡（心力衰竭）
+2. `immediate_pvl_occurred = 1` - 发生术后即刻瓣周漏（中度以上主动脉瓣反流）
+2025-06-30 16:43:55 - ERROR - 解析SQL '根据您的查询，我需要查找出院前死亡（心力衰竭）且发生术后即刻瓣周漏（中度以上主动脉瓣反流）的患者。以下是相应的SQL查询：
+
+```sql
+SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有满足以下两个条件的患者记录：
+1. `death_before_discharge = 1` - 出院前死亡（心力衰竭）
+2. `immediate_pvl_occurred = 1` - 发生术后即刻瓣周漏（中度以上主动脉瓣反流）' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "D:\PythonCode\TAVI_Pre\app.py", line 1250, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+  File "C:\Users\SAIRI\.conda\envs\tavi\lib\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+  File "C:\Users\SAIRI\.conda\envs\tavi\lib\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 16:43:55 - WARNING - 未能从SQL '根据您的查询，我需要查找出院前死亡（心力衰竭）且发生术后即刻瓣周漏（中度以上主动脉瓣反流）的患者。以下是相应的SQL查询：
+
+```sql
+SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有满足以下两个条件的患者记录：
+1. `death_before_discharge = 1` - 出院前死亡（心力衰竭）
+2. `immediate_pvl_occurred = 1` - 发生术后即刻瓣周漏（中度以上主动脉瓣反流）' 中解析出任何筛选条件。
+2025-06-30 16:43:56 - INFO - 数据库连接成功
+2025-06-30 16:43:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 16:43:56 - INFO - 最终WHERE子句: 1=1
+2025-06-30 16:43:56 - INFO - 查询参数: []
+2025-06-30 16:43:56 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 16:43:56 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 16:43:56 - INFO - 数据库连接成功
+2025-06-30 16:43:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 16:43:56 - INFO - 最终WHERE子句: 1=1
+2025-06-30 16:43:56 - INFO - 查询参数: []
+2025-06-30 16:43:56 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 16:43:56 - INFO - 查询参数: []
+2025-06-30 16:43:56 - INFO - 数据库连接成功
+2025-06-30 16:43:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 16:43:56 - INFO - 最终WHERE子句: 1=1
+2025-06-30 16:43:56 - INFO - 查询参数: []
+2025-06-30 16:43:56 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:09:19 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:09:21 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:09:27 - INFO - 数据库连接成功
+2025-06-30 17:09:27 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:09:27 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:09:27 - INFO - 查询参数: []
+2025-06-30 17:09:27 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:09:27 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:09:27 - INFO - 数据库连接成功
+2025-06-30 17:09:27 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:09:27 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:09:27 - INFO - 查询参数: []
+2025-06-30 17:09:27 - INFO - 数据库连接成功
+2025-06-30 17:09:27 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:09:27 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:09:27 - INFO - 查询参数: []
+2025-06-30 17:09:27 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:09:27 - INFO - 查询参数: []
+2025-06-30 17:09:27 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:09:51 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前心力衰竭且有中度以上主动脉瓣反流的患者
+2025-06-30 17:10:03 - INFO - [AI] 生成的SQL: 根据您的查询，我需要查找出院前死亡（心力衰竭）且发生术后即刻瓣周漏（中度以上主动脉瓣反流）的患者。以下是相应的SQL查询语句：
+
+```sql
+SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有满足以下两个条件的患者记录：
+1. `death_before_discharge = 1` - 出院前死亡（心力衰竭）
+2. `immediate_pvl_occurred = 1` - 发生术后即刻瓣周漏（中度以上主动脉瓣反流）
+2025-06-30 17:10:03 - ERROR - 解析SQL '根据您的查询，我需要查找出院前死亡（心力衰竭）且发生术后即刻瓣周漏（中度以上主动脉瓣反流）的患者。以下是相应的SQL查询语句：
+
+```sql
+SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有满足以下两个条件的患者记录：
+1. `death_before_discharge = 1` - 出院前死亡（心力衰竭）
+2. `immediate_pvl_occurred = 1` - 发生术后即刻瓣周漏（中度以上主动脉瓣反流）' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "D:\PythonCode\TAVI_Pre\app.py", line 1250, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\SAIRI\AppData\Roaming\Python\Python311\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\SAIRI\AppData\Roaming\Python\Python311\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 17:10:03 - WARNING - 未能从SQL '根据您的查询，我需要查找出院前死亡（心力衰竭）且发生术后即刻瓣周漏（中度以上主动脉瓣反流）的患者。以下是相应的SQL查询语句：
+
+```sql
+SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有满足以下两个条件的患者记录：
+1. `death_before_discharge = 1` - 出院前死亡（心力衰竭）
+2. `immediate_pvl_occurred = 1` - 发生术后即刻瓣周漏（中度以上主动脉瓣反流）' 中解析出任何筛选条件。
+2025-06-30 17:10:03 - INFO - 数据库连接成功
+2025-06-30 17:10:03 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:10:03 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:10:03 - INFO - 查询参数: []
+2025-06-30 17:10:04 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:10:04 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:10:04 - INFO - 数据库连接成功
+2025-06-30 17:10:04 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:10:04 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:10:04 - INFO - 数据库连接成功
+2025-06-30 17:10:04 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:10:04 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:10:04 - INFO - 查询参数: []
+2025-06-30 17:10:04 - INFO - 查询参数: []
+2025-06-30 17:10:04 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:10:04 - INFO - 查询参数: []
+2025-06-30 17:10:04 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:10:22 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄大于80岁且使用球囊扩张式的男性病人
+2025-06-30 17:10:30 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age > 80 AND thv_type = 'Balloon-expandable' AND sex = 'Male'
+2025-06-30 17:10:30 - INFO - 从SQL成功解析出filters对象: {'age_min': 80.0, 'thv_type': 'Balloon-expandable', 'gender': ['Male']}
+2025-06-30 17:10:30 - INFO - 数据库连接成功
+2025-06-30 17:10:30 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 17:10:30 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 17:10:30 - INFO - 添加性别筛选: ['Male']
+2025-06-30 17:10:30 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 17:10:30 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 17:10:30 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 17:10:31 - INFO - 收到数据请求 - 筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 17:10:31 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:10:31 - INFO - 数据库连接成功
+2025-06-30 17:10:31 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 17:10:31 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 17:10:31 - INFO - 添加性别筛选: ['Male']
+2025-06-30 17:10:31 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 17:10:31 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 17:10:31 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 17:10:31 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 17:10:31 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 17:10:31 - INFO - 数据库连接成功
+2025-06-30 17:10:31 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 17:10:31 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 17:10:31 - INFO - 添加性别筛选: ['Male']
+2025-06-30 17:10:31 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 17:10:31 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 17:10:31 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 17:10:31 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:24:47 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:24:48 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:24:53 - INFO - 数据库连接成功
+2025-06-30 17:24:53 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:24:53 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:24:53 - INFO - 查询参数: []
+2025-06-30 17:24:53 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:24:53 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:24:53 - INFO - 数据库连接成功
+2025-06-30 17:24:53 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:24:53 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:24:53 - INFO - 查询参数: []
+2025-06-30 17:24:53 - INFO - 数据库连接成功
+2025-06-30 17:24:53 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:24:53 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:24:53 - INFO - 查询参数: []
+2025-06-30 17:24:53 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:24:53 - INFO - 查询参数: []
+2025-06-30 17:24:53 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:24:58 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 年龄大于80岁且使用球囊扩张式的男性病人
+2025-06-30 17:25:06 - INFO - [AI] 生成的SQL: SELECT * FROM tavi_patients WHERE age > 80 AND thv_type = 'Balloon-expandable' AND sex = 'Male'
+2025-06-30 17:25:06 - INFO - 从SQL成功解析出filters对象: {'age_min': 80.0, 'thv_type': 'Balloon-expandable', 'gender': ['Male']}
+2025-06-30 17:25:06 - INFO - 数据库连接成功
+2025-06-30 17:25:06 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 17:25:06 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 17:25:06 - INFO - 添加性别筛选: ['Male']
+2025-06-30 17:25:06 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 17:25:06 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 17:25:06 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 17:25:07 - INFO - 收到数据请求 - 筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 17:25:07 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:25:07 - INFO - 数据库连接成功
+2025-06-30 17:25:07 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 17:25:07 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 17:25:07 - INFO - 添加性别筛选: ['Male']
+2025-06-30 17:25:07 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 17:25:07 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 17:25:07 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 17:25:07 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 17:25:07 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 17:25:07 - INFO - 数据库连接成功
+2025-06-30 17:25:07 - INFO - 开始构建WHERE子句，筛选条件: {'age_min': 80, 'gender': ['Male'], 'thv_type': 'Balloon-expandable'}
+2025-06-30 17:25:07 - INFO - 添加年龄最小值筛选: 80
+2025-06-30 17:25:07 - INFO - 添加性别筛选: ['Male']
+2025-06-30 17:25:07 - INFO - 添加瓣膜类型筛选: Balloon-expandable
+2025-06-30 17:25:07 - INFO - 最终WHERE子句: age >= %s AND sex IN (%s) AND thv_type = %s
+2025-06-30 17:25:07 - INFO - 查询参数: [80, 'Male', 'Balloon-expandable']
+2025-06-30 17:25:07 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:25:21 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前心力衰竭且有中度以上主动脉瓣反流的患者
+2025-06-30 17:25:31 - INFO - [AI] 生成的SQL: 根据您的查询需求，我们需要查找出院前心力衰竭（NYHA心功能分级III或IV级）且发生术后即刻瓣周漏的患者。以下是相应的SQL查询语句：
+
+```sql
+SELECT * FROM tavi_patients WHERE nyha_classification IN ('III', 'IV') AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有NYHA心功能分级为III或IV级（表示中重度心力衰竭）且发生了术后即刻瓣周漏的患者记录。
+2025-06-30 17:25:31 - ERROR - 解析SQL '根据您的查询需求，我们需要查找出院前心力衰竭（NYHA心功能分级III或IV级）且发生术后即刻瓣周漏的患者。以下是相应的SQL查询语句：
+
+```sql
+SELECT * FROM tavi_patients WHERE nyha_classification IN ('III', 'IV') AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有NYHA心功能分级为III或IV级（表示中重度心力衰竭）且发生了术后即刻瓣周漏的患者记录。' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "D:\PythonCode\TAVI_Pre\app.py", line 1250, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\SAIRI\AppData\Roaming\Python\Python311\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\SAIRI\AppData\Roaming\Python\Python311\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 17:25:31 - WARNING - 未能从SQL '根据您的查询需求，我们需要查找出院前心力衰竭（NYHA心功能分级III或IV级）且发生术后即刻瓣周漏的患者。以下是相应的SQL查询语句：
+
+```sql
+SELECT * FROM tavi_patients WHERE nyha_classification IN ('III', 'IV') AND immediate_pvl_occurred = 1
+```
+
+这个查询会返回所有NYHA心功能分级为III或IV级（表示中重度心力衰竭）且发生了术后即刻瓣周漏的患者记录。' 中解析出任何筛选条件。
+2025-06-30 17:25:31 - INFO - 数据库连接成功
+2025-06-30 17:25:31 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:25:31 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:25:31 - INFO - 查询参数: []
+2025-06-30 17:25:32 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:25:32 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:25:32 - INFO - 数据库连接成功
+2025-06-30 17:25:32 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:25:32 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:25:32 - INFO - 查询参数: []
+2025-06-30 17:25:32 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:25:32 - INFO - 查询参数: []
+2025-06-30 17:25:32 - INFO - 数据库连接成功
+2025-06-30 17:25:32 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:25:32 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:25:32 - INFO - 查询参数: []
+2025-06-30 17:25:32 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:25:43 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前心力衰竭且有中度以上主动脉瓣反流的患者
+2025-06-30 17:25:55 - INFO - [AI] 生成的SQL: 根据您的查询要求，需要查找出院前心力衰竭（NYHA心功能分级III或IV级）且有中度以上主动脉瓣反流（假设"中度以上"对应`immediate_pvl_occurred`为真）的患者。
+
+SQL查询语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE (nyha_classification = 'III' OR nyha_classification = 'IV') AND immediate_pvl_occurred = 1
+```
+
+注意：
+1. 心力衰竭通常对应NYHA心功能分级III或IV级
+2. 假设"中度以上主动脉瓣反流"对应数据库中的`immediate_pvl_occurred`字段为真(1)
+3. 如果"主动脉瓣反流"在数据库中有其他专门字段表示，请提供该字段名称以便调整查询
+2025-06-30 17:25:55 - ERROR - 解析SQL '根据您的查询要求，需要查找出院前心力衰竭（NYHA心功能分级III或IV级）且有中度以上主动脉瓣反流（假设"中度以上"对应`immediate_pvl_occurred`为真）的患者。
+
+SQL查询语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE (nyha_classification = 'III' OR nyha_classification = 'IV') AND immediate_pvl_occurred = 1
+```
+
+注意：
+1. 心力衰竭通常对应NYHA心功能分级III或IV级
+2. 假设"中度以上主动脉瓣反流"对应数据库中的`immediate_pvl_occurred`字段为真(1)
+3. 如果"主动脉瓣反流"在数据库中有其他专门字段表示，请提供该字段名称以便调整查询' 时发生致命错误: Not supported query type!
+Traceback (most recent call last):
+  File "D:\PythonCode\TAVI_Pre\app.py", line 1250, in parse_sql_to_filters
+    all_tokens = [str(token) for token in parser.tokens]
+                                          ^^^^^^^^^^^^^
+  File "C:\Users\SAIRI\AppData\Roaming\Python\Python311\site-packages\sql_metadata\parser.py", line 190, in tokens
+    _ = self.query_type
+        ^^^^^^^^^^^^^^^
+  File "C:\Users\SAIRI\AppData\Roaming\Python\Python311\site-packages\sql_metadata\parser.py", line 130, in query_type
+    raise ValueError("Not supported query type!")
+ValueError: Not supported query type!
+2025-06-30 17:25:55 - WARNING - 未能从SQL '根据您的查询要求，需要查找出院前心力衰竭（NYHA心功能分级III或IV级）且有中度以上主动脉瓣反流（假设"中度以上"对应`immediate_pvl_occurred`为真）的患者。
+
+SQL查询语句如下：
+
+```sql
+SELECT * FROM tavi_patients WHERE (nyha_classification = 'III' OR nyha_classification = 'IV') AND immediate_pvl_occurred = 1
+```
+
+注意：
+1. 心力衰竭通常对应NYHA心功能分级III或IV级
+2. 假设"中度以上主动脉瓣反流"对应数据库中的`immediate_pvl_occurred`字段为真(1)
+3. 如果"主动脉瓣反流"在数据库中有其他专门字段表示，请提供该字段名称以便调整查询' 中解析出任何筛选条件。
+2025-06-30 17:25:56 - INFO - 数据库连接成功
+2025-06-30 17:25:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:25:56 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:25:56 - INFO - 查询参数: []
+2025-06-30 17:25:56 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:25:56 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:25:56 - INFO - 数据库连接成功
+2025-06-30 17:25:56 - INFO - 数据库连接成功
+2025-06-30 17:25:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:25:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:25:56 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:25:56 - INFO - 查询参数: []
+2025-06-30 17:25:56 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:25:56 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:25:56 - INFO - 查询参数: []
+2025-06-30 17:25:56 - INFO - 查询参数: []
+2025-06-30 17:25:56 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:34:51 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:34:52 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:35:21 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:35:22 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:35:30 - INFO - 数据库连接成功
+2025-06-30 17:35:30 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:35:30 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:35:30 - INFO - 查询参数: []
+2025-06-30 17:35:30 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:35:30 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:35:30 - INFO - 数据库连接成功
+2025-06-30 17:35:30 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:35:30 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:35:30 - INFO - 数据库连接成功
+2025-06-30 17:35:30 - INFO - 查询参数: []
+2025-06-30 17:35:30 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:35:30 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:35:30 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:35:30 - INFO - 查询参数: []
+2025-06-30 17:35:30 - INFO - 查询参数: []
+2025-06-30 17:35:30 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:35:36 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前心力衰竭且有中度以上主动脉瓣反流的患者
+2025-06-30 17:35:42 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND aortic_valve_regurgitation >= 'Moderate'
+2025-06-30 17:35:42 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND aortic_valve_regurgitation >= 'Moderate'
+2025-06-30 17:35:42 - INFO - 提取的WHERE子句: death_before_discharge = 1 AND aortic_valve_regurgitation >= 'Moderate'
+2025-06-30 17:35:42 - WARNING - 无法映射SQL列 'aortic_valve_regurgitation' 到filter key。
+2025-06-30 17:35:42 - INFO - 从SQL成功解析出filters对象: {'death_before_discharge': True}
+2025-06-30 17:35:42 - INFO - 数据库连接成功
+2025-06-30 17:35:42 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 17:35:42 - INFO - 添加出院前死亡筛选: True
+2025-06-30 17:35:42 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 17:35:42 - INFO - 查询参数: [True]
+2025-06-30 17:35:43 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True}
+2025-06-30 17:35:43 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:35:43 - INFO - 数据库连接成功
+2025-06-30 17:35:43 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 17:35:43 - INFO - 添加出院前死亡筛选: True
+2025-06-30 17:35:43 - INFO - 数据库连接成功
+2025-06-30 17:35:43 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 17:35:43 - INFO - 添加出院前死亡筛选: True
+2025-06-30 17:35:43 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 17:35:43 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 17:35:43 - INFO - 查询参数: [True]
+2025-06-30 17:35:43 - INFO - 查询参数: [True]
+2025-06-30 17:35:43 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = %s
+2025-06-30 17:35:43 - INFO - 查询参数: [True]
+2025-06-30 17:35:43 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:36:16 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:36:17 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:36:22 - INFO - 数据库连接成功
+2025-06-30 17:36:22 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:36:22 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:36:22 - INFO - 查询参数: []
+2025-06-30 17:36:22 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:36:22 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:36:22 - INFO - 数据库连接成功
+2025-06-30 17:36:22 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:36:22 - INFO - 数据库连接成功
+2025-06-30 17:36:22 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:36:22 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:36:22 - INFO - 查询参数: []
+2025-06-30 17:36:22 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:36:22 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:36:22 - INFO - 查询参数: []
+2025-06-30 17:36:22 - INFO - 查询参数: []
+2025-06-30 17:36:22 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:36:28 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前心力衰竭且有中度以上主动脉瓣反流的患者
+2025-06-30 17:36:35 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND aortic_valve_regurgitation_grade IN ('Moderate', 'Severe')
+2025-06-30 17:36:35 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = 1 AND aortic_valve_regurgitation_grade IN ('Moderate', 'Severe')
+2025-06-30 17:36:35 - INFO - 提取的WHERE子句: death_before_discharge = 1 AND aortic_valve_regurgitation_grade IN ('Moderate', 'Severe')
+2025-06-30 17:36:35 - WARNING - 无法映射SQL列 'aortic_valve_regurgitation_grade' 到filter key。
+2025-06-30 17:36:35 - INFO - 从SQL成功解析出filters对象: {'death_before_discharge': True}
+2025-06-30 17:36:36 - INFO - 数据库连接成功
+2025-06-30 17:36:36 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 17:36:36 - INFO - 添加出院前死亡筛选: True
+2025-06-30 17:36:36 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 17:36:36 - INFO - 查询参数: [True]
+2025-06-30 17:36:36 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True}
+2025-06-30 17:36:36 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:36:36 - INFO - 数据库连接成功
+2025-06-30 17:36:36 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 17:36:36 - INFO - 添加出院前死亡筛选: True
+2025-06-30 17:36:36 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 17:36:36 - INFO - 数据库连接成功
+2025-06-30 17:36:36 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True}
+2025-06-30 17:36:36 - INFO - 添加出院前死亡筛选: True
+2025-06-30 17:36:36 - INFO - 最终WHERE子句: death_before_discharge = %s
+2025-06-30 17:36:36 - INFO - 查询参数: [True]
+2025-06-30 17:36:36 - INFO - 查询参数: [True]
+2025-06-30 17:36:36 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = %s
+2025-06-30 17:36:36 - INFO - 查询参数: [True]
+2025-06-30 17:36:36 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:40:22 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:40:52 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:41:05 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:41:17 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:42:09 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:42:10 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:43:50 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:43:51 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:44:01 - INFO - 数据库连接成功
+2025-06-30 17:44:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:44:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:44:01 - INFO - 查询参数: []
+2025-06-30 17:44:01 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:44:01 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:44:01 - INFO - 数据库连接成功
+2025-06-30 17:44:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:44:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:44:01 - INFO - 查询参数: []
+2025-06-30 17:44:01 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:44:01 - INFO - 查询参数: []
+2025-06-30 17:44:01 - INFO - 数据库连接成功
+2025-06-30 17:44:01 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:44:01 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:44:01 - INFO - 查询参数: []
+2025-06-30 17:44:01 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:44:25 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前心力衰竭且有中度以上主动脉瓣反流的患者
+2025-06-30 17:44:32 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE heart_failure = 1 AND death_before_discharge = 0 AND moderate_severe_ar = 1
+2025-06-30 17:44:32 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE heart_failure = 1 AND death_before_discharge = 0 AND moderate_severe_ar = 1
+2025-06-30 17:44:32 - INFO - 提取的WHERE子句: heart_failure = 1 AND death_before_discharge = 0 AND moderate_severe_ar = 1
+2025-06-30 17:44:32 - WARNING - 无法映射SQL列 'moderate_severe_ar' 到filter key。
+2025-06-30 17:44:32 - INFO - 从SQL成功解析出filters对象: {'heart_failure': True, 'death_before_discharge': False}
+2025-06-30 17:44:32 - INFO - 数据库连接成功
+2025-06-30 17:44:32 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': False, 'heart_failure': True}
+2025-06-30 17:44:32 - INFO - 添加出院前死亡筛选: False
+2025-06-30 17:44:32 - INFO - 添加心衰筛选: True
+2025-06-30 17:44:32 - INFO - 最终WHERE子句: death_before_discharge = %s AND heart_failure = %s
+2025-06-30 17:44:32 - INFO - 查询参数: [False, True]
+2025-06-30 17:44:32 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': False, 'heart_failure': True}
+2025-06-30 17:44:32 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:44:32 - INFO - 数据库连接成功
+2025-06-30 17:44:32 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': False, 'heart_failure': True}
+2025-06-30 17:44:32 - INFO - 添加出院前死亡筛选: False
+2025-06-30 17:44:32 - INFO - 添加心衰筛选: True
+2025-06-30 17:44:32 - INFO - 最终WHERE子句: death_before_discharge = %s AND heart_failure = %s
+2025-06-30 17:44:32 - INFO - 查询参数: [False, True]
+2025-06-30 17:44:32 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE death_before_discharge = %s AND heart_failure = %s
+2025-06-30 17:44:32 - INFO - 查询参数: [False, True]
+2025-06-30 17:44:32 - INFO - 数据库连接成功
+2025-06-30 17:44:32 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': False, 'heart_failure': True}
+2025-06-30 17:44:32 - INFO - 添加出院前死亡筛选: False
+2025-06-30 17:44:32 - INFO - 添加心衰筛选: True
+2025-06-30 17:44:32 - INFO - 最终WHERE子句: death_before_discharge = %s AND heart_failure = %s
+2025-06-30 17:44:32 - INFO - 查询参数: [False, True]
+2025-06-30 17:44:32 - INFO - 查询成功，返回 8 条记录
+2025-06-30 17:48:45 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:49:18 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:49:49 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:49:50 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:50:23 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:50:25 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:52:01 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:52:03 - INFO - 启动TAVI智能分析系统API服务...
+2025-06-30 17:52:08 - INFO - 数据库连接成功
+2025-06-30 17:52:08 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:52:08 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:52:08 - INFO - 查询参数: []
+2025-06-30 17:52:08 - INFO - 收到数据请求 - 筛选条件: {}
+2025-06-30 17:52:08 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:52:08 - INFO - 数据库连接成功
+2025-06-30 17:52:08 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:52:08 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:52:08 - INFO - 查询参数: []
+2025-06-30 17:52:08 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-06-30 17:52:08 - INFO - 查询参数: []
+2025-06-30 17:52:09 - INFO - 数据库连接成功
+2025-06-30 17:52:09 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-06-30 17:52:09 - INFO - 最终WHERE子句: 1=1
+2025-06-30 17:52:09 - INFO - 查询参数: []
+2025-06-30 17:52:09 - INFO - 查询成功，返回 20 条记录
+2025-06-30 17:52:14 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 出院前心力衰竭且有中度以上主动脉瓣反流的患者
+2025-06-30 17:52:19 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE heart_failure = 1 AND moderate_severe_ar = 1
+2025-06-30 17:52:19 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE heart_failure = 1 AND moderate_severe_ar = 1
+2025-06-30 17:52:19 - INFO - 提取的WHERE子句: heart_failure = 1 AND moderate_severe_ar = 1
+2025-06-30 17:52:19 - INFO - 从SQL成功解析出filters对象: {'heart_failure': True, 'moderate_severe_ar': True}
+2025-06-30 17:52:19 - INFO - 数据库连接成功
+2025-06-30 17:52:19 - INFO - 开始构建WHERE子句，筛选条件: {'heart_failure': True, 'moderate_severe_ar': True}
+2025-06-30 17:52:19 - INFO - 添加心衰筛选: True
+2025-06-30 17:52:19 - INFO - 最终WHERE子句: heart_failure = %s
+2025-06-30 17:52:19 - INFO - 查询参数: [True]
+2025-06-30 17:52:20 - INFO - 收到数据请求 - 筛选条件: {'heart_failure': True, 'moderate_severe_ar': True}
+2025-06-30 17:52:20 - INFO - 页码: 1, 每页大小: 20
+2025-06-30 17:52:20 - INFO - 数据库连接成功
+2025-06-30 17:52:20 - INFO - 开始构建WHERE子句，筛选条件: {'heart_failure': True, 'moderate_severe_ar': True}
+2025-06-30 17:52:20 - INFO - 数据库连接成功
+2025-06-30 17:52:20 - INFO - 添加心衰筛选: True
+2025-06-30 17:52:20 - INFO - 开始构建WHERE子句，筛选条件: {'heart_failure': True, 'moderate_severe_ar': True}
+2025-06-30 17:52:20 - INFO - 最终WHERE子句: heart_failure = %s
+2025-06-30 17:52:20 - INFO - 添加心衰筛选: True
+2025-06-30 17:52:20 - INFO - 最终WHERE子句: heart_failure = %s
+2025-06-30 17:52:20 - INFO - 查询参数: [True]
+2025-06-30 17:52:20 - INFO - 查询参数: [True]
+2025-06-30 17:52:20 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE heart_failure = %s
+2025-06-30 17:52:20 - INFO - 查询参数: [True]
+2025-06-30 17:52:20 - INFO - 查询成功，返回 20 条记录
+2025-07-02 09:37:52 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 09:37:53 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 09:38:35 - INFO - 数据库连接成功
+2025-07-02 09:38:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:38:35 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:38:35 - INFO - 查询参数: []
+2025-07-02 09:38:35 - INFO - 收到数据请求 - 筛选条件: {}
+2025-07-02 09:38:35 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 09:38:35 - INFO - 数据库连接成功
+2025-07-02 09:38:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:38:35 - INFO - 数据库连接成功
+2025-07-02 09:38:35 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:38:35 - INFO - 查询参数: []
+2025-07-02 09:38:35 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:38:35 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-07-02 09:38:35 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:38:35 - INFO - 查询参数: []
+2025-07-02 09:38:35 - INFO - 查询参数: []
+2025-07-02 09:38:35 - INFO - 查询成功，返回 20 条记录
+2025-07-02 09:39:32 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣架移位且出院前死亡的男性患者
+2025-07-02 09:39:36 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1 AND death_before_discharge = 1 AND sex = 'Male'
+2025-07-02 09:39:36 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1 AND death_before_discharge = 1 AND sex = 'Male'
+2025-07-02 09:39:36 - INFO - 提取的WHERE子句: immediate_pvl_occurred = 1 AND death_before_discharge = 1 AND sex = 'Male'
+2025-07-02 09:39:36 - INFO - 从SQL成功解析出filters对象: {'immediate_pvl_occurred': True, 'death_before_discharge': True, 'gender': ['Male']}
+2025-07-02 09:39:37 - INFO - 数据库连接成功
+2025-07-02 09:39:37 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:39:37 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:39:37 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:39:37 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:39:37 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:39:37 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:39:37 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:39:37 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 09:39:37 - INFO - 数据库连接成功
+2025-07-02 09:39:37 - INFO - 数据库连接成功
+2025-07-02 09:39:37 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:39:37 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:39:37 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:39:37 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:39:37 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:39:37 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:39:37 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:39:37 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:39:37 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:39:37 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:39:37 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:39:37 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:39:37 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:39:37 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:39:37 - INFO - 查询成功，返回 4 条记录
+2025-07-02 09:45:16 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣环撕裂且出院前死亡的男性患者
+2025-07-02 09:45:22 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE sex = 'Male' AND death_before_discharge = 1 AND immediate_pvl_occurred = 1
+2025-07-02 09:45:22 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE sex = 'Male' AND death_before_discharge = 1 AND immediate_pvl_occurred = 1
+2025-07-02 09:45:22 - INFO - 提取的WHERE子句: sex = 'Male' AND death_before_discharge = 1 AND immediate_pvl_occurred = 1
+2025-07-02 09:45:22 - INFO - 从SQL成功解析出filters对象: {'gender': ['Male'], 'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:45:22 - INFO - 数据库连接成功
+2025-07-02 09:45:22 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:45:22 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:45:22 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:45:22 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:45:22 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:45:22 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:45:22 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:45:22 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 09:45:22 - INFO - 数据库连接成功
+2025-07-02 09:45:22 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:45:22 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:45:22 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:45:22 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:45:22 - INFO - 数据库连接成功
+2025-07-02 09:45:22 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:45:22 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:45:22 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:45:22 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:45:22 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:45:22 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:45:22 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:45:22 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:45:22 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:45:22 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:45:23 - INFO - 查询成功，返回 4 条记录
+2025-07-02 09:45:58 - INFO - 数据库连接成功
+2025-07-02 09:45:58 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:45:58 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:45:58 - INFO - 查询参数: []
+2025-07-02 09:45:58 - INFO - 收到数据请求 - 筛选条件: {}
+2025-07-02 09:45:58 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 09:45:58 - INFO - 数据库连接成功
+2025-07-02 09:45:58 - INFO - 数据库连接成功
+2025-07-02 09:45:58 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:45:58 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:45:58 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:45:58 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:45:58 - INFO - 查询参数: []
+2025-07-02 09:45:58 - INFO - 查询参数: []
+2025-07-02 09:45:58 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-07-02 09:45:58 - INFO - 查询参数: []
+2025-07-02 09:45:58 - INFO - 查询成功，返回 20 条记录
+2025-07-02 09:46:09 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣环撕裂且出院前死亡的男性患者
+2025-07-02 09:46:13 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1 AND death_before_discharge = 1 AND sex = 'Male'
+2025-07-02 09:46:13 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1 AND death_before_discharge = 1 AND sex = 'Male'
+2025-07-02 09:46:13 - INFO - 提取的WHERE子句: immediate_pvl_occurred = 1 AND death_before_discharge = 1 AND sex = 'Male'
+2025-07-02 09:46:13 - INFO - 从SQL成功解析出filters对象: {'immediate_pvl_occurred': True, 'death_before_discharge': True, 'gender': ['Male']}
+2025-07-02 09:46:13 - INFO - 数据库连接成功
+2025-07-02 09:46:13 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:46:13 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:46:13 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:46:13 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:46:13 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:46:13 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:46:14 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:46:14 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 09:46:14 - INFO - 数据库连接成功
+2025-07-02 09:46:14 - INFO - 数据库连接成功
+2025-07-02 09:46:14 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:46:14 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'gender': ['Male'], 'immediate_pvl_occurred': True}
+2025-07-02 09:46:14 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:46:14 - INFO - 添加性别筛选: ['Male']
+2025-07-02 09:46:14 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:46:14 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:46:14 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:46:14 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:46:14 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:46:14 - INFO - 最终WHERE子句: sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:46:14 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:46:14 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:46:14 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE sex IN (%s) AND immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:46:14 - INFO - 查询参数: ['Male', True, True]
+2025-07-02 09:46:14 - INFO - 查询成功，返回 4 条记录
+2025-07-02 09:56:25 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 09:56:27 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 09:56:56 - INFO - 数据库连接成功
+2025-07-02 09:56:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:56:56 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:56:56 - INFO - 查询参数: []
+2025-07-02 09:56:56 - INFO - 收到数据请求 - 筛选条件: {}
+2025-07-02 09:56:56 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 09:56:56 - INFO - 数据库连接成功
+2025-07-02 09:56:56 - INFO - 数据库连接成功
+2025-07-02 09:56:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:56:56 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 09:56:56 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:56:56 - INFO - 最终WHERE子句: 1=1
+2025-07-02 09:56:56 - INFO - 查询参数: []
+2025-07-02 09:56:56 - INFO - 查询参数: []
+2025-07-02 09:56:56 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-07-02 09:56:56 - INFO - 查询参数: []
+2025-07-02 09:56:56 - INFO - 查询成功，返回 20 条记录
+2025-07-02 09:57:30 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣架移位且出院前死亡的患者
+2025-07-02 09:57:35 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1 AND death_before_discharge = 1
+2025-07-02 09:57:35 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1 AND death_before_discharge = 1
+2025-07-02 09:57:35 - INFO - 提取的WHERE子句: immediate_pvl_occurred = 1 AND death_before_discharge = 1
+2025-07-02 09:57:35 - INFO - 从SQL成功解析出filters对象: {'immediate_pvl_occurred': True, 'death_before_discharge': True}
+2025-07-02 09:57:35 - INFO - 数据库连接成功
+2025-07-02 09:57:35 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:57:35 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:57:35 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:57:35 - INFO - 最终WHERE子句: immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:57:35 - INFO - 查询参数: [True, True]
+2025-07-02 09:57:35 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:57:35 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 09:57:35 - INFO - 数据库连接成功
+2025-07-02 09:57:35 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:57:35 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:57:35 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:57:35 - INFO - 最终WHERE子句: immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:57:35 - INFO - 查询参数: [True, True]
+2025-07-02 09:57:35 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:57:35 - INFO - 查询参数: [True, True]
+2025-07-02 09:57:35 - INFO - 数据库连接成功
+2025-07-02 09:57:35 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:57:35 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:57:35 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:57:35 - INFO - 最终WHERE子句: immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:57:35 - INFO - 查询参数: [True, True]
+2025-07-02 09:57:35 - INFO - 查询成功，返回 11 条记录
+2025-07-02 09:57:55 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣环撕裂且出院前死亡的患者
+2025-07-02 09:58:00 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1 AND death_before_discharge = 1
+2025-07-02 09:58:00 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1 AND death_before_discharge = 1
+2025-07-02 09:58:00 - INFO - 提取的WHERE子句: immediate_pvl_occurred = 1 AND death_before_discharge = 1
+2025-07-02 09:58:00 - INFO - 从SQL成功解析出filters对象: {'immediate_pvl_occurred': True, 'death_before_discharge': True}
+2025-07-02 09:58:00 - INFO - 数据库连接成功
+2025-07-02 09:58:00 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:58:00 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:58:00 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:58:00 - INFO - 最终WHERE子句: immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:58:00 - INFO - 查询参数: [True, True]
+2025-07-02 09:58:01 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:58:01 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 09:58:01 - INFO - 数据库连接成功
+2025-07-02 09:58:01 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:58:01 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:58:01 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:58:01 - INFO - 最终WHERE子句: immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:58:01 - INFO - 查询参数: [True, True]
+2025-07-02 09:58:01 - INFO - 查询成功，返回 11 条记录
+2025-07-02 09:58:01 - INFO - 数据库连接成功
+2025-07-02 09:58:01 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'immediate_pvl_occurred': True}
+2025-07-02 09:58:01 - INFO - 添加术后即刻瓣周漏筛选: True
+2025-07-02 09:58:01 - INFO - 添加出院前死亡筛选: True
+2025-07-02 09:58:01 - INFO - 最终WHERE子句: immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:58:01 - INFO - 查询参数: [True, True]
+2025-07-02 09:58:01 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = %s AND death_before_discharge = %s
+2025-07-02 09:58:01 - INFO - 查询参数: [True, True]
+2025-07-02 10:07:13 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 10:08:36 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 10:08:49 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣架移位且出院前死亡的患者
+2025-07-02 10:08:54 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE thv_displacement = 1 AND death_before_discharge = 1
+2025-07-02 10:08:54 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE thv_displacement = 1 AND death_before_discharge = 1
+2025-07-02 10:08:54 - INFO - 提取的WHERE子句: thv_displacement = 1 AND death_before_discharge = 1
+2025-07-02 10:08:54 - INFO - 从SQL成功解析出filters对象: {'thv_displacement': True, 'death_before_discharge': True}
+2025-07-02 10:08:54 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣环撕裂且出院前死亡的患者
+2025-07-02 10:08:59 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE annular_rupture = 1 AND death_before_discharge = 1
+2025-07-02 10:08:59 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE annular_rupture = 1 AND death_before_discharge = 1
+2025-07-02 10:08:59 - INFO - 提取的WHERE子句: annular_rupture = 1 AND death_before_discharge = 1
+2025-07-02 10:08:59 - INFO - 从SQL成功解析出filters对象: {'annular_rupture': True, 'death_before_discharge': True}
+2025-07-02 10:08:59 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 严重错位的男性患者
+2025-07-02 10:09:03 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE prosthesis_malposition = 1 AND sex = 'Male'
+2025-07-02 10:09:03 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE prosthesis_malposition = 1 AND sex = 'Male'
+2025-07-02 10:09:03 - INFO - 提取的WHERE子句: prosthesis_malposition = 1 AND sex = 'Male'
+2025-07-02 10:09:03 - INFO - 从SQL成功解析出filters对象: {'prosthesis_malposition': True, 'gender': ['Male']}
+2025-07-02 10:09:03 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 术后即刻瓣周漏的患者
+2025-07-02 10:09:06 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1
+2025-07-02 10:09:06 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE immediate_pvl_occurred = 1
+2025-07-02 10:09:06 - INFO - 提取的WHERE子句: immediate_pvl_occurred = 1
+2025-07-02 10:09:06 - INFO - 从SQL成功解析出filters对象: {'immediate_pvl_occurred': True}
+2025-07-02 10:16:29 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 10:16:33 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 10:16:34 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 10:17:06 - INFO - 数据库连接成功
+2025-07-02 10:17:06 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 10:17:06 - INFO - 最终WHERE子句: 1=1
+2025-07-02 10:17:06 - INFO - 查询参数: []
+2025-07-02 10:17:06 - INFO - 收到数据请求 - 筛选条件: {}
+2025-07-02 10:17:06 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 10:17:06 - INFO - 数据库连接成功
+2025-07-02 10:17:06 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 10:17:06 - INFO - 最终WHERE子句: 1=1
+2025-07-02 10:17:06 - INFO - 查询参数: []
+2025-07-02 10:17:06 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-07-02 10:17:06 - INFO - 查询参数: []
+2025-07-02 10:17:06 - INFO - 数据库连接成功
+2025-07-02 10:17:06 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 10:17:06 - INFO - 最终WHERE子句: 1=1
+2025-07-02 10:17:06 - INFO - 查询参数: []
+2025-07-02 10:17:06 - INFO - 查询成功，返回 20 条记录
+2025-07-02 10:17:56 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣环撕裂且出院前死亡的患者
+2025-07-02 10:18:02 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE annular_rupture = 1 AND death_before_discharge = 1
+2025-07-02 10:18:02 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE annular_rupture = 1 AND death_before_discharge = 1
+2025-07-02 10:18:02 - INFO - 提取的WHERE子句: annular_rupture = 1 AND death_before_discharge = 1
+2025-07-02 10:18:02 - INFO - 从SQL成功解析出filters对象: {'annular_rupture': True, 'death_before_discharge': True}
+2025-07-02 10:18:02 - INFO - 数据库连接成功
+2025-07-02 10:18:02 - INFO - 开始构建WHERE子句，筛选条件: {'annular_rupture': True, 'death_before_discharge': True}
+2025-07-02 10:18:02 - INFO - 添加瓣环撕裂筛选: True
+2025-07-02 10:18:02 - INFO - 添加出院前死亡筛选: True
+2025-07-02 10:18:02 - INFO - 最终WHERE子句: annular_rupture = %s AND death_before_discharge = %s
+2025-07-02 10:18:02 - INFO - 查询参数: [True, True]
+2025-07-02 10:18:02 - INFO - 收到数据请求 - 筛选条件: {'annular_rupture': True, 'death_before_discharge': True}
+2025-07-02 10:18:02 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 10:18:02 - INFO - 数据库连接成功
+2025-07-02 10:18:02 - INFO - 数据库连接成功
+2025-07-02 10:18:02 - INFO - 开始构建WHERE子句，筛选条件: {'annular_rupture': True, 'death_before_discharge': True}
+2025-07-02 10:18:02 - INFO - 开始构建WHERE子句，筛选条件: {'annular_rupture': True, 'death_before_discharge': True}
+2025-07-02 10:18:02 - INFO - 添加瓣环撕裂筛选: True
+2025-07-02 10:18:02 - INFO - 添加瓣环撕裂筛选: True
+2025-07-02 10:18:02 - INFO - 添加出院前死亡筛选: True
+2025-07-02 10:18:02 - INFO - 最终WHERE子句: annular_rupture = %s AND death_before_discharge = %s
+2025-07-02 10:18:02 - INFO - 添加出院前死亡筛选: True
+2025-07-02 10:18:02 - INFO - 查询参数: [True, True]
+2025-07-02 10:18:02 - INFO - 最终WHERE子句: annular_rupture = %s AND death_before_discharge = %s
+2025-07-02 10:18:02 - INFO - 查询参数: [True, True]
+2025-07-02 10:18:02 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE annular_rupture = %s AND death_before_discharge = %s
+2025-07-02 10:18:02 - INFO - 查询参数: [True, True]
+2025-07-02 10:18:02 - INFO - 查询成功，返回 9 条记录
+2025-07-02 10:18:46 - INFO - [API] 收到Text-to-SQL-to-Filter请求: 手术中瓣架移位且出院前死亡的患者
+2025-07-02 10:18:50 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE thv_displacement = 1 AND death_before_discharge = 1
+2025-07-02 10:18:50 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE thv_displacement = 1 AND death_before_discharge = 1
+2025-07-02 10:18:50 - INFO - 提取的WHERE子句: thv_displacement = 1 AND death_before_discharge = 1
+2025-07-02 10:18:50 - INFO - 从SQL成功解析出filters对象: {'thv_displacement': True, 'death_before_discharge': True}
+2025-07-02 10:18:51 - INFO - 数据库连接成功
+2025-07-02 10:18:51 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'thv_displacement': True}
+2025-07-02 10:18:51 - INFO - 添加瓣架移位筛选: True
+2025-07-02 10:18:51 - INFO - 添加出院前死亡筛选: True
+2025-07-02 10:18:51 - INFO - 最终WHERE子句: thv_displacement = %s AND death_before_discharge = %s
+2025-07-02 10:18:51 - INFO - 查询参数: [True, True]
+2025-07-02 10:18:51 - INFO - 收到数据请求 - 筛选条件: {'death_before_discharge': True, 'thv_displacement': True}
+2025-07-02 10:18:51 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 10:18:51 - INFO - 数据库连接成功
+2025-07-02 10:18:51 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'thv_displacement': True}
+2025-07-02 10:18:51 - INFO - 添加瓣架移位筛选: True
+2025-07-02 10:18:51 - INFO - 添加出院前死亡筛选: True
+2025-07-02 10:18:51 - INFO - 最终WHERE子句: thv_displacement = %s AND death_before_discharge = %s
+2025-07-02 10:18:51 - INFO - 查询参数: [True, True]
+2025-07-02 10:18:51 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE thv_displacement = %s AND death_before_discharge = %s
+2025-07-02 10:18:51 - INFO - 查询参数: [True, True]
+2025-07-02 10:18:51 - INFO - 数据库连接成功
+2025-07-02 10:18:51 - INFO - 开始构建WHERE子句，筛选条件: {'death_before_discharge': True, 'thv_displacement': True}
+2025-07-02 10:18:51 - INFO - 添加瓣架移位筛选: True
+2025-07-02 10:18:51 - INFO - 添加出院前死亡筛选: True
+2025-07-02 10:18:51 - INFO - 最终WHERE子句: thv_displacement = %s AND death_before_discharge = %s
+2025-07-02 10:18:51 - INFO - 查询参数: [True, True]
+2025-07-02 10:18:51 - INFO - 查询成功，返回 3 条记录
+2025-07-02 10:19:45 - INFO - [API] 收到Text-to-SQL-to-Filter请求: BMI介于23到30且LVEF在5%-50%的患者
+2025-07-02 10:19:49 - INFO - [AI] 原始响应: SELECT * FROM tavi_patients WHERE bmi BETWEEN 23 AND 30 AND lvef BETWEEN 5 AND 50
+2025-07-02 10:19:49 - INFO - [AI] 提取的SQL: SELECT * FROM tavi_patients WHERE bmi BETWEEN 23 AND 30 AND lvef BETWEEN 5 AND 50
+2025-07-02 10:19:49 - INFO - 提取的WHERE子句: bmi BETWEEN 23 AND 30 AND lvef BETWEEN 5 AND 50
+2025-07-02 10:19:49 - INFO - 从SQL成功解析出filters对象: {'bmi_min': 23.0, 'bmi_max': 30.0, 'lvef_min': 5.0, 'lvef_max': 50.0}
+2025-07-02 10:19:50 - INFO - 数据库连接成功
+2025-07-02 10:19:50 - INFO - 开始构建WHERE子句，筛选条件: {'bmi_max': 30, 'bmi_min': 23, 'lvef_max': 50, 'lvef_min': 5}
+2025-07-02 10:19:50 - INFO - 添加BMI最小值筛选: 23
+2025-07-02 10:19:50 - INFO - 添加BMI最大值筛选: 30
+2025-07-02 10:19:50 - INFO - 添加LVEF最小值筛选: 5
+2025-07-02 10:19:50 - INFO - 添加LVEF最大值筛选: 50
+2025-07-02 10:19:50 - INFO - 最终WHERE子句: bmi >= %s AND bmi <= %s AND lvef >= %s AND lvef <= %s
+2025-07-02 10:19:50 - INFO - 查询参数: [23, 30, 5, 50]
+2025-07-02 10:19:50 - INFO - 收到数据请求 - 筛选条件: {'bmi_max': 30, 'bmi_min': 23, 'lvef_max': 50, 'lvef_min': 5}
+2025-07-02 10:19:50 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 10:19:50 - INFO - 数据库连接成功
+2025-07-02 10:19:50 - INFO - 开始构建WHERE子句，筛选条件: {'bmi_max': 30, 'bmi_min': 23, 'lvef_max': 50, 'lvef_min': 5}
+2025-07-02 10:19:50 - INFO - 添加BMI最小值筛选: 23
+2025-07-02 10:19:50 - INFO - 添加BMI最大值筛选: 30
+2025-07-02 10:19:50 - INFO - 添加LVEF最小值筛选: 5
+2025-07-02 10:19:50 - INFO - 添加LVEF最大值筛选: 50
+2025-07-02 10:19:50 - INFO - 最终WHERE子句: bmi >= %s AND bmi <= %s AND lvef >= %s AND lvef <= %s
+2025-07-02 10:19:50 - INFO - 查询参数: [23, 30, 5, 50]
+2025-07-02 10:19:50 - INFO - 图表查询SQL: SELECT * FROM tavi_patients WHERE bmi >= %s AND bmi <= %s AND lvef >= %s AND lvef <= %s
+2025-07-02 10:19:50 - INFO - 查询参数: [23, 30, 5, 50]
+2025-07-02 10:19:50 - INFO - 数据库连接成功
+2025-07-02 10:19:50 - INFO - 开始构建WHERE子句，筛选条件: {'bmi_max': 30, 'bmi_min': 23, 'lvef_max': 50, 'lvef_min': 5}
+2025-07-02 10:19:50 - INFO - 添加BMI最小值筛选: 23
+2025-07-02 10:19:50 - INFO - 添加BMI最大值筛选: 30
+2025-07-02 10:19:50 - INFO - 添加LVEF最小值筛选: 5
+2025-07-02 10:19:50 - INFO - 添加LVEF最大值筛选: 50
+2025-07-02 10:19:50 - INFO - 最终WHERE子句: bmi >= %s AND bmi <= %s AND lvef >= %s AND lvef <= %s
+2025-07-02 10:19:50 - INFO - 查询参数: [23, 30, 5, 50]
+2025-07-02 10:19:50 - INFO - 查询成功，返回 4 条记录
+2025-07-02 10:26:05 - INFO - 收到数据请求 - 筛选条件: {'patient_id': '10.1093_ehjcr_ytac486'}
+2025-07-02 10:26:05 - INFO - 页码: 1, 每页大小: 1
+2025-07-02 10:26:05 - INFO - 数据库连接成功
+2025-07-02 10:26:05 - INFO - 开始构建WHERE子句，筛选条件: {'patient_id': '10.1093_ehjcr_ytac486'}
+2025-07-02 10:26:05 - INFO - 添加DOI筛选: 10.1093_ehjcr_ytac486
+2025-07-02 10:26:05 - INFO - 最终WHERE子句: patient_id = %s
+2025-07-02 10:26:05 - INFO - 查询参数: ['10.1093_ehjcr_ytac486']
+2025-07-02 10:26:05 - INFO - 查询成功，返回 1 条记录
+2025-07-02 10:38:18 - INFO - 数据库连接成功
+2025-07-02 10:38:18 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 10:38:18 - INFO - 最终WHERE子句: 1=1
+2025-07-02 10:38:18 - INFO - 查询参数: []
+2025-07-02 10:38:18 - INFO - 收到数据请求 - 筛选条件: {}
+2025-07-02 10:38:18 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 10:38:18 - INFO - 数据库连接成功
+2025-07-02 10:38:18 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 10:38:18 - INFO - 最终WHERE子句: 1=1
+2025-07-02 10:38:18 - INFO - 数据库连接成功
+2025-07-02 10:38:18 - INFO - 查询参数: []
+2025-07-02 10:38:18 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 10:38:18 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-07-02 10:38:18 - INFO - 最终WHERE子句: 1=1
+2025-07-02 10:38:18 - INFO - 查询参数: []
+2025-07-02 10:38:18 - INFO - 查询参数: []
+2025-07-02 10:38:18 - INFO - 查询成功，返回 20 条记录
+2025-07-02 11:08:26 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 11:10:36 - INFO - 数据库连接成功
+2025-07-02 11:10:36 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:10:36 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:10:36 - INFO - 查询参数: []
+2025-07-02 11:10:36 - INFO - 收到数据请求 - 筛选条件: {}
+2025-07-02 11:10:36 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 11:10:36 - INFO - 数据库连接成功
+2025-07-02 11:10:36 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:10:36 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:10:36 - INFO - 查询参数: []
+2025-07-02 11:10:36 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-07-02 11:10:36 - INFO - 查询参数: []
+2025-07-02 11:10:36 - INFO - 数据库连接成功
+2025-07-02 11:10:36 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:10:36 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:10:36 - INFO - 查询参数: []
+2025-07-02 11:10:36 - INFO - 查询成功，返回 20 条记录
+2025-07-02 11:10:47 - INFO - 数据库连接成功
+2025-07-02 11:10:47 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:10:47 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:10:47 - INFO - 查询参数: []
+2025-07-02 11:10:47 - INFO - 收到数据请求 - 筛选条件: {}
+2025-07-02 11:10:47 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 11:10:47 - INFO - 数据库连接成功
+2025-07-02 11:10:47 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:10:47 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:10:47 - INFO - 数据库连接成功
+2025-07-02 11:10:47 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:10:47 - INFO - 查询参数: []
+2025-07-02 11:10:47 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:10:47 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-07-02 11:10:47 - INFO - 查询参数: []
+2025-07-02 11:10:47 - INFO - 查询参数: []
+2025-07-02 11:10:47 - INFO - 查询成功，返回 20 条记录
+2025-07-02 11:11:04 - INFO - 数据库连接成功
+2025-07-02 11:11:04 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:11:04 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:11:04 - INFO - 查询参数: []
+2025-07-02 11:11:04 - INFO - 收到数据请求 - 筛选条件: {}
+2025-07-02 11:11:04 - INFO - 页码: 1, 每页大小: 20
+2025-07-02 11:11:04 - INFO - 数据库连接成功
+2025-07-02 11:11:04 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:11:04 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:11:04 - INFO - 数据库连接成功
+2025-07-02 11:11:04 - INFO - 查询参数: []
+2025-07-02 11:11:04 - INFO - 开始构建WHERE子句，筛选条件: {}
+2025-07-02 11:11:04 - INFO - 图表查询SQL: SELECT * FROM tavi_patients
+2025-07-02 11:11:04 - INFO - 最终WHERE子句: 1=1
+2025-07-02 11:11:04 - INFO - 查询参数: []
+2025-07-02 11:11:04 - INFO - 查询参数: []
+2025-07-02 11:11:04 - INFO - 查询成功，返回 20 条记录
+2025-07-02 11:14:28 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 11:14:29 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 11:14:29 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 11:15:32 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 11:15:33 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 14:17:37 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 14:17:38 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 14:27:11 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 14:27:12 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 14:40:36 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 14:40:38 - INFO - 启动TAVI智能分析系统API服务...
+2025-07-02 15:14:08 - INFO - 启动TAVI智能分析系统API服务...

@@ -1,0 +1,39 @@
+/**
+ * TAVI预手术评估系统模态框组件样式
+ */
+
+/* 模态框内标题样式 */
+.modal-body h6 {
+    background-color: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+/* 统计卡片内大字体文本样式 */
+.card-text.fs-1 {
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+/* 病例详情表格样式 */
+.modal-body .table th {
+    white-space: nowrap;
+    min-width: 120px;
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* 表格单元格样式 */
+.modal-body .table td {
+    word-break: break-word; /* 长文本自动换行 */
+}
+
+/* 病例详情中的基本信息和报告信息表格布局 */
+.modal-body .table th[scope="row"] {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+    white-space: nowrap;
+    background-color: #f8f9fa;
+} 

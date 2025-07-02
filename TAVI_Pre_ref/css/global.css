@@ -1,0 +1,59 @@
+/**
+ * TAVI预手术评估系统全局样式
+ * 定义全局共用的基础样式
+ */
+
+/* 定义整个页面的基本字体和背景 */
+body {
+    font-family: 'Noto Sans SC', 'Microsoft YaHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    /* 创建柔和的渐变背景效果，增加视觉层次感 */
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(42, 100, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(42, 100, 246, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+}
+
+/* 加载中旋转动画样式 */
+.loading {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0.25rem solid rgba(13, 110, 253, 0.25);
+    border-right-color: #0d6efd; /* 右侧边框高亮 */
+    border-radius: 50%;
+    animation: spinner 0.75s linear infinite;
+}
+
+/* 旋转动画定义 */
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 状态标签基础样式 */
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* 成功状态标签 - 绿色 */
+.status-badge.success {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+/* 危险状态标签 - 红色 */
+.status-badge.danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+/* 警告状态标签 - 黄色 */
+.status-badge.warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+} 

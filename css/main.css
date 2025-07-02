@@ -688,9 +688,12 @@ body {
     /* 初始位置 */
     bottom: 30px;
     right: 50px; /* 您可以微调这个值，比如 50px */
-    z-index: 1050;
+    z-index: 2000; /* 🔧 提高z-index确保不被覆盖 */
     /* 容器本身不响应鼠标事件，让内部元素决定 */
-    pointer-events: none; 
+    pointer-events: none;
+    /* 🔧 确保widget始终可见 */
+    display: block !important;
+    visibility: visible !important;
 }
 
 /* 只有内部元素可点击 */
@@ -708,16 +711,17 @@ body {
     font-size: 36px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    display: flex;
+    display: flex !important; /* 🔧 确保按钮始终显示 */
     justify-content: center;
     align-items: center;
     transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-    z-index: 2;
+    z-index: 2001; /* 🔧 提高z-index */
     animation: ragflow-breathing-glow 3s infinite ease-in-out;
     /* 让悬浮球在widget容器内绝对定位，以便拖拽计算 */
     position: absolute;
     bottom: 0;
     right: 0;
+    visibility: visible !important; /* 🔧 确保可见 */
 }
 
 .chat-toggle-btn:hover {

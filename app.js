@@ -3,9 +3,16 @@ let currentPage = 1;
 const casesPerPage = 20;
 let charts = {};
 let currentFilters = {};
+let fieldMapping = {};  // 字段映射知识库
 
 // API配置
 const API_BASE_URL = 'http://localhost:5000/api';
+
+// 智能筛选配置
+const INTELLIGENT_FILTER_CONFIG = {
+    useKnowledgeBase: true,  // 控制是否使用知识库辅助智能筛选
+    knowledgeBasePath: './data/tavi_field_mapping.json'  // 知识库文件路径
+};
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
@@ -14,14 +21,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 初始化应用
 async function initializeApp() {
-    // 绑定事件监听器
-    bindEventListeners();
-    
-    // 初始化图表
-    initializeCharts();
-    
-    // 加载初始数据
-    await loadInitialData();
+    try {
+        // 绑定事件监听器
+        bindEventListeners();
+        
+        // 初始化图表
+        initializeCharts();
+        
+        // 加载知识库（如果启用）
+        if (INTELLIGENT_FILTER_CONFIG.useKnowledgeBase) {
+            await loadFieldMappingKnowledgeBase();
+        }
+        
+        // 加载初始数据
+        await loadInitialData();
+    } catch (error) {
+        console.error('应用初始化失败:', error);
+        showError('应用初始化失败，请刷新页面重试');
+    }
+}
+
+// 加载字段映射知识库
+async function loadFieldMappingKnowledgeBase() {
+    try {
+        console.log('正在加载字段映射知识库...');
+        const response = await fetch(INTELLIGENT_FILTER_CONFIG.knowledgeBasePath);
+        if (!response.ok) {
+            throw new Error(`无法加载知识库文件: ${response.status}`);
+        }
+        fieldMapping = await response.json();
+        console.log('字段映射知识库加载成功:', fieldMapping);
+    } catch (error) {
+        console.warn('字段映射知识库加载失败，将使用默认映射:', error);
+        // 提供基本的默认映射
+        fieldMapping = {
+            field_mapping: {
+                "基线资料": {
+                    "年龄": "age",
+                    "性别": "sex",
+                    "BMI": "bmi"
+                }
+            }
+        };
+    }
 }
 
 // 加载初始数据
@@ -430,11 +472,24 @@ async function handleNaturalLanguageFilter() {
     showLoading(true);
 
     try {
+        // 准备请求数据
+        const requestData = { query };
+        
+        // 如果启用知识库，添加知识库信息到请求中
+        if (INTELLIGENT_FILTER_CONFIG.useKnowledgeBase && fieldMapping.field_mapping) {
+            requestData.knowledge_base = {
+                field_mapping: fieldMapping.field_mapping,
+                data_type_info: fieldMapping.data_type_info,
+                units: fieldMapping.units
+            };
+            console.log('已加载知识库辅助AI解析:', requestData.knowledge_base);
+        }
+
         // 1. 调用API，获取由自然语言转换而来的filters对象
         const response = await fetch(`${API_BASE_URL}/text-to-sql-to-filter`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query })
+            body: JSON.stringify(requestData)
         });
 
         if (!response.ok) {
@@ -460,15 +515,10 @@ async function handleNaturalLanguageFilter() {
         ]);
         
         console.log('智能筛选数据加载完成。');
-        showFilterResult(); // 显示“筛选完成”的成功提示
+        showFilterResult(); // 显示"筛选完成"的成功提示
 
-        // 5. (可选但推荐) 清空UI上的所有筛选条件
-        // 这样做是为了明确告诉用户，当前数据结果与UI控件上的值无关
-        document.querySelectorAll('.filter-sidebar input[type="text"], .filter-sidebar input[type="number"]').forEach(i => i.value = '');
-        document.querySelectorAll('.filter-sidebar input[type="checkbox"], .filter-sidebar input[type="radio"]').forEach(i => i.checked = false);
-        document.querySelectorAll('.filter-sidebar select').forEach(s => s.value = '');
-        updateFilterVisualFeedback();
-
+        // 5. 【新功能】将AI解析的筛选条件映射到UI控件中，实现可解释的筛选显示
+        applyFiltersToUI(currentFilters);
 
     } catch (error) {
         console.error('智能筛选失败:', error);
@@ -1377,11 +1427,268 @@ async function showCaseDetail(patientId) {
                 <div class="col-md-6">${rightHtml}</div>
             </div>
         `;
+        
+        // 绑定查看论文详情按钮事件
+        document.getElementById('view-paper-details').onclick = () => showPaperDetail(patientId);
+        
         modal.show();
     } catch (error) {
         console.error('获取病例详情失败:', error);
         showError('获取病例详情失败，请重试');
     }
+}
+
+// 显示论文详情
+async function showPaperDetail(patientId) {
+    try {
+        // 从后端或本地数据源获取论文数据
+        const paperData = await getPaperDataByPatientId(patientId);
+        
+        if (!paperData) {
+            showError('未找到该患者对应的论文数据');
+            return;
+        }
+        
+        // 更新论文基本信息
+        document.getElementById('paper-doi').textContent = paperData.doi || 'N/A';
+        document.getElementById('paper-pmid').textContent = paperData.pmid || 'N/A';
+        document.getElementById('paper-year').textContent = paperData.year || 'N/A';
+        document.getElementById('paper-source').textContent = paperData.source || 'N/A';
+        document.getElementById('paper-author').textContent = paperData.author || 'N/A';
+        document.getElementById('paper-title').textContent = paperData.title || 'N/A';
+        document.getElementById('paper-abstract').textContent = paperData.abstract || 'N/A';
+        
+        // 加载论文配图
+        await loadPaperImages(paperData);
+        
+        // 显示论文详情模态框
+        const paperModal = new bootstrap.Modal(document.getElementById('paper-detail-modal'));
+        paperModal.show();
+        
+    } catch (error) {
+        console.error('获取论文详情失败:', error);
+        showError('获取论文详情失败，请重试');
+    }
+}
+
+// 根据患者ID获取论文数据
+async function getPaperDataByPatientId(patientId) {
+    try {
+        console.log(`正在查找患者ID ${patientId} 对应的论文数据...`);
+        
+        // 首先尝试从本地数据源获取
+        if (typeof taviCases !== 'undefined' && taviCases) {
+            console.log(`本地数据源中有 ${taviCases.length} 条记录`);
+            const caseData = taviCases.find(item => item.id === parseInt(patientId));
+            if (caseData) {
+                console.log(`找到匹配的论文数据:`, caseData.doi);
+                return caseData;
+            }
+        }
+        
+        // 尝试从后端数据获取（如果有对应的映射关系）
+        try {
+            const response = await fetch(`${API_BASE_URL}/data`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    filters: { patient_id: patientId },
+                    page: 1,
+                    page_size: 1
+                })
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                const patientData = result.data && result.data[0];
+                
+                if (patientData && patientData.doi) {
+                    // 尝试根据DOI查找论文数据
+                    const paperData = taviCases?.find(item => item.doi === patientData.doi);
+                    if (paperData) {
+                        console.log(`通过DOI找到匹配的论文数据:`, paperData.doi);
+                        return paperData;
+                    }
+                }
+            }
+        } catch (apiError) {
+            console.warn('后端API查询失败:', apiError);
+        }
+        
+        console.warn(`未找到患者ID ${patientId} 对应的论文数据`);
+        return null;
+        
+    } catch (error) {
+        console.error('获取论文数据失败:', error);
+        return null;
+    }
+}
+
+// 加载论文配图
+async function loadPaperImages(paperData) {
+    const imagesContainer = document.getElementById('paper-images-container');
+    
+    try {
+        // 显示加载中状态
+        imagesContainer.innerHTML = '<div class="loading-message"><i class="bi bi-clock"></i> 正在加载图片...</div>';
+        
+        // 检查是否有图片数据
+        if (!paperData.Files || !paperData.Files.Images || paperData.Files.Images.length === 0) {
+            imagesContainer.innerHTML = '<div class="alert alert-warning">该论文没有配图</div>';
+            return;
+        }
+        
+        // 清空容器
+        imagesContainer.innerHTML = '';
+        
+        // 渲染所有图片
+        paperData.Files.Images.forEach((image, index) => {
+            const imageContainer = createPaperImageContainer(image, index, paperData.doi);
+            imagesContainer.appendChild(imageContainer);
+        });
+        
+    } catch (error) {
+        console.error('加载论文配图失败:', error);
+        imagesContainer.innerHTML = '<div class="error-message">图片加载失败</div>';
+    }
+}
+
+// 创建论文图片容器
+function createPaperImageContainer(image, index, doi) {
+    // 创建主容器
+    const imageDiv = document.createElement('div');
+    imageDiv.className = 'image-container';
+    
+    // 创建图片包装器
+    const imageWrapper = document.createElement('div');
+    imageWrapper.className = 'image-wrapper';
+    
+    // 创建图注元素
+    const caption = document.createElement('p');
+    caption.className = 'image-caption';
+    caption.textContent = image.caption || '无图注';
+    
+    // 创建图片元素
+    const img = document.createElement('img');
+    
+    // 修正图片路径 - 使用正确的相对路径
+    const correctedPath = image.path.replace(/^.*extract_downloads/, './data/extract_downloads');
+    img.src = correctedPath;
+    img.alt = `论文配图 ${index + 1}`;
+    img.className = 'case-image';
+    
+    // 添加图片加载错误处理
+    img.onerror = function() {
+        handlePaperImageError(this, image.path, doi);
+    };
+    
+    // 添加图片点击放大功能
+    img.onclick = function() {
+        showImageModal(this.src, caption.textContent);
+    };
+    
+    // 按顺序添加元素
+    imageWrapper.appendChild(caption);
+    imageWrapper.appendChild(img);
+    imageDiv.appendChild(imageWrapper);
+    
+    return imageDiv;
+}
+
+// 处理论文图片加载错误
+function handlePaperImageError(imgElement, originalPath, doi) {
+    // 构建可能的DOI文件夹名称变体
+    const doiFolderVariations = [
+        doi,
+        doi.replace(/\./g, '_'),
+        doi + '.Cureus',
+        doi.replace(/\./g, '_') + '.Cureus'
+    ];
+    
+    // 构建图片文件名
+    const fileName = originalPath.split('/').pop();
+    
+    // 尝试多种可能的路径格式
+    const pathVariations = [
+        // 原始路径的修正版本
+        originalPath.replace(/^.*extract_downloads/, './data/extract_downloads'),
+        // 替换常见的基础路径
+        originalPath.replace('D:/Romy/SAIRI/TAVI/Code/extract_downloads', './data/extract_downloads'),
+        originalPath.replace(/^.*\/extract_downloads/, './data/extract_downloads'),
+        // 基于DOI构建路径
+        ...doiFolderVariations.map(folder => `./data/extract_downloads/${folder}/images/${fileName}`)
+    ];
+    
+    // 移除重复路径
+    const uniquePaths = [...new Set(pathVariations)];
+    
+    // 尝试下一个备用路径
+    const attemptCount = parseInt(imgElement.dataset.attemptCount || '0');
+    if (attemptCount < uniquePaths.length) {
+        imgElement.dataset.attemptCount = (attemptCount + 1).toString();
+        imgElement.src = uniquePaths[attemptCount];
+        console.log(`尝试加载图片路径 ${attemptCount + 1}/${uniquePaths.length}: ${uniquePaths[attemptCount]}`);
+        return;
+    }
+    
+    // 所有路径都失败，显示错误信息
+    console.error(`所有图片路径都失败，原始路径: ${originalPath}, DOI: ${doi}`);
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-warning';
+    errorDiv.innerHTML = `
+        <strong>图片无法加载</strong><br>
+        <small>已尝试多种路径格式，图片文件可能不存在</small>
+        <details class="mt-2">
+            <summary>调试信息</summary>
+            <small>原始路径: ${originalPath}<br>
+            DOI: ${doi}<br>
+            尝试的路径: ${uniquePaths.join('<br>')}</small>
+        </details>
+    `;
+    
+    // 替换图片元素
+    imgElement.parentNode.replaceChild(errorDiv, imgElement);
+}
+
+// 显示图片放大模态框
+function showImageModal(imageSrc, caption) {
+    // 创建临时模态框来显示大图
+    const modalHtml = `
+        <div class="modal fade" id="image-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">图片预览</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="${imageSrc}" class="img-fluid" alt="图片预览">
+                        <p class="mt-2 text-muted">${caption}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // 移除已存在的图片模态框
+    const existingModal = document.getElementById('image-modal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // 添加新的模态框
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // 显示模态框
+    const imageModal = new bootstrap.Modal(document.getElementById('image-modal'));
+    imageModal.show();
+    
+    // 模态框关闭后移除DOM元素
+    document.getElementById('image-modal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
 }
 
 // 显示筛选结果提示
@@ -1594,14 +1901,30 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 2. 确保所有关键元素都存在
     if (!toggleBtn || !chatContainer || !chatWidget || !chatHeader || !closeBtn || !guidanceBubble) {
-        console.error("RAGFlow Widget: One or more essential elements are missing from the DOM.");
+        console.error("🚨 RAGFlow Widget: One or more essential elements are missing from the DOM.");
+        console.log('🔧 RAGFlow 元素检查:', {
+            toggleBtn: !!toggleBtn,
+            chatContainer: !!chatContainer, 
+            chatWidget: !!chatWidget,
+            chatHeader: !!chatHeader,
+            closeBtn: !!closeBtn,
+            guidanceBubble: !!guidanceBubble
+        });
         return;
     }
     const iframe = chatContainer.querySelector('iframe');
     if (!iframe) {
-        console.error("RAGFlow Widget: Iframe element is missing.");
+        console.error("🚨 RAGFlow Widget: Iframe element is missing.");
         return;
     }
+    
+    console.log('✅ RAGFlow Widget: 所有关键元素已找到，开始初始化');
+    console.log('🔧 RAGFlow Widget位置:', {
+        display: getComputedStyle(chatWidget).display,
+        visibility: getComputedStyle(chatWidget).visibility,
+        zIndex: getComputedStyle(chatWidget).zIndex,
+        position: getComputedStyle(chatWidget).position
+    });
 
     // =================================================================
     // 模块一：引导气泡控制 (每次刷新都出现)
@@ -1631,8 +1954,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     guidanceBubble.addEventListener('click', handleBubbleClick);
     
+    // 🔧 修改：只在点击页面其他区域时隐藏引导气泡，不影响聊天窗口
     document.addEventListener('click', (e) => {
-        if (!chatWidget.contains(e.target)) {
+        // 只有当聊天窗口未打开时，才隐藏引导气泡
+        if (!chatWidget.contains(e.target) && !chatContainer.classList.contains('show')) {
             handleInteractionAndHideBubble();
         }
     }, true);
@@ -1648,28 +1973,54 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveWidgetPosition = (x, y) => localStorage.setItem('ragflow_widget_pos', JSON.stringify({ x, y }));
 
     const loadWidgetPosition = () => {
+        console.log('🔧 RAGFlow: 开始加载widget位置');
+        
         // 清理旧的样式，确保left/top生效
         chatWidget.style.right = 'auto';
         chatWidget.style.bottom = 'auto';
         
         const pos = JSON.parse(localStorage.getItem('ragflow_widget_pos'));
         if (pos) {
+            console.log('🔧 RAGFlow: 从localStorage加载位置:', pos);
             const winWidth = window.innerWidth, winHeight = window.innerHeight;
-            let newX = Math.max(0, Math.min(pos.x, winWidth - chatWidget.offsetWidth));
-            let newY = Math.max(0, Math.min(pos.y, winHeight - chatWidget.offsetHeight));
+            let newX = Math.max(20, Math.min(pos.x, winWidth - chatWidget.offsetWidth - 20));
+            let newY = Math.max(20, Math.min(pos.y, winHeight - chatWidget.offsetHeight - 20));
             chatWidget.style.left = newX + 'px';
             chatWidget.style.top = newY + 'px';
+            console.log('🔧 RAGFlow: 设置位置为:', newX, newY);
         } else {
             // 如果没有保存的位置，使用CSS的初始位置
-            // 我们需要手动计算left/top，因为现在是绝对定位
-            const initialRight = parseInt(getComputedStyle(chatWidget).right);
-            const initialBottom = parseInt(getComputedStyle(chatWidget).bottom);
-            chatWidget.style.left = (window.innerWidth - chatWidget.offsetWidth - initialRight) + 'px';
-            chatWidget.style.top = (window.innerHeight - chatWidget.offsetHeight - initialBottom) + 'px';
+            console.log('🔧 RAGFlow: 使用默认位置');
+            const initialRight = 50; // 固定边距，避免getComputedStyle问题
+            const initialBottom = 30;
+            const newX = window.innerWidth - chatWidget.offsetWidth - initialRight;
+            const newY = window.innerHeight - chatWidget.offsetHeight - initialBottom;
+            chatWidget.style.left = Math.max(20, newX) + 'px';
+            chatWidget.style.top = Math.max(20, newY) + 'px';
+            console.log('🔧 RAGFlow: 设置默认位置为:', newX, newY);
         }
+        
+        // 确保widget可见
+        chatWidget.style.display = 'block';
+        chatWidget.style.visibility = 'visible';
+        console.log('🔧 RAGFlow: widget位置加载完成');
     };
     // 延迟加载，确保widget渲染完毕获取正确尺寸
     setTimeout(loadWidgetPosition, 100);
+    
+    // 🔧 添加定期检查，确保widget不会意外消失
+    setInterval(() => {
+        if (chatWidget && (chatWidget.style.display === 'none' || chatWidget.style.visibility === 'hidden')) {
+            console.warn('🚨 RAGFlow: 检测到widget被隐藏，正在恢复显示');
+            chatWidget.style.display = 'block';
+            chatWidget.style.visibility = 'visible';
+        }
+        if (toggleBtn && (toggleBtn.style.display === 'none' || toggleBtn.style.visibility === 'hidden')) {
+            console.warn('🚨 RAGFlow: 检测到悬浮球被隐藏，正在恢复显示');
+            toggleBtn.style.display = 'flex';
+            toggleBtn.style.visibility = 'visible';
+        }
+    }, 5000); // 每5秒检查一次
 
     toggleBtn.addEventListener('mousedown', (e) => {
         isDraggingWidget = true;
@@ -1817,3 +2168,397 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
 });
+
+// ==================== START: 新增的将filters对象映射到UI控件的函数 ====================
+function applyFiltersToUI(filters) {
+    console.log('开始将filters对象映射到UI控件:', filters);
+    
+    // 1. 清空所有现有的筛选条件
+    document.querySelectorAll('.filter-content input[type="text"], .filter-content input[type="number"]').forEach(i => i.value = '');
+    document.querySelectorAll('.filter-content input[type="checkbox"], .filter-content input[type="radio"]').forEach(i => i.checked = false);
+    document.querySelectorAll('.filter-content select').forEach(s => s.value = '');
+    
+    // 用于存储解析结果摘要的数组
+    const filterSummary = [];
+    
+    // 2. 处理年龄范围
+    if (filters.age_min !== undefined || filters.age_max !== undefined) {
+        const ageMinInput = document.getElementById('age-min');
+        const ageMaxInput = document.getElementById('age-max');
+        
+        let ageText = '年龄';
+        if (filters.age_min !== undefined && filters.age_max !== undefined) {
+            if (ageMinInput) ageMinInput.value = filters.age_min;
+            if (ageMaxInput) ageMaxInput.value = filters.age_max;
+            ageText += `: ${filters.age_min}-${filters.age_max}岁`;
+        } else if (filters.age_min !== undefined) {
+            if (ageMinInput) ageMinInput.value = filters.age_min;
+            ageText += `: ≥${filters.age_min}岁`;
+        } else if (filters.age_max !== undefined) {
+            if (ageMaxInput) ageMaxInput.value = filters.age_max;
+            ageText += `: ≤${filters.age_max}岁`;
+        }
+        filterSummary.push({ type: 'basic-info', text: ageText, icon: 'bi-person' });
+    }
+    
+    // 3. 处理性别
+    if (filters.gender) {
+        const genders = Array.isArray(filters.gender) ? filters.gender : [filters.gender];
+        const genderTexts = [];
+        genders.forEach(gender => {
+            if (gender === 'Male' || gender === 'male') {
+                const maleCheckbox = document.getElementById('gender-male');
+                if (maleCheckbox) maleCheckbox.checked = true;
+                genderTexts.push('男性');
+            }
+            if (gender === 'Female' || gender === 'female') {
+                const femaleCheckbox = document.getElementById('gender-female');
+                if (femaleCheckbox) femaleCheckbox.checked = true;
+                genderTexts.push('女性');
+            }
+        });
+        if (genderTexts.length > 0) {
+            filterSummary.push({ type: 'basic-info', text: `性别: ${genderTexts.join('或')}`, icon: 'bi-gender-ambiguous' });
+        }
+    }
+    
+    // 4. 处理BMI范围
+    if (filters.bmi_min !== undefined || filters.bmi_max !== undefined) {
+        const bmiMinInput = document.getElementById('bmi-min');
+        const bmiMaxInput = document.getElementById('bmi-max');
+        
+        let bmiText = 'BMI';
+        if (filters.bmi_min !== undefined && filters.bmi_max !== undefined) {
+            if (bmiMinInput) bmiMinInput.value = filters.bmi_min;
+            if (bmiMaxInput) bmiMaxInput.value = filters.bmi_max;
+            bmiText += `: ${filters.bmi_min}-${filters.bmi_max}`;
+        } else if (filters.bmi_min !== undefined) {
+            if (bmiMinInput) bmiMinInput.value = filters.bmi_min;
+            bmiText += `: ≥${filters.bmi_min}`;
+        } else if (filters.bmi_max !== undefined) {
+            if (bmiMaxInput) bmiMaxInput.value = filters.bmi_max;
+            bmiText += `: ≤${filters.bmi_max}`;
+        }
+        filterSummary.push({ type: 'basic-info', text: bmiText, icon: 'bi-calculator' });
+    }
+    
+    // 5. 处理NYHA分级
+    if (filters.nyha_classification) {
+        const nyhaGrades = Array.isArray(filters.nyha_classification) ? filters.nyha_classification : [filters.nyha_classification];
+        nyhaGrades.forEach(grade => {
+            const nyhaCheckbox = document.getElementById(`nyha-${grade.toLowerCase()}`);
+            if (nyhaCheckbox) nyhaCheckbox.checked = true;
+        });
+        filterSummary.push({ type: 'basic-info', text: `NYHA分级: ${nyhaGrades.join('、')}`, icon: 'bi-heart' });
+    }
+    
+    // 6. 处理瓣膜类型
+    if (filters.thv_type) {
+        const valveTypeSelect = document.getElementById('valve-type');
+        if (valveTypeSelect) {
+            // 反向映射瓣膜类型
+            const valveTypeReverseMapping = { 
+                'Balloon-expandable': '球囊扩张式', 
+                'Self-expandable': '自膨胀式' 
+            };
+            const displayValue = valveTypeReverseMapping[filters.thv_type] || filters.thv_type;
+            valveTypeSelect.value = displayValue;
+            filterSummary.push({ type: 'surgery', text: `瓣膜类型: ${displayValue}`, icon: 'bi-gear' });
+        }
+    }
+    
+    // 7. 处理瓣膜品牌
+    if (filters.thv_brand) {
+        const valveBrandSelect = document.getElementById('valve-brand');
+        if (valveBrandSelect) {
+            valveBrandSelect.value = filters.thv_brand;
+            filterSummary.push({ type: 'surgery', text: `瓣膜品牌: ${filters.thv_brand}`, icon: 'bi-tag' });
+        }
+    }
+    
+    // 8. 处理布尔值筛选条件
+    // 从collectFilterValues中获取映射关系
+    const booleanMapping = {
+        // 基线资料
+        'atrial_fibrillation': { id: 'atrial-fibrillation', name: '房颤', type: 'basic-info' },
+        'myocardial_infarction': { id: 'myocardial-infarction', name: '心梗', type: 'basic-info' },
+        'pci_history': { id: 'pci-history', name: 'PCI史', type: 'basic-info' },
+        'cabg_history': { id: 'cabg-history', name: 'CABG史', type: 'basic-info' },
+        'diabetes_mellitus': { id: 'diabetes', name: '糖尿病', type: 'basic-info' },
+        'hypertension': { id: 'hypertension', name: '高血压', type: 'basic-info' },
+        'hyperlipidemia': { id: 'hyperlipidemia', name: '高脂血症', type: 'basic-info' },
+        'coronary_artery_disease': { id: 'coronary-artery-disease', name: '冠心病', type: 'basic-info' },
+        'copd': { id: 'copd', name: '慢阻肺', type: 'basic-info' },
+        'dialysis': { id: 'dialysis', name: '透析', type: 'basic-info' },
+        'acei_arb': { id: 'acei-arb', name: 'ACEI/ARB', type: 'basic-info' },
+        'beta_blocker': { id: 'beta-blocker', name: 'Beta受体阻滞剂', type: 'basic-info' },
+        'calcium_blocker': { id: 'calcium-blocker', name: '钙离子阻滞剂', type: 'basic-info' },
+        'diuretic': { id: 'diuretic', name: '利尿剂', type: 'basic-info' },
+        'aspirin': { id: 'aspirin', name: '阿司匹林', type: 'basic-info' },
+        'anticoagulant': { id: 'anticoagulant', name: '抗凝药', type: 'basic-info' },
+        'statins': { id: 'statins', name: '他汀类药物', type: 'basic-info' },
+        'sglt2_inhibitors': { id: 'sglt2-inhibitors', name: 'SGLT2抑制剂', type: 'basic-info' },
+        // 术前影像学评估
+        'moderate_severe_ar': { id: 'moderate-severe-ar', name: '中度以上主动脉瓣反流', type: 'imaging' },
+        'moderate_severe_mr': { id: 'moderate-severe-mr', name: '中度以上二尖瓣反流', type: 'imaging' },
+        // 手术信息
+        'transfemoral_access': { id: 'transfemoral-access', name: '经股动脉入路', type: 'surgery' },
+        'transapical_access': { id: 'transapical-access', name: '经心尖入路', type: 'surgery' },
+        'mean_pg_gte_20': { id: 'mean-pg-gte-20', name: '跨瓣压差≥20mmHg', type: 'surgery' },
+        'prosthesis_malposition': { id: 'prosthesis-malposition', name: '严重错位', type: 'surgery' },
+        'annular_rupture': { id: 'annular-rupture', name: '瓣环撕裂', type: 'surgery' },
+        'immediate_pvl_occurred': { id: 'immediate-pvl', name: '术后即刻瓣周漏', type: 'surgery' },
+        'thv_displacement': { id: 'valve-displacement', name: '瓣架移位', type: 'surgery' },
+        'conversion_to_savr': { id: 'conversion-to-savr', name: '转外科开胸', type: 'surgery' },
+        'cpb_required': { id: 'cpb-required', name: '转心肺转流', type: 'surgery' },
+        'valve_in_valve': { id: 'valve-in-valve', name: '瓣中瓣', type: 'surgery' },
+        'periprocedural_death': { id: 'periprocedural-death', name: '围术期死亡', type: 'surgery' },
+        'pre_dilation': { id: 'pre-dilatation', name: '预扩张', type: 'surgery' },
+        'post_dilation': { id: 'post-dilatation', name: '后扩张', type: 'surgery' },
+        'excessive_oversizing': { id: 'excessive-oversizing', name: '过大尺寸', type: 'surgery' },
+        'oversizing_gte_15': { id: 'oversizing-gte-15', name: '尺寸过大≥15%', type: 'surgery' },
+        // 出院前评价
+        'death_before_discharge': { id: 'death-before-discharge', name: '出院前死亡', type: 'discharge' },
+        'stroke_before_discharge': { id: 'stroke-before-discharge', name: '卒中', type: 'discharge' },
+        'major_bleeding': { id: 'major-bleeding', name: '大出血', type: 'discharge' },
+        'aki': { id: 'acute-kidney-injury', name: '急性肾衰', type: 'discharge' },
+        'major_vascular_complication': { id: 'major-vascular-complications', name: '严重血管并发症', type: 'discharge' },
+        'mi_ami': { id: 'mi-ami', name: '心肌梗死/急性心肌梗死', type: 'discharge' },
+        'heart_failure': { id: 'heart-failure', name: '心力衰竭', type: 'discharge' },
+        'all_cause_cv_death': { id: 'all-cause-cv-death', name: '所有原因死亡和心血管死亡', type: 'discharge' },
+        'pacemaker_implantation': { id: 'pacemaker-implantation', name: '起搏器植入', type: 'discharge' },
+        'pvl_detected': { id: 'pvl-detected', name: '瓣周漏', type: 'discharge' },
+        'acs_ihd': { id: 'acs-ihd', name: '急性冠脉综合征/缺血性心脏病', type: 'discharge' },
+        // 随访信息
+        'mortality_30d': { id: 'death-30-days', name: '30天全因死亡', type: 'followup' },
+        'mi_30d': { id: 'mi-30-days', name: '30天心梗', type: 'followup' },
+        'stroke_30d': { id: 'stroke-30-days', name: '30天卒中', type: 'followup' },
+        'hf_readmission_30d': { id: 'hf-readmission-30-days', name: '30天心衰再住院', type: 'followup' },
+        'mortality_1y': { id: 'death-1-year', name: '1年全因死亡', type: 'followup' },
+        'mi_1y': { id: 'mi-1-year', name: '1年心梗', type: 'followup' },
+        'stroke_1y': { id: 'stroke-1-year', name: '1年卒中', type: 'followup' },
+        'hf_readmission_1y': { id: 'hf-readmission-1-year', name: '1年心衰再住院', type: 'followup' },
+        'subsequent_intervention': { id: 'subsequent-intervention', name: '因TAVI并发症接受后续干预', type: 'followup' },
+        'occlusion_procedure': { id: 'occlusion-procedure', name: '术后封堵', type: 'followup' },
+        'valve_dislodgement': { id: 'valve-dislodgement', name: '术后瓣膜脱落', type: 'followup' },
+        'aortic_dissection': { id: 'aortic-dissection', name: '术后主动脉夹层', type: 'followup' },
+        'hematoma': { id: 'hematoma', name: '术后血肿', type: 'followup' },
+        'reoperation': { id: 'reoperation', name: '二次手术', type: 'followup' },
+        'conversion_to_open_surgery': { id: 'conversion-to-open-surgery', name: '术后中转开胸', type: 'followup' },
+        'pacemaker_post_tavi': { id: 'pacemaker-post-tavi', name: '术后起搏器植入', type: 'followup' },
+        'heart_failure_post': { id: 'heart-failure-post', name: '术后心衰', type: 'followup' }
+    };
+    
+    Object.entries(booleanMapping).forEach(([filterKey, config]) => {
+        if (filters[filterKey] !== undefined) {
+            const select = document.getElementById(config.id);
+            if (select) {
+                select.value = filters[filterKey] ? 'true' : 'false';
+                const statusText = filters[filterKey] ? '是' : '否';
+                filterSummary.push({ 
+                    type: config.type, 
+                    text: `${config.name}: ${statusText}`, 
+                    icon: config.type === 'basic-info' ? 'bi-check-circle' : 
+                          config.type === 'imaging' ? 'bi-camera' :
+                          config.type === 'surgery' ? 'bi-scissors' :
+                          config.type === 'discharge' ? 'bi-hospital' : 'bi-arrow-repeat'
+                });
+            }
+        }
+    });
+    
+    // 9. 处理数值范围筛选条件
+    const numericMapping = {
+        // 基线资料
+        'sts_score': { id: 'sts-score', name: 'STS评分', unit: '%', type: 'basic-info' },
+        'nt_probnp': { id: 'nt-probnp', name: 'NT-proBNP', unit: 'pg/ml', type: 'basic-info' },
+        'surface_area': { id: 'surface-area', name: '体表面积', unit: 'm²', type: 'basic-info' },
+        // 术前影像学评估
+        'lvef': { id: 'lvef', name: 'LVEF', unit: '%', type: 'imaging' },
+        'aortic_valve_peak_pg': { id: 'max-gradient', name: '最大跨瓣压差', unit: 'mmHg', type: 'imaging' },
+        'aortic_valve_mean_pg': { id: 'mean-gradient', name: '平均跨瓣压差', unit: 'mmHg', type: 'imaging' },
+        'aortic_valve_eoa': { id: 'eoa', name: '有效瓣口面积', unit: 'cm²', type: 'imaging' },
+        'annular_area': { id: 'annular-area', name: '瓣环面积', unit: 'cm²', type: 'imaging' },
+        'annular_mean_diameter': { id: 'annular-mean-diameter', name: '瓣环平均直径', unit: 'mm', type: 'imaging' },
+        'annular_max_diameter': { id: 'annular-max-diameter', name: '瓣环最大直径', unit: 'mm', type: 'imaging' },
+        'annular_min_diameter': { id: 'annular-min-diameter', name: '瓣环最小直径', unit: 'mm', type: 'imaging' },
+        'annular_perimeter': { id: 'annular-perimeter', name: '瓣环周径', unit: 'mm', type: 'imaging' },
+        'annular_calcification': { id: 'annular-calcification', name: '瓣环钙化', unit: 'mm³', type: 'imaging' },
+        'supraannular_calcification': { id: 'supraannular-calcification', name: '瓣环上钙化', unit: 'mm³', type: 'imaging' },
+        'aortic_valve_flow_velocity': { id: 'valve-velocity', name: '瓣口流速', unit: 'm/s', type: 'imaging' },
+        'stj_height': { id: 'stj-height', name: '窦管交界高度', unit: 'mm', type: 'imaging' },
+        'stj_diameter': { id: 'stj-diameter', name: '窦管交界直径', unit: 'mm', type: 'imaging' },
+        'sinus_diameter': { id: 'sinus-diameter', name: '窦部直径', unit: 'mm', type: 'imaging' },
+        'ascending_aorta_diameter': { id: 'ascending-aorta-diameter', name: '升主动脉直径', unit: 'mm', type: 'imaging' },
+        'lvot_diameter': { id: 'lvot-diameter', name: 'LVOT直径', unit: 'mm', type: 'imaging' },
+        'lvot_calcification': { id: 'lvot-calcification', name: 'LVOT钙化体积', unit: 'mm³', type: 'imaging' },
+        'left_coronary_height': { id: 'lca-height', name: '左冠脉高度', unit: 'mm', type: 'imaging' },
+        'right_coronary_height': { id: 'rca-height', name: '右冠脉高度', unit: 'mm', type: 'imaging' },
+        'aortic_valve_eoai': { id: 'eoai', name: '有效瓣口面积指数', unit: 'cm²/m²', type: 'imaging' },
+        'lvedv': { id: 'lvedv', name: '左心室舒张末期容积', unit: 'ml', type: 'imaging' },
+        'lvesv': { id: 'lvesv', name: '左心室收缩末期容积', unit: 'ml', type: 'imaging' },
+        // 手术信息
+        'thv_size': { id: 'valve-size', name: '瓣膜尺寸', unit: 'mm', type: 'surgery' },
+        'immediate_mean_pg': { id: 'post-mean-pg', name: '术后即刻跨瓣压差', unit: 'mmHg', type: 'surgery' },
+        'total_procedure_time': { id: 'total-procedure-time', name: '总术时', unit: 'min', type: 'surgery' },
+        'fluoroscopy_time': { id: 'fluoroscopy-time', name: '造影时间', unit: 'min', type: 'surgery' },
+        'contrast_volume': { id: 'contrast-volume', name: '造影量', unit: 'ml', type: 'surgery' },
+        'immediate_lvef': { id: 'immediate-lvef', name: '术后即刻LVEF', unit: '%', type: 'surgery' },
+        // 出院前评价
+        'flow_velocity': { id: 'flow-velocity', name: '主动脉瓣口流速', unit: 'm/s', type: 'discharge' },
+        'mean_pg': { id: 'mean-pg', name: '平均跨瓣压差', unit: 'mmHg', type: 'discharge' },
+        'max_pg': { id: 'max-pg', name: '最大跨瓣压差', unit: 'mmHg', type: 'discharge' }
+    };
+    
+    Object.entries(numericMapping).forEach(([filterPrefix, config]) => {
+        const hasMin = filters[`${filterPrefix}_min`] !== undefined;
+        const hasMax = filters[`${filterPrefix}_max`] !== undefined;
+        
+        if (hasMin || hasMax) {
+            const minInput = document.getElementById(`${config.id}-min`);
+            const maxInput = document.getElementById(`${config.id}-max`);
+            
+            let rangeText = config.name;
+            if (hasMin && hasMax) {
+                if (minInput) minInput.value = filters[`${filterPrefix}_min`];
+                if (maxInput) maxInput.value = filters[`${filterPrefix}_max`];
+                rangeText += `: ${filters[`${filterPrefix}_min`]}-${filters[`${filterPrefix}_max`]}${config.unit}`;
+            } else if (hasMin) {
+                if (minInput) minInput.value = filters[`${filterPrefix}_min`];
+                rangeText += `: ≥${filters[`${filterPrefix}_min`]}${config.unit}`;
+            } else if (hasMax) {
+                if (maxInput) maxInput.value = filters[`${filterPrefix}_max`];
+                rangeText += `: ≤${filters[`${filterPrefix}_max`]}${config.unit}`;
+            }
+            
+            filterSummary.push({ 
+                type: config.type, 
+                text: rangeText, 
+                icon: config.type === 'basic-info' ? 'bi-bar-chart' : 
+                      config.type === 'imaging' ? 'bi-rulers' :
+                      config.type === 'surgery' ? 'bi-speedometer' : 'bi-graph-up'
+            });
+        }
+    });
+    
+    // 10. 处理分类值筛选条件
+    const categoryMapping = {
+        'other_access': { id: 'other-access', name: '其它入路', type: 'surgery' },
+        'immediate_pvl_severity': { id: 'immediate-pvl-severity', name: '术后即刻瓣周漏程度', type: 'surgery' },
+        'pvl_severity': { id: 'discharge-pvl-severity', name: '出院前瓣周漏程度', type: 'discharge' },
+        'pvl_severity_last_followup': { id: 'followup-pvl-severity', name: '随访瓣周漏程度', type: 'followup' },
+        'mitral_regurgitation_change': { id: 'mitral-regurgitation-change', name: '二尖瓣返流变化', type: 'discharge' }
+    };
+    
+    Object.entries(categoryMapping).forEach(([filterKey, config]) => {
+        if (filters[filterKey] !== undefined) {
+            const select = document.getElementById(config.id);
+            if (select) {
+                select.value = filters[filterKey];
+                filterSummary.push({ 
+                    type: config.type, 
+                    text: `${config.name}: ${filters[filterKey]}`, 
+                    icon: 'bi-list-ul'
+                });
+            }
+        }
+    });
+    
+    // 11. 处理未识别的其他字段（通用处理）
+    const processedKeys = new Set([
+        'age_min', 'age_max', 'gender', 'bmi_min', 'bmi_max', 'nyha_classification', 
+        'thv_type', 'thv_brand'
+    ]);
+    
+    // 添加已处理的布尔值字段
+    Object.keys(booleanMapping).forEach(key => processedKeys.add(key));
+    
+    // 添加已处理的数值范围字段
+    Object.keys(numericMapping).forEach(prefix => {
+        processedKeys.add(`${prefix}_min`);
+        processedKeys.add(`${prefix}_max`);
+    });
+    
+    // 添加已处理的分类字段
+    Object.keys(categoryMapping).forEach(key => processedKeys.add(key));
+    
+    // 处理其他未识别的字段
+    Object.entries(filters).forEach(([key, value]) => {
+        if (!processedKeys.has(key) && value !== undefined && value !== null && value !== '') {
+            let fieldName = key;
+            let fieldValue = value;
+            let fieldType = 'general';
+            
+            // 尝试从知识库中查找中文名称
+            if (INTELLIGENT_FILTER_CONFIG.useKnowledgeBase && fieldMapping.field_mapping) {
+                for (const category of Object.values(fieldMapping.field_mapping)) {
+                    for (const [chineseName, englishName] of Object.entries(category)) {
+                        if (englishName === key) {
+                            fieldName = chineseName;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // 格式化显示值
+            if (typeof value === 'boolean') {
+                fieldValue = value ? '是' : '否';
+            } else if (Array.isArray(value)) {
+                fieldValue = value.join('、');
+            }
+            
+            // 确定字段类型
+            if (key.includes('baseline') || key.includes('age') || key.includes('sex') || key.includes('bmi')) {
+                fieldType = 'basic-info';
+            } else if (key.includes('imaging') || key.includes('lvef') || key.includes('pg') || key.includes('eoa')) {
+                fieldType = 'imaging';
+            } else if (key.includes('procedure') || key.includes('surgery') || key.includes('thv') || key.includes('valve')) {
+                fieldType = 'surgery';
+            } else if (key.includes('discharge') || key.includes('before')) {
+                fieldType = 'discharge';
+            } else if (key.includes('followup') || key.includes('30d') || key.includes('1y') || key.includes('last')) {
+                fieldType = 'followup';
+            }
+            
+            filterSummary.push({ 
+                type: fieldType, 
+                text: `${fieldName}: ${fieldValue}`, 
+                icon: 'bi-gear-fill'  // 通用图标
+            });
+        }
+    });
+    
+    // 12. 更新视觉反馈
+    updateFilterVisualFeedback();
+    
+    // 13. 显示解析结果摘要
+    displayFilterSummary(filterSummary);
+    
+    console.log('filters对象已成功映射到UI控件，包含通用字段处理');
+}
+
+// 显示筛选条件摘要
+function displayFilterSummary(filterSummary) {
+    const resultDiv = document.getElementById('ai-filter-result');
+    const summaryDiv = document.getElementById('ai-filter-summary');
+    
+    if (!resultDiv || !summaryDiv) return;
+    
+    if (filterSummary.length === 0) {
+        resultDiv.style.display = 'none';
+        return;
+    }
+    
+    // 生成筛选条件标签
+    const tagsHtml = filterSummary.map(item => 
+        `<span class="filter-tag ${item.type}">
+            <i class="${item.icon}"></i>
+            ${item.text}
+        </span>`
+    ).join('');
+    
+    summaryDiv.innerHTML = tagsHtml;
+    resultDiv.style.display = 'block';
+}
+// ==================== END: 新增的将filters对象映射到UI控件的函数 ====================

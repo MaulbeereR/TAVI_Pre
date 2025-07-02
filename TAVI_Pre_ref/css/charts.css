@@ -1,0 +1,81 @@
+/**
+ * TAVI预手术评估系统图表组件样式
+ */
+
+/* 图表容器样式 */
+.chart-container {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 图表卡片样式 */
+.chart-card {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+/* 图表卡片内容区域布局 */
+.chart-card .card-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 图表标题样式 */
+.chart-card .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 0.75rem 1rem;
+    text-align: center;
+}
+
+/* 图表标题文本样式 */
+.chart-card .card-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* 图表图例容器 */
+.chartjs-legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+/* 图例项目样式 */
+.chartjs-legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 1rem;
+}
+
+/* 图例文本样式 */
+.chartjs-legend-item span {
+    margin-left: 0.5rem;
+}
+
+/* 图例颜色标记样式 */
+.chartjs-legend-item .chartjs-legend-marker {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+/* 图例颜色标记内部样式 */
+.chartjs-legend-item .chartjs-legend-marker::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: inherit;
+    border-radius: 2px;
+} 

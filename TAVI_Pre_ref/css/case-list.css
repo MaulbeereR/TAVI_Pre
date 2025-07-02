@@ -1,0 +1,32 @@
+/**
+ * TAVI预手术评估系统病例列表和筛选组件样式
+ */
+
+/* 病例列表行悬停效果 */
+#case-list tr:hover {
+    background-color: #f1f8ff; /* 淡蓝色背景提示可点击 */
+    cursor: pointer;
+}
+
+/* 高亮显示匹配的病例 */
+.case-matched {
+    background-color: rgba(13, 110, 253, 0.1); /* 淡蓝色背景突出显示 */
+}
+
+/* 筛选面板标签样式 */
+#filter-form label {
+    font-weight: 500;
+}
+
+/* 查看详情按钮样式 */
+.btn-view-details {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* 病症文本样式 */
+.case-text {
+    color: inherit;
+    border-bottom: none;
+    cursor: default;
+}
