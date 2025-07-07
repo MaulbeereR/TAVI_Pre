@@ -276,6 +276,27 @@ function bindEventListeners() {
     document.addEventListener('input', updateFilterVisualFeedback);
     document.addEventListener('change', updateFilterVisualFeedback);
     
+    // 智能聊天相关事件监听器
+    const sendChatBtn = document.getElementById('send-chat-message');
+    const chatInput = document.getElementById('chat-input');
+    const applyChatFiltersBtn = document.getElementById('apply-chat-filters');
+    
+    if (sendChatBtn) {
+        sendChatBtn.addEventListener('click', handleChatMessage);
+    }
+    
+    if (chatInput) {
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleChatMessage();
+            }
+        });
+    }
+    
+    if (applyChatFiltersBtn) {
+        applyChatFiltersBtn.addEventListener('click', applyChatFilters);
+    }
+    
     // 初始化视觉反馈
     setTimeout(updateFilterVisualFeedback, 100);
 }
@@ -1476,13 +1497,29 @@ async function getPaperDataByPatientId(patientId) {
     try {
         console.log(`正在查找患者ID ${patientId} 对应的论文数据...`);
         
-        // 首先尝试从本地数据源获取
+        // 将患者ID（DOI格式，下划线分隔）转换为标准DOI格式（斜杠分隔）
+        const standardDoi = patientId.replace(/_/g, '/');
+        console.log(`转换后的标准DOI: ${standardDoi}`);
+        
+        // 首先尝试从本地数据源直接通过DOI匹配
         if (typeof taviCases !== 'undefined' && taviCases) {
             console.log(`本地数据源中有 ${taviCases.length} 条记录`);
-            const caseData = taviCases.find(item => item.id === parseInt(patientId));
+            
+            // 直接通过DOI匹配
+            const caseData = taviCases.find(item => item.doi === standardDoi);
             if (caseData) {
-                console.log(`找到匹配的论文数据:`, caseData.doi);
+                console.log(`通过DOI直接匹配找到论文数据:`, caseData.doi);
                 return caseData;
+            }
+            
+            // 如果直接匹配失败，尝试通过患者ID作为数字ID匹配（兼容旧版本）
+            const numericId = parseInt(patientId);
+            if (!isNaN(numericId)) {
+                const caseDataById = taviCases.find(item => item.id === numericId);
+                if (caseDataById) {
+                    console.log(`通过数字ID匹配找到论文数据:`, caseDataById.doi);
+                    return caseDataById;
+                }
             }
         }
         
@@ -1504,11 +1541,15 @@ async function getPaperDataByPatientId(patientId) {
                 const result = await response.json();
                 const patientData = result.data && result.data[0];
                 
-                if (patientData && patientData.doi) {
+                if (patientData && patientData.patient_id) {
+                    // 将患者数据中的patient_id转换为标准DOI格式
+                    const patientDoi = patientData.patient_id.replace(/_/g, '/');
+                    console.log(`从后端获取到的患者DOI: ${patientDoi}`);
+                    
                     // 尝试根据DOI查找论文数据
-                    const paperData = taviCases?.find(item => item.doi === patientData.doi);
+                    const paperData = taviCases?.find(item => item.doi === patientDoi);
                     if (paperData) {
-                        console.log(`通过DOI找到匹配的论文数据:`, paperData.doi);
+                        console.log(`通过后端DOI找到匹配的论文数据:`, paperData.doi);
                         return paperData;
                     }
                 }
@@ -1518,6 +1559,13 @@ async function getPaperDataByPatientId(patientId) {
         }
         
         console.warn(`未找到患者ID ${patientId} 对应的论文数据`);
+        console.warn(`尝试过的DOI格式: ${standardDoi}`);
+        
+        // 调试信息：列出所有可用的DOI
+        if (typeof taviCases !== 'undefined' && taviCases) {
+            console.log('所有可用的DOI:', taviCases.map(item => item.doi));
+        }
+        
         return null;
         
     } catch (error) {
@@ -1912,11 +1960,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         return;
     }
-    const iframe = chatContainer.querySelector('iframe');
-    if (!iframe) {
-        console.error("🚨 RAGFlow Widget: Iframe element is missing.");
-        return;
-    }
+    // 移除iframe检查，因为我们现在使用自定义聊天界面
+    // const iframe = chatContainer.querySelector('iframe');
     
     console.log('✅ RAGFlow Widget: 所有关键元素已找到，开始初始化');
     console.log('🔧 RAGFlow Widget位置:', {
@@ -2033,12 +2078,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     toggleBtn.addEventListener('click', (e) => {
+        console.log('🔧 RAGFlow: 悬浮球被点击了');
         if (hasDragged) {
             e.preventDefault();
+            console.log('🔧 RAGFlow: 检测到拖拽，忽略点击');
             return;
         }
         handleInteractionAndHideBubble();
         chatContainer.classList.toggle('show');
+        console.log('🔧 RAGFlow: 聊天窗口状态:', chatContainer.classList.contains('show'));
     });
 
     closeBtn.addEventListener('click', (e) => {
@@ -2070,7 +2118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             originalMouseY = e.pageY;
             originalLeft = chatContainer.offsetLeft;
             originalTop = chatContainer.offsetTop;
-            iframe.style.pointerEvents = 'none';
+            // iframe.style.pointerEvents = 'none'; // 不再需要iframe
             document.body.style.userSelect = 'none';
         });
     });
@@ -2087,7 +2135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isDraggingContainer = true;
         containerDragOffsetX = e.clientX - chatWidget.offsetLeft;
         containerDragOffsetY = e.clientY - chatWidget.offsetTop;
-        iframe.style.pointerEvents = 'none';
+        // iframe.style.pointerEvents = 'none'; // 不再需要iframe
         document.body.style.userSelect = 'none';
     });
 
@@ -2157,7 +2205,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (isResizing || isDraggingContainer) {
-            iframe.style.pointerEvents = 'auto';
+            // iframe.style.pointerEvents = 'auto'; // 不再需要iframe
         }
         
         isDraggingWidget = isResizing = isDraggingContainer = false;
@@ -2562,3 +2610,579 @@ function displayFilterSummary(filterSummary) {
     resultDiv.style.display = 'block';
 }
 // ==================== END: 新增的将filters对象映射到UI控件的函数 ====================
+
+// ================== 智能聊天功能 ==================
+
+// 全局变量存储当前聊天中的筛选条件
+let currentChatFilters = {};
+
+// 处理聊天消息
+async function handleChatMessage() {
+    const chatInput = document.getElementById('chat-input');
+    const userMessage = chatInput.value.trim();
+    
+    if (!userMessage) {
+        return;
+    }
+    
+    // 清空输入框
+    chatInput.value = '';
+    
+    // 显示用户消息
+    addChatMessage(userMessage, 'user');
+    
+    // 显示思考状态
+    showChatTyping(true);
+    
+    try {
+        // 二分类判断用户意图
+        const intent = await classifyUserIntent(userMessage);
+        
+        if (intent.type === 'case_query') {
+            // 处理病例查询
+            await handleCaseQuery(userMessage, intent);
+        } else {
+            // 处理问答查询
+            await handleQAQuery(userMessage, intent);
+        }
+        
+    } catch (error) {
+        console.error('处理聊天消息失败:', error);
+        addChatMessage('抱歉，我遇到了一些问题，请稍后再试。', 'bot');
+    } finally {
+        showChatTyping(false);
+    }
+}
+
+// 二分类判断用户意图
+async function classifyUserIntent(userMessage) {
+    try {
+        // 暂时使用本地分类（后续可扩展为API调用）
+        return simpleIntentClassification(userMessage);
+        
+    } catch (error) {
+        console.warn('意图分类失败，使用本地分类:', error);
+        return simpleIntentClassification(userMessage);
+    }
+}
+
+// 改进的意图分类算法
+function simpleIntentClassification(userMessage) {
+    const message = userMessage.toLowerCase();
+    console.log('🔧 意图分类 - 原始消息:', userMessage);
+    
+    // === 第一步：强制问答识别（高优先级） ===
+    const strongQAPatterns = [
+        // 疑问句开头
+        /^(请问|问一下|想问|咨询|请教)/,
+        // 疑问词组合
+        /(什么是|如何|为什么|怎么|怎样|怎么样)/,
+        // 概念性询问
+        /(有哪些|包括哪些|分为哪些|什么原因|什么风险|什么好处|什么优点|什么缺点)/,
+        // 解释性询问
+        /(解释|介绍|说明|原理|机制|定义|概念)/,
+        // 风险相关询问
+        /(面临.*风险|有.*风险|存在.*风险|风险.*哪些|并发症.*哪些)/,
+        // 医学知识询问
+        /(适应症|禁忌症|注意事项|治疗方法|手术方式|疗效|效果|预后|成功率)/
+    ];
+    
+    for (const pattern of strongQAPatterns) {
+        if (pattern.test(message)) {
+            console.log('🎯 强制问答匹配:', pattern.source);
+            return {
+                type: 'qa_query',
+                confidence: 0.9,
+                reasoning: `强制问答模式：匹配模式 "${pattern.source}"`
+            };
+        }
+    }
+    
+    // === 第二步：强制病例查询识别（高优先级） ===
+    const strongCasePatterns = [
+        // 明确的查询指令
+        /^(查询|筛选|查找|找|搜索|检索|获取|显示|列出)/,
+        // 数量统计
+        /(有多少|总共|共有|统计|数量|个数|多少个|多少例|多少名|多少位)/,
+        // 具体条件查询
+        /(大于|小于|等于|范围|之间|以上|以下|超过|不超过|≥|≤|>|<)/,
+        // 明确指向数据
+        /(病例|患者.*数据|数据.*显示|筛选.*条件)/
+    ];
+    
+    for (const pattern of strongCasePatterns) {
+        if (pattern.test(message)) {
+            console.log('🎯 强制病例查询匹配:', pattern.source);
+            return {
+                type: 'case_query',
+                confidence: 0.9,
+                reasoning: `强制病例查询模式：匹配模式 "${pattern.source}"`
+            };
+        }
+    }
+    
+    // === 第三步：基于关键词的加权评分 ===
+    let caseScore = 0;
+    let qaScore = 0;
+    
+    // 病例查询关键词（权重1）
+    const caseKeywords = [
+        '病例', '例子', '数据', '统计', '显示', '列出',
+        '男性', '女性', '年龄', '性别', 'bmi', 'nyha', 'lvef'
+    ];
+    
+    // 问答查询关键词（权重2，更高权重）
+    const qaKeywords = [
+        'tavi', 'tavr', '经导管', '主动脉瓣', '置换', '植入',
+        '原理', '机制', '方法', '治疗', '预后', '疗效'
+    ];
+    
+    // 概念性问答关键词（权重3，最高权重）
+    const conceptualQAKeywords = [
+        '风险', '好处', '优点', '缺点', '原因', '影响', '作用',
+        '意义', '价值', '重要性', '必要性', '可能性'
+    ];
+    
+    // 计算加权分数
+    caseKeywords.forEach(keyword => {
+        if (message.includes(keyword)) {
+            caseScore += 1;
+        }
+    });
+    
+    qaKeywords.forEach(keyword => {
+        if (message.includes(keyword)) {
+            qaScore += 2;
+        }
+    });
+    
+    conceptualQAKeywords.forEach(keyword => {
+        if (message.includes(keyword)) {
+            qaScore += 3;
+        }
+    });
+    
+    // === 第四步：句式结构分析 ===
+    // 疑问句标志
+    if (message.includes('？') || message.includes('?') || 
+        message.includes('吗') || message.includes('呢') ||
+        message.includes('呀') || message.includes('啊')) {
+        qaScore += 2;
+    }
+    
+    // 数量词（倾向于查询）
+    if (message.includes('个') || message.includes('名') || 
+        message.includes('例') || message.includes('位') ||
+        message.includes('条') || message.includes('项')) {
+        // 但如果同时包含"哪些"，仍然是问答
+        if (!message.includes('哪些')) {
+            caseScore += 1;
+        }
+    }
+    
+    // === 第五步：最终判断 ===
+    console.log('🔧 意图评分 - 病例查询:', caseScore, '问答:', qaScore);
+    
+    if (qaScore > caseScore) {
+        return {
+            type: 'qa_query',
+            confidence: qaScore / (qaScore + caseScore),
+            reasoning: `问答评分(${qaScore}) > 病例查询评分(${caseScore})`
+        };
+    } else if (caseScore > qaScore) {
+        return {
+            type: 'case_query',
+            confidence: caseScore / (qaScore + caseScore),
+            reasoning: `病例查询评分(${caseScore}) > 问答评分(${qaScore})`
+        };
+    } else {
+        // 平分或都为0时，默认为问答
+        return {
+            type: 'qa_query',
+            confidence: 0.5,
+            reasoning: '评分相等，默认为问答查询'
+        };
+    }
+}
+
+// 处理病例查询
+async function handleCaseQuery(userMessage, intent) {
+    addChatMessage(`我理解您想要查询病例数据。让我来解析您的需求...`, 'bot');
+    
+    try {
+        // 使用现有的智能筛选API解析用户查询
+        const response = await fetch(`${API_BASE_URL}/text-to-sql-to-filter`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                query: userMessage,
+                // 如果启用知识库，添加知识库信息
+                ...(INTELLIGENT_FILTER_CONFIG.useKnowledgeBase && fieldMapping.field_mapping ? {
+                    knowledge_base: {
+                        field_mapping: fieldMapping.field_mapping,
+                        data_type_info: fieldMapping.data_type_info,
+                        units: fieldMapping.units
+                    }
+                } : {})
+            })
+        });
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.error || 'AI服务解析失败');
+        }
+
+        const filtersFromAI = await response.json();
+        console.log('从AI获取的筛选条件:', filtersFromAI);
+        
+        // 保存筛选条件
+        currentChatFilters = filtersFromAI;
+        
+        // 显示筛选条件标签
+        displayChatFilterTags(filtersFromAI);
+        
+        // 添加提示消息
+        const filterCount = Object.keys(filtersFromAI).length;
+        if (filterCount > 0) {
+            addChatMessage(
+                `我已经解析出${filterCount}个筛选条件，请查看下方的筛选标签。点击"应用筛选"按钮来执行查询。`,
+                'bot'
+            );
+        } else {
+            addChatMessage(
+                '我没有从您的消息中识别出具体的筛选条件，请尝试更具体的描述，比如"查找年龄大于70岁的男性患者"。',
+                'bot'
+            );
+        }
+        
+    } catch (error) {
+        console.error('病例查询处理失败:', error);
+        addChatMessage(`解析查询条件时出现问题：${error.message}`, 'bot');
+    }
+}
+
+// 处理问答查询
+async function handleQAQuery(userMessage, intent) {
+    try {
+        // 暂时使用备用回答（后续可集成真实的知识库API）
+        addChatMessage(getFallbackAnswer(userMessage), 'bot');
+        
+    } catch (error) {
+        console.warn('知识库问答调用失败，使用备用回答:', error);
+        addChatMessage(getFallbackAnswer(userMessage), 'bot');
+    }
+}
+
+// 备用回答
+function getFallbackAnswer(userMessage) {
+    const message = userMessage.toLowerCase();
+    
+    // 高龄患者风险相关问题
+    if (message.includes('高龄') && (message.includes('风险') || message.includes('面临'))) {
+        return `高龄患者进行TAVI手术面临的主要风险包括：
+
+**心血管风险：**
+• 术后心律失常（尤其是传导阻滞）
+• 血流动力学不稳定
+• 心脏功能储备不足
+
+**血管相关风险：**
+• 血管脆性增加，易发生血管并发症
+• 大血管损伤风险较高
+• 血管通路困难
+
+**全身性风险：**
+• 认知功能下降
+• 肾功能不全加重
+• 感染抵抗力下降
+• 术后恢复时间延长
+
+**其他风险：**
+• 起搏器植入需求增加
+• 卒中风险相对较高
+• 多器官功能衰竭
+
+尽管如此，TAVI仍是高龄高危患者的重要治疗选择，风险效益比通常是有利的。`;
+    }
+    
+    // 一般风险相关问题
+    if (message.includes('风险') && !message.includes('高龄')) {
+        return `TAVI手术的一般风险包括：
+
+**手术相关风险：**
+• 瓣膜移位（1-3%）
+• 瓣环撕裂（<1%）
+• 冠脉阻塞（1-2%）
+
+**血管相关风险：**
+• 大血管并发症（2-5%）
+• 出血（5-10%）
+• 血管闭塞
+
+**心脏相关风险：**
+• 瓣周漏（10-20%，多数轻微）
+• 传导阻滞需起搏器（5-15%）
+• 急性心肌梗死（<1%）
+
+**神经系统风险：**
+• 卒中（1-3%）
+• 认知功能变化
+
+**其他风险：**
+• 急性肾损伤（5-15%）
+• 感染（<1%）
+
+总体而言，TAVI的30天死亡率约1-3%，显著低于传统开胸手术。`;
+    }
+    
+    if (message.includes('tavi') || message.includes('tavr')) {
+        return `TAVI（经导管主动脉瓣植入术）是一种微创心脏手术，用于治疗主动脉瓣狭窄。这项技术允许医生通过导管将人工瓣膜植入患者体内，而无需开胸手术。
+
+**主要优点：**
+• 微创性，恢复期较短
+• 适用于高风险手术患者
+• 住院时间短
+• 局麻下即可完成
+
+**适应症：**
+• 重度主动脉瓣狭窄
+• 传统手术高风险或禁忌
+• 预期寿命>1年
+
+如果您想了解更多具体信息，建议咨询专业医生。`;
+    }
+    
+    if (message.includes('主动脉瓣')) {
+        return `主动脉瓣是心脏的重要组成部分，位于左心室和主动脉之间。
+
+**正常功能：**
+• 控制血液从左心室流向主动脉
+• 防止血液反流回左心室
+• 维持正常血液循环
+
+**常见疾病：**
+• 主动脉瓣狭窄（AS）
+• 主动脉瓣关闭不全（AR）
+• 先天性双瓣畸形
+
+**治疗方法：**
+• TAVI（经导管瓣膜植入）
+• SAVR（外科瓣膜置换）
+• 瓣膜成形术
+
+TAVI手术就是治疗主动脉瓣疾病的一种现代微创方法。`;
+    }
+    
+    if (message.includes('瓣周漏')) {
+        return `瓣周漏（Paravalvular Leak, PVL）是TAVI手术后的常见现象。
+
+**发生原因：**
+• 人工瓣膜与原生瓣环密合不完全
+• 钙化组织阻碍完全贴合
+• 瓣膜尺寸选择
+
+**严重程度分级：**
+• 微量：通常无临床意义
+• 轻度：一般不需要干预
+• 中度：需要密切随访
+• 重度：可能需要介入处理
+
+**临床影响：**
+• 大多数瓣周漏是轻微的
+• 轻度PVL对预后影响有限
+• 重度PVL可能影响心功能
+
+**处理方法：**
+• 轻微：观察随访
+• 明显：球囊后扩张
+• 严重：二次瓣膜植入`;
+    }
+    
+    if (message.includes('并发症')) {
+        return `TAVI手术的主要并发症包括：
+
+**术中并发症：**
+• 瓣膜移位或错位（1-3%）
+• 瓣环撕裂（<1%）
+• 血管损伤（2-5%）
+• 冠脉阻塞（1-2%）
+
+**术后早期并发症：**
+• 瓣周漏（10-20%，多数轻微）
+• 起搏器植入需求（5-15%）
+• 卒中（1-3%）
+• 大出血（5-10%）
+• 急性肾损伤（5-15%）
+
+**长期并发症：**
+• 瓣膜功能恶化
+• 感染性心内膜炎
+• 血栓栓塞事件
+
+**发生率趋势：**
+随着技术改进和经验积累，TAVI并发症发生率持续降低，整体安全性不断提高。`;
+    }
+    
+    return `抱歉，我暂时无法回答这个问题。但是我可以帮您：
+
+1. 🔍 <strong>查询和筛选病例数据</strong>：例如"查找年龄大于70岁的男性患者"
+2. 📊 <strong>分析统计信息</strong>：例如"显示所有病例的并发症情况"
+3. 💡 <strong>提供TAVI相关的基础知识</strong>：例如"什么是TAVI手术？"
+
+请尝试重新描述您的问题，或者问我一些关于TAVI病例数据的查询需求。`;
+}
+
+// 显示聊天中的筛选条件标签
+function displayChatFilterTags(filters) {
+    const filterTagsContainer = document.getElementById('filter-tags');
+    const filterResultsContainer = document.getElementById('filter-results');
+    
+    if (!filterTagsContainer || !filterResultsContainer) return;
+    
+    // 清空现有标签
+    filterTagsContainer.innerHTML = '';
+    
+    // 字段名称映射（简化版）
+    const fieldNameMap = {
+        age_min: '最小年龄',
+        age_max: '最大年龄',
+        gender: '性别',
+        bmi_min: '最小BMI',
+        bmi_max: '最大BMI',
+        diabetes_mellitus: '糖尿病',
+        hypertension: '高血压',
+        hyperlipidemia: '高脂血症',
+        coronary_artery_disease: '冠心病',
+        atrial_fibrillation: '房颤',
+        nyha_classification: 'NYHA分级',
+        lvef_min: '最小LVEF',
+        lvef_max: '最大LVEF',
+        aortic_valve_peak_pg_min: '最小最大跨瓣压差',
+        aortic_valve_peak_pg_max: '最大最大跨瓣压差',
+        aortic_valve_mean_pg_min: '最小平均跨瓣压差',
+        aortic_valve_mean_pg_max: '最大平均跨瓣压差',
+        thv_size_min: '最小瓣膜尺寸',
+        thv_size_max: '最大瓣膜尺寸',
+        thv_type: '瓣膜类型',
+        thv_brand: '瓣膜品牌',
+        immediate_pvl_occurred: '术后即刻瓣周漏',
+        mortality_30d: '30天死亡',
+        mortality_1y: '1年死亡',
+        stroke_before_discharge: '出院前卒中',
+        major_bleeding: '大出血',
+        pacemaker_implantation: '起搏器植入'
+    };
+    
+    // 生成标签
+    Object.entries(filters).forEach(([key, value]) => {
+        const tagElement = document.createElement('span');
+        tagElement.className = 'filter-tag-chat';
+        
+        const fieldName = fieldNameMap[key] || key;
+        let displayValue = value;
+        
+        // 格式化显示值
+        if (typeof value === 'boolean') {
+            displayValue = value ? '是' : '否';
+        } else if (Array.isArray(value)) {
+            displayValue = value.join(', ');
+        } else if (key.includes('_min')) {
+            displayValue = `≥ ${value}`;
+        } else if (key.includes('_max')) {
+            displayValue = `≤ ${value}`;
+        }
+        
+        tagElement.textContent = `${fieldName}: ${displayValue}`;
+        filterTagsContainer.appendChild(tagElement);
+    });
+    
+    // 显示筛选结果区域
+    if (Object.keys(filters).length > 0) {
+        filterResultsContainer.style.display = 'block';
+    } else {
+        filterResultsContainer.style.display = 'none';
+    }
+}
+
+// 应用聊天中的筛选条件
+async function applyChatFilters() {
+    if (Object.keys(currentChatFilters).length === 0) {
+        addChatMessage('没有可应用的筛选条件。', 'bot');
+        return;
+    }
+    
+    try {
+        // 显示加载状态
+        addChatMessage('正在应用筛选条件，请稍候...', 'bot');
+        
+        // 设置全局筛选条件
+        currentFilters = currentChatFilters;
+        currentPage = 1;
+        
+        // 并行加载数据
+        await Promise.all([
+            loadStatistics(currentFilters),
+            loadChartData(currentFilters),
+            loadTableData(currentFilters, currentPage, casesPerPage)
+        ]);
+        
+        // 应用筛选条件到UI控件
+        applyFiltersToUI(currentFilters);
+        
+        // 显示成功消息
+        addChatMessage('筛选条件已成功应用！您可以在主界面查看筛选结果。', 'bot');
+        
+        // 隐藏筛选结果区域
+        document.getElementById('filter-results').style.display = 'none';
+        
+        // 清空当前聊天筛选条件
+        currentChatFilters = {};
+        
+    } catch (error) {
+        console.error('应用筛选条件失败:', error);
+        addChatMessage('应用筛选条件时出现错误，请重试。', 'bot');
+    }
+}
+
+// 添加聊天消息
+function addChatMessage(message, sender) {
+    const chatMessages = document.getElementById('chat-messages');
+    if (!chatMessages) return;
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}-message`;
+    
+    const avatarDiv = document.createElement('div');
+    avatarDiv.className = 'message-avatar';
+    avatarDiv.innerHTML = sender === 'bot' ? '<i class="bi bi-robot"></i>' : '<i class="bi bi-person"></i>';
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    
+    // 支持HTML内容（用于列表等格式）
+    if (message.includes('<') || message.includes('•')) {
+        // 将bullet points转换为HTML列表
+        const formattedMessage = message
+            .replace(/•\s+/g, '<br>• ')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        contentDiv.innerHTML = formattedMessage;
+    } else {
+        contentDiv.textContent = message;
+    }
+    
+    messageDiv.appendChild(avatarDiv);
+    messageDiv.appendChild(contentDiv);
+    
+    chatMessages.appendChild(messageDiv);
+    
+    // 滚动到最新消息
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// 显示/隐藏打字状态
+function showChatTyping(show) {
+    const typingElement = document.getElementById('chat-typing');
+    if (typingElement) {
+        typingElement.style.display = show ? 'block' : 'none';
+    }
+}

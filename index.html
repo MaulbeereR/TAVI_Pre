@@ -273,6 +273,296 @@
                 max-height: 300px;
             }
         }
+        
+        /* 智能聊天界面样式 */
+        #ragflow-chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .bot-message .message-avatar {
+            background: #007bff;
+            color: white;
+        }
+        
+        .user-message {
+            flex-direction: row-reverse;
+        }
+        
+        .user-message .message-avatar {
+            background: #6c757d;
+            color: white;
+            margin-right: 0;
+            margin-left: 10px;
+        }
+        
+        .message-content {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .user-message .message-content {
+            background: #007bff;
+            color: white;
+        }
+        
+        .message-content p {
+            margin: 0 0 8px 0;
+        }
+        
+        .message-content p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .message-content ul {
+            margin: 8px 0 0 0;
+            padding-left: 20px;
+        }
+        
+        .message-content li {
+            margin-bottom: 5px;
+        }
+        
+        .filter-results {
+            border-top: 1px solid #e9ecef;
+            background: white;
+            padding: 10px 15px;
+        }
+        
+        .filter-summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .filter-icon {
+            color: #007bff;
+            margin-right: 8px;
+        }
+        
+        .filter-title {
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .filter-tag-chat {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            border: 1px solid #bbdefb;
+        }
+        
+        .chat-input-area {
+            border-top: 1px solid #e9ecef;
+            padding: 15px;
+            background: white;
+        }
+        
+        .chat-input-area .input-group {
+            margin-bottom: 10px;
+        }
+        
+        .chat-typing {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .typing-indicator {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .welcome-message {
+            text-align: left;
+        }
+        
+        .welcome-message .message-content {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+        }
+        
+        /* RAGFlow聊天窗口控制样式 */
+        #ragflow-chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        #ragflow-chat-container {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            width: 400px;
+            height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            bottom: 80px;
+            right: 20px;
+            z-index: 1001;
+        }
+        
+        #ragflow-chat-container.show {
+            display: flex !important; /* 显示时使用flex布局 */
+        }
+        
+        #ragflow-chat-toggle-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #007bff;
+            color: white;
+            border: none;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,123,255,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        #ragflow-chat-toggle-btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        
+        #ragflow-chat-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+        }
+        
+        .chat-header-title {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        
+        .chat-header-title i {
+            font-size: 18px;
+        }
+        
+        .chat-header-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .chat-header-btn:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        #ragflow-guidance-bubble {
+            position: absolute;
+            right: 70px;
+            bottom: 30px;
+            background: white;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        
+        #ragflow-guidance-bubble.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(10px);
+        }
+        
+        #ragflow-guidance-bubble:before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid white;
+        }
         .filter-tag.general {
             background-color: #f3e5f5;
             color: #7b1fa2;
@@ -375,7 +665,7 @@
             <div class="col-md-3">
                     <div class="stat-card compact">
                         <div class="stat-icon">
-                            <i class="bi bi-heart-break-fill"></i>
+                            <i class="bi bi-activity"></i>
                         </div>
                         <div class="stat-content">
                             <h3>死亡率</h3>
@@ -386,32 +676,14 @@
             </div>
         </div>
         
-                <!-- START: 新增的自然-语言输入模块 -->
-        <div class="card shadow-sm mb-4" id="intelligent-filter-module">
+                <!-- START: 智能筛选助手已集成到智能问答机器人中 -->
+        <div class="card shadow-sm mb-4" id="intelligent-filter-module" style="display: none;">
             <div class="card-body">
                 <h5 class="card-title">智能筛选助手</h5>
-                <p class="card-subtitle mb-2 text-muted">请用自然语言描述您想筛选的病例特征，系统将为您自动设置下方筛选条件。</p>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control form-control-lg" id="natural-language-input" placeholder="例如：查找年龄大于75岁且有高血压的女性患者">
-                    <button class="btn btn-primary btn-lg" type="button" id="apply-natural-language-filter">
-                        <i class="bi bi-magic"></i> 解析并筛选
-                    </button>
-                </div>
-                
-                <!-- 新增：解析结果展示区域 -->
-                <div id="ai-filter-result" class="ai-filter-result" style="display: none;">
-                    <div class="alert alert-info">
-                        <h6 class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> AI解析结果</h6>
-                        <p class="mb-2">已识别以下筛选条件：</p>
-                        <div id="ai-filter-summary" class="ai-filter-summary"></div>
-                        <small class="text-muted mt-2 d-block">
-                            <i class="bi bi-info-circle"></i> 这些筛选条件已自动应用到下方的"数据筛选"区域中
-                        </small>
-                    </div>
-                </div>
+                <p class="card-subtitle mb-2 text-muted">此功能已集成到右下角的智能问答机器人中，请点击机器人图标使用。</p>
             </div>
         </div>
-    <!-- END: 新增的自然语言输入模块 -->
+    <!-- END: 智能筛选助手已集成到智能问答机器人中 -->
 
         <!-- 数据筛选区域 - 占据整个版面宽度 -->
         <div class="filter-section-wrapper">
@@ -1928,19 +2200,62 @@
         <div id="ragflow-chat-container">
             <!-- 【修改】窗口头部，增加图标 -->
             <div id="ragflow-chat-header">
-                <i class="bi bi-robot me-2"></i> 
-                智能助手
+                <div class="chat-header-title">
+                    <i class="bi bi-robot me-2"></i> 
+                    <span>智能助手</span>
+                </div>
                 <button id="ragflow-chat-close-btn" class="chat-header-btn" title="关闭">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>
             
-            <!-- 【修改】iframe高度以适应新的头部高度 -->
-            <iframe
-                src="http://192.168.23.252:81/chat/share?shared_id=58397d6a4cd911f0b0130242c0a80006&from=chat&auth=FlOTc5NmE4NDgzYTExZjBiNzgzMDI0Mm"
-                style="width: 100%; height: calc(100% - 40px); border: none;"
-                frameborder="0"
-            ></iframe>
+            <!-- 聊天消息区域 -->
+            <div id="chat-messages" class="chat-messages">
+                <div class="welcome-message">
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <i class="bi bi-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>您好！我是TAVI智能助手，我可以帮您：</p>
+                            <ul>
+                                <li>🔍 <strong>查询病例</strong>：例如"查找年龄大于70岁的男性患者"</li>
+                                <li>💬 <strong>医学问答</strong>：例如"什么是TAVI手术？"</li>
+                            </ul>
+                            <p>请直接告诉我您的需求！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 筛选结果展示区域 -->
+            <div id="filter-results" class="filter-results" style="display: none;">
+                <div class="filter-summary">
+                    <div class="filter-summary-header">
+                        <span class="filter-icon"><i class="bi bi-funnel"></i></span>
+                        <span class="filter-title">筛选条件</span>
+                        <button class="btn btn-sm btn-outline-primary" id="apply-chat-filters">
+                            <i class="bi bi-check-circle"></i> 应用筛选
+                        </button>
+                    </div>
+                    <div id="filter-tags" class="filter-tags">
+                        <!-- 筛选标签将在这里动态显示 -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 输入区域 -->
+            <div id="chat-input-area" class="chat-input-area">
+                <div class="input-group">
+                    <input type="text" id="chat-input" class="form-control" placeholder="输入您的问题或筛选需求...">
+                    <button class="btn btn-primary" id="send-chat-message">
+                        <i class="bi bi-send"></i>
+                    </button>
+                </div>
+                <div class="chat-typing" id="chat-typing" style="display: none;">
+                    <span class="typing-indicator">助手正在思考...</span>
+                </div>
+            </div>
         </div>
 
         <!-- 悬浮球触发按钮 -->
